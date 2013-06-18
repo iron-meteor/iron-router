@@ -18,8 +18,13 @@ Package.on_use(function (api) {
   ], ['client', 'server']);
 
   api.add_files([
-    'lib/client/router.js'
+    'lib/client/router.js',
+    'lib/client/helpers.js'
   ], 'client');
+
+  api.add_files([
+    'router.js'
+  ], ['client', 'server']);
 });
 
 Package.on_test(function (api) {
