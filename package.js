@@ -10,7 +10,7 @@ Package.on_use(function (api) {
   ], 'client');
 
   api.add_files([
-    'lib/path.js',
+    'lib/route_path.js',
     'lib/route_context.js',
     'lib/route.js',
     'lib/route_handlers/simple_route_handler.js',
