@@ -5,7 +5,8 @@ Package.describe({
 Package.on_use(function (api) {
   api.use([
     'deps',
-    'underscore'
+    'underscore',
+    'handlebars'
   ], 'client');
 
   api.add_files([
