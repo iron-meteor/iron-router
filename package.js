@@ -2,6 +2,8 @@ Package.describe({
   summary: 'Routing for Meteor'
 });
 
+Npm.depends({'connect': '2.7.10'});
+
 Package.on_use(function (api) {
   api.use([
     'deps',
@@ -21,6 +23,10 @@ Package.on_use(function (api) {
     'lib/client/router.js',
     'lib/client/helpers.js'
   ], 'client');
+  
+  api.add_files([
+    'lib/server/router.js'
+  ], 'server');
 
   api.add_files([
     'router.js'
@@ -28,9 +34,17 @@ Package.on_use(function (api) {
 });
 
 Package.on_test(function (api) {
-  api.use('router', 'client');
-  api.use('reactive-dict', 'client');
-  api.use('tinytest', 'client');
-  api.use('test-helpers', 'client');
-  api.add_files('test/router_tests.js', 'client');
+  api.use([
+    'router', 
+    'reactive-dict', 
+    'tinytest', 
+    'test-helpers'
+  ], ['client', 'server']);
+  
+  api.use([
+    'http'
+  ], 'server')
+  
+  // api.add_files('test/router_tests.js', 'client');
+  api.add_files('test/router_server_tests.js', 'server');
 });
