@@ -6,7 +6,8 @@ Package.on_use(function (api) {
   api.use([
     'deps',
     'underscore',
-    'handlebars'
+    'handlebars',
+    'posture'
   ], 'client');
 
   api.add_files([
@@ -14,7 +15,6 @@ Package.on_use(function (api) {
     'lib/route_context.js',
     'lib/route.js',
     'lib/route_handlers/simple_route_handler.js',
-    'lib/router.js',
   ], ['client', 'server']);
 
   api.add_files([
