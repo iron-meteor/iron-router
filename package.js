@@ -19,6 +19,7 @@ Package.on_use(function (api) {
   ], ['client', 'server']);
 
   api.add_files([
+    'lib/client/location.js',
     'lib/client/route_controller.js',
     'lib/client/client_router.js',
     'lib/client/helpers.js'
