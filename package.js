@@ -7,24 +7,25 @@ Package.on_use(function (api) {
     'deps',
     'underscore',
     'handlebars',
-    'posture'
+    'posture',
+    'controller'
   ], 'client');
 
   api.add_files([
     'lib/route_path.js',
     'lib/route_context.js',
     'lib/route.js',
-    'lib/route_handlers/simple_route_handler.js',
+    'lib/router.js'
   ], ['client', 'server']);
 
   api.add_files([
-    'lib/client/router.js',
-    'lib/client/helpers.js'
+    'lib/client/route_controller.js',
+    'lib/client/client_router.js',
   ], 'client');
 
   api.add_files([
-    'router.js'
-  ], ['client', 'server']);
+    'lib/server/server_router.js'
+  ], 'server');
 });
 
 Package.on_test(function (api) {
