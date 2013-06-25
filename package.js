@@ -21,6 +21,7 @@ Package.on_use(function (api) {
   api.add_files([
     'lib/client/route_controller.js',
     'lib/client/client_router.js',
+    'lib/client/helpers.js'
   ], 'client');
 
   api.add_files([
