@@ -4,6 +4,7 @@ Package.describe({
 
 Package.on_use(function (api) {
   api.use([
+    'meteor',
     'deps',
     'underscore',
     'handlebars',
@@ -26,6 +27,7 @@ Package.on_use(function (api) {
   ], 'client');
 
   api.add_files([
+    'lib/server/route_controller.js',
     'lib/server/server_router.js'
   ], 'server');
 });
