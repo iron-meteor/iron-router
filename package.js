@@ -33,9 +33,28 @@ Package.on_use(function (api) {
 });
 
 Package.on_test(function (api) {
-  api.use('router', 'client');
+  api.use('iron-router', 'client');
   api.use('reactive-dict', 'client');
   api.use('tinytest', 'client');
   api.use('test-helpers', 'client');
-  api.add_files('test/router_tests.js', 'client');
+
+
+  api.add_files([
+    'test/test-helpers.js',
+    'test/route_path_test.js',
+    'test/route_context_test.js',
+    'test/route_test.js',
+    'test/router_test.js'
+  ], ['client', 'server']);
+
+  api.add_files([
+    'test/client/location_test.js',
+    'test/client/route_controller_test.js',
+    'test/client/client_router_test.js',
+  ], 'client');
+
+  api.add_files([
+    'test/server/route_controller_test.js',
+    'test/server/server_router_test.js',
+  ], 'server');
 });

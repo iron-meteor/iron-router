@@ -1,3 +1,8 @@
+Tinytest.add('Router - API', function (test) {
+  test.isTrue(Router);
+});
+
+/*
 Tinytest.add('Router - reactivity in run', function (test) {
   var router
     , firstRoute
@@ -63,3 +68,4 @@ Tinytest.add('Router - reactivity in run', function (test) {
   test.equal(runs.length, 4);
   test.equal(currentCount, 2);
 });
+*/
