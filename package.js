@@ -33,7 +33,7 @@ Package.on_use(function (api) {
 });
 
 Package.on_test(function (api) {
-  api.use('iron-router', 'client');
+  api.use('iron-router', ['client', 'server']);
   api.use('reactive-dict', 'client');
   api.use('tinytest', 'client');
   api.use('test-helpers', 'client');
