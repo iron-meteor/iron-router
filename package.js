@@ -10,7 +10,7 @@ Package.on_use(function (api) {
     'meteor',
     'deps',
     'underscore',
-    'reactive-dict'
+    'ejson'
   ], ['client', 'server']);
 
   api.use([
