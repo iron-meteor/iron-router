@@ -47,28 +47,20 @@ Package.on_use(function (api) {
 });
 
 Package.on_test(function (api) {
-  api.use(['iron-router', 'tinytest', 'test-helpers'], ['client']);
-  api.use('reactive-dict', 'client');
+  api.use([
+    'iron-router',
+    'tinytest',
+    'test-helpers'
+  ], ['client']);
 
   api.add_files([
     'test/test_helpers.js',
-    'test/router_utils_test.js'
-  ], 'client');
-
-  /*
-  api.add_files([
-    'test/test-helpers.js',
+    'test/router_utils_test.js',
     'test/route_path_test.js',
     'test/route_context_test.js',
     'test/route_test.js',
     'test/router_test.js'
   ], ['client']);
-
-  api.add_files([
-    'test/client/location_test.js',
-    'test/client/route_controller_test.js',
-    'test/client/client_router_test.js',
-  ], 'client');
 
   /*
    * XXX removing server tests for now
