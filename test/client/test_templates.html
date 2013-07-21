@@ -1,0 +1,30 @@
+<template name="layout">
+  {{yield 'aside'}}
+
+  {{yield}}
+
+  {{yield 'footer'}}
+</template>
+
+<template name="one">
+  One
+  {{reactiveContent}}
+</template>
+
+<template name="two">
+  Two
+  {{reactiveContent}}
+</template>
+
+<template name="aside">
+  Aside Content
+  {{reactiveContent}}
+</template>
+
+<template name="loading">
+  Loading
+</template>
+
+<template name="notFound">
+  Not Found
+</template>

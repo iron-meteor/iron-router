@@ -50,17 +50,24 @@ Package.on_test(function (api) {
   api.use([
     'iron-router',
     'tinytest',
-    'test-helpers'
+    'test-helpers',
+    'templating'
   ], ['client']);
 
+  //XXX change back to client and server
   api.add_files([
     'test/test_helpers.js',
     'test/router_utils_test.js',
     'test/route_path_test.js',
     'test/route_context_test.js',
     'test/route_test.js',
-    'test/router_test.js'
+    'test/router_test.js',
   ], ['client']);
+
+  api.add_files([
+    'test/client/test_templates.html',
+    'test/client/route_controller_test.js'
+  ], 'client');
 
   /*
    * XXX removing server tests for now
