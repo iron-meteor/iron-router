@@ -1,4 +1,6 @@
 <template name="layout">
+  Layout
+
   {{yield 'aside'}}
 
   {{yield}}
@@ -8,17 +10,14 @@
 
 <template name="one">
   One
-  {{reactiveContent}}
 </template>
 
 <template name="two">
   Two
-  {{reactiveContent}}
 </template>
 
 <template name="aside">
   Aside Content
-  {{reactiveContent}}
 </template>
 
 <template name="loading">
@@ -27,4 +26,8 @@
 
 <template name="notFound">
   Not Found
+</template>
+
+<template name="reactive">
+  {{content}}
 </template>

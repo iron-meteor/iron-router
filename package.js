@@ -51,7 +51,8 @@ Package.on_test(function (api) {
     'iron-router',
     'tinytest',
     'test-helpers',
-    'templating'
+    'templating',
+    'reactive-dict'
   ], ['client']);
 
   //XXX change back to client and server
@@ -66,7 +67,8 @@ Package.on_test(function (api) {
 
   api.add_files([
     'test/client/test_templates.html',
-    'test/client/route_controller_test.js'
+    'test/client/route_controller_test.js',
+    'test/client/client_router_test.js'
   ], 'client');
 
   /*
