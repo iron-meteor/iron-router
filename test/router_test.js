@@ -1,4 +1,3 @@
-
 Tinytest.add('IronRouter - initialize', function (test) {
   var router = new IronRouter({autoRender: false, autoStart: false});
   test.isFalse(router.options.autoRender);
