@@ -2,10 +2,9 @@ Package.describe({
   summary: 'Routing for Meteor'
 });
 
+Npm.depends({connect: "2.7.10"});
+
 Package.on_use(function (api) {
-
-  Npm.depends({connect: "2.7.10"});
-
   api.use([
     'meteor',
     'deps',
