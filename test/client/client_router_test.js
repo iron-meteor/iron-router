@@ -83,3 +83,40 @@ Tinytest.add('ClientRouter - onRun', function (test) {
   // XXX having problems getting reactivity to work properly in
   // tests. Need to come back and investigate this.
 });
+
+Tinytest.add('ClientRouter - basic filter', function (test) {
+  var router = new ClientRouter({
+    autoRender: false,
+    autoStart: false
+  });
+  
+  var renderedRouter = new OnscreenDiv(Spark.render(_.bind(router.render, router)));
+  test.equal(renderedRouter.text().trim(), '');
+  
+  router.map(function () {
+    this.route('one', {path: '/'})
+  });
+  
+  router.configure({
+    before: function() {
+      if (Session.get('stop')) {
+        this.render('two');
+        this.stop();
+      }
+    }
+  });
+  
+  Session.set('stop', false);
+  router.start();
+  Deps.flush();
+  test.equal(renderedRouter.text().trim(), 'One');
+  
+  Session.set('stop', true);
+  Deps.flush();
+  test.equal(renderedRouter.text().trim(), 'Two');
+  
+  
+  Session.set('stop', false);
+  Deps.flush();
+  test.equal(renderedRouter.text().trim(), 'One');
+});
