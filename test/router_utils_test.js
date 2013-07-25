@@ -102,3 +102,79 @@ Tinytest.add('Utils - classify', function (test) {
   test.equal(RouterUtils.classify('posts_show'), 'PostsShow');
 });
 
+Tinytest.add('Utils - global', function (test) {
+  if (Meteor.isServer) {
+    test.equal(RouterUtils.global(), global);
+  }
+
+  if (Meteor.isClient) {
+    test.equal(RouterUtils.global(), window);
+  }
+});
+
+Tinytest.add('Utils - resolveValue', function (test) {
+  var global = Meteor.isServer ? global : window;
+
+  test.throws(function () {
+    RouterUtils.resolveValue('App');
+  });
+  global.App = {};
+  test.equal(RouterUtils.resolveValue('App'), global.App);
+
+  test.throws(function () {
+    RouterUtils.resolveValue('App.controllers');
+  });
+  global.App.controllers = {};
+  test.equal(RouterUtils.resolveValue('App.controllers'),
+             global.App.controllers);
+
+  test.throws(function () {
+    RouterUtils.resolveValue('App.controllers.Fn');
+  });
+
+  global.App.controllers.Fn = function () {};
+  test.equal(RouterUtils.resolveValue('App.controllers.Fn'),
+             global.App.controllers.Fn);
+
+  // an actual value should resolve immediately.
+  var fn = function () {};
+  test.equal(RouterUtils.resolveValue(fn), fn);
+});
+
+// delayed inheritance mechanism
+Tinytest.addAsync('Utils - create', function (test, onComplete) {
+  var global = Meteor.isServer ? global : window;
+
+  global.Child = RouterUtils.create({
+    extend: 'Super',
+    childMethod: function () { return 'childMethod'; }
+  });
+
+  global.Child.childClassProperty = 'childClassProperty';
+
+  global.Super = RouterUtils.create({
+    superMethod: function () { return 'superMethod'; }
+  });
+
+  // test Child.prototype is created but we are not inheriting yet
+  var c = new Child;
+  test.equal(c.childMethod(), 'childMethod');
+  test.throws(function () { c.superMethod() });
+
+  setTimeout(function () {
+    // test that child inherits from super properly.
+    var c = new Child;
+    test.equal(c.childMethod(), 'childMethod');
+    test.equal(c.superMethod(), 'superMethod');
+    test.equal(Child.childClassProperty, 'childClassProperty');
+    // just making sure we didn't clobber the parent somehow
+    var p = new Super;
+    test.equal(p.superMethod(), 'superMethod');
+    test.throws(function () {
+      // childMethod shouldn't exist on the parent
+      p.childMethod();
+    });
+
+    onComplete();
+  });
+});

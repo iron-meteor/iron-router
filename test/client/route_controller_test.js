@@ -210,3 +210,38 @@ Tinytest.add('RouteController - inheritance', function (test) {
   test.equal(inst.waitOn, handle);
   test.equal(inst.renderTemplates.aside.to, 'aside');
 });
+
+Tinytest.addAsync('RouteController - create', function (test, onComplete) {
+  var global = Meteor.isServer ? global : window;
+
+  global.ChildController = RouteController.create({
+    extend: 'SuperController',
+
+    childMethod: function () { return 'childMethod'; }
+  });
+
+  global.SuperController = RouteController.extend({
+    superMethod: function () { return 'superMethod'; }
+  });
+
+  var c = new ChildController;
+  test.equal(c.childMethod(), 'childMethod');
+  test.throws(function () { c.superMethod() });
+
+  setTimeout(function () {
+    // test that child inherits from super properly.
+    var c = new ChildController;
+    test.equal(c.childMethod(), 'childMethod');
+    test.equal(c.superMethod(), 'superMethod');
+    test.equal(Child.childClassProperty, 'childClassProperty');
+    // just making sure we didn't clobber the parent somehow
+    var p = new SuperController;
+    test.equal(p.superMethod(), 'superMethod');
+    test.throws(function () {
+      // childMethod shouldn't exist on the parent
+      p.childMethod();
+    });
+
+    onComplete();
+  });
+});
