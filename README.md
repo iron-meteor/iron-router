@@ -35,21 +35,93 @@ By default the *name* of the route (the first argument to `this.route`) is also 
 
 ### Layouts
 
+A *layout* is simply a template which specifies one or more *yields* which the router can render templates into.
+For example, the following layout has two named yields (`sidebar` and `footer`) in addition to the main yield.
+
+```handlebars
+ <template name="layout">
+   <aside>
+     {{yield 'sidebar'}}
+   </aside>
+
+   <nav>
+     <ul>
+       <!-- navigation links here>
+     </ul>
+   </nav>
+
+   {{{yield}}}
+
+   <footer>
+     {{yield 'footer'}}
+   </footer>
+ </template>
+```
+
+The layout enables a route to render multiple templates in addition to the main template. You don't have to use a layout: if none is specified, the router just uses a default layout which contains the only the main yield and no other named yields.
+
+For more information about configuring the layout, see the configuration section below. Named yields can be configured globally, but also at the the controller level.
+
 ### Path helpers
 
 ### Hooks
 
-### Configuration
+## Configuration
 
+Configuration of Iron Router is hierarchical: settings flow from the global configuration to routes and finally to route controllers. When rendering a particular route, the router looks for appropriate settings in reverse order of the above, so you can override settings by setting specific options on routes and controllers.
 
+### Global
 
-## Controllers
+To set up a general layout for the router, you do something like the following. This will render the template with the name `sidebar` to all yields named `sidebar` and so on for `footer`, using the template called `layout`.
 
+```javascript
+Router.configure({
+  layout: 'layout',
+  renderTemplates: {
+    'footer': {
+      to: 'footer'
+    },
+    'sidebar': {
+      to: 'sidebar'
+    }
+  }
+});
+```
+
+### Routes
+
+### Controllers
+
+Controllers allow more fine-grained control over how routes are rendered. They allow you to specify additional options as well as control the rendering process.
+
+You don't have to specify a controller to render a route. Iron Router will look for controllers in a smart way, and create one for a route if none exists.
 
 ## Server Side Routing
 
+## Coffeescript Support
 
+Iron router has very good support for coffeescript. The inheritance model for RouteControllers is the same as that of Coffeescript itself, so you can define new controllers in a very intuitive way:
+
+```coffeescript
+class @PostController extends RouteController
+    template: 'post'
+
+    renderTemplates:
+      'sidebar': to: 'sidebar'
+      'footer': to: 'footer'
+
+    data: ->
+      title: 'Hello World'
+
+    run: ->
+      console.log 'running'
+      super
+```
+
+The above controller is created in the global namespace with the use of `@`, and will be automatically used to render the route called `/post`.
 
 ## Examples
+
+- Basic example in CoffeeScript: https://github.com/cmather/iron-router-coffeescript-example
 
 ## Contributing
