@@ -35,6 +35,13 @@ Package.on_use(function (api) {
     'lib/client/helpers.js'
   ], 'client');
 
+  api.export([
+   'Location',
+   'RouteController',
+   'Router',
+   'ClientRouter'
+  ], 'client');
+
   /*
    * All kinds of breaking changes due to linker branch merge
    * so commenting this out for now
