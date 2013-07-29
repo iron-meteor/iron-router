@@ -152,8 +152,6 @@ Tinytest.add('IronRouter - run', function (test) {
     });
 
     test.equal(onRun[0].context.path, '/client');
-    test.isTrue(onRun[0].options.routeOption);
-    test.isTrue(onRun[0].options.routerOption);
 
     // onUnhandled check again
     route = router.routes['server'];

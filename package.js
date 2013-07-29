@@ -36,7 +36,12 @@ Package.on_use(function (api) {
   ], 'client');
 
   api.export([
+   'RouterUtils',
    'Location',
+   'RoutePath',
+   'RouteContext',
+   'Route',
+   'IronRouter',
    'RouteController',
    'Router',
    'ClientRouter'
