@@ -35,17 +35,22 @@ Package.on_use(function (api) {
     'lib/client/helpers.js'
   ], 'client');
 
-  api.export([
-   'RouterUtils',
-   'Location',
-   'RoutePath',
-   'RouteContext',
-   'Route',
-   'IronRouter',
-   'RouteController',
-   'Router',
-   'ClientRouter'
-  ], 'client');
+  if (typeof api.export !== 'undefined') {
+    api.export([
+     'Location',
+     'RouteContext',
+     'Route',
+     'IronRouter',
+     'RouteController',
+     'Router',
+     'ClientRouter'
+    ], 'client');
+
+    api.export([
+     'RouterUtils',
+     'RoutePath',
+    ], 'client', {testOnly: true});
+  }
 
   /*
    * All kinds of breaking changes due to linker branch merge
