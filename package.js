@@ -37,9 +37,7 @@ Package.on_use(function (api) {
 
   if (typeof api.export !== 'undefined') {
     api.export([
-     'RouterUtils',
      'Location',
-     'RoutePath',
      'RouteContext',
      'Route',
      'IronRouter',
@@ -47,6 +45,11 @@ Package.on_use(function (api) {
      'Router',
      'ClientRouter'
     ], 'client');
+
+    api.export([
+     'RouterUtils',
+     'RoutePath',
+    ], 'client', {testOnly: true});
   }
 
   /*
