@@ -61,6 +61,31 @@ Tinytest.add('RouteController - wait', function (test) {
   
   test.isTrue(onReadyCalled);
 
+  // test function
+  var first = new Subscription;
+  var second = new Subscription;
+
+  onReadyCalled = false;
+  onWaitCalled = true;
+
+  function getHandle () {
+    return [first, second];
+  }
+
+  Deps.autorun(function () {
+    controller.wait(getHandle, onReady, onWait);
+  });
+
+  test.isTrue(onWaitCalled);
+  first.mark();
+  Deps.flush();
+  
+  test.isFalse(onReadyCalled);
+
+  second.mark();
+  Deps.flush();
+  
+  test.isTrue(onReadyCalled);
 });
 
 Tinytest.add('RouteController - render', function (test) {
