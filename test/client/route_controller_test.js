@@ -109,7 +109,7 @@ Tinytest.add('RouteController - render', function (test) {
   var onRenderCalled = false;
   controller.onRender = function (template, options) {
     onRenderCalled = true;
-    test.equal(template, Template.one);
+    test.equal(template, 'one');
   };
   controller.render();
   test.isTrue(onRenderCalled);
@@ -118,7 +118,7 @@ Tinytest.add('RouteController - render', function (test) {
   var data = {};
   onRenderCalled = false;
   controller.onRender = function (template, options) {
-    test.equal(template, Template.aside);
+    test.equal(template, 'aside');
     test.equal(options.to, 'aside');
     test.equal(options.data, data);
     onRenderCalled = true;
@@ -131,7 +131,7 @@ Tinytest.add('RouteController - render', function (test) {
   handle = new Subscription;
   onRenderCalled = false;
   controller.onRender = function (template, options) {
-    test.equal(template, Template.loading);
+    test.equal(template, 'loading');
     onRenderCalled = true;
   };
 
@@ -143,7 +143,7 @@ Tinytest.add('RouteController - render', function (test) {
 
   onRenderCalled = false;
   controller.onRender = function (template, options) {
-    test.equal(template, Template.one);
+    test.equal(template, 'one');
     onRenderCalled = true;
   };
 
@@ -155,7 +155,7 @@ Tinytest.add('RouteController - render', function (test) {
   // a notFoundTemplate is set
   onRenderCalled = false;
   controller.onRender = function (template, options) {
-    test.equal(template, Template.notFound);
+    test.equal(template, 'notFound');
     onRenderCalled = true;
   };
 
@@ -210,10 +210,10 @@ Tinytest.add('RouteController - run', function (test) {
 
   test.isTrue(onRenderCalled);
   // first render the main template
-  test.equal(_.indexOf(rendered, Template.one), 0);
+  test.equal(_.indexOf(rendered, 'one'), 0);
 
   // then render each of the renderTemplates
-  test.equal(_.indexOf(rendered, Template.aside), 1);
+  test.equal(_.indexOf(rendered, 'aside'), 1);
 });
 
 Tinytest.add('RouteController - inheritance', function (test) {
