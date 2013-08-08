@@ -52,7 +52,7 @@ that you can override this with the `path` option.
  - `template`  defaults to the route name
 
 #### Extended
- - `layout` defaults to simply {{{yield}}} within <body> tags
+ - `layout` defaults to simply {{{yield}}} within `<body>` tags
  - `data` collection and other data items reference
  - `waitOn` specificies collection which must be loaded before render
  - `loadingTemplate` template to render while loading
