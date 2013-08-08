@@ -49,6 +49,8 @@ Tinytest.add('ClientRouter - render', function (test) {
 });
 
 Tinytest.add('ClientRouter - onRun', function (test) {
+  var calls = {};
+
   var router = new ClientRouter({
     autoRender: false,
     autoStart: true
@@ -69,19 +71,19 @@ Tinytest.add('ClientRouter - onRun', function (test) {
       controller: 'ReactiveController',
       action: 'run'
     });
+
+    this.route('nonreactive', {
+      reactive: false,
+      path: '/nonreactive'
+    });
+
+    this.route('handler', {
+      path: '/handler'
+    }, function () {
+      Meteor._ensure(calls, 'handler');
+      calls.handler.thisArg = this;
+    });
   });
-
-  // reactive run
-  window.ReactiveController = RouteController.extend({
-    run: function () {
-      var content = Session.get('content');
-      console.log('run', content);
-    }
-  });
-
-
-  // XXX having problems getting reactivity to work properly in
-  // tests. Need to come back and investigate this.
 });
 
 Tinytest.add('ClientRouter - basic filter', function (test) {
@@ -114,7 +116,6 @@ Tinytest.add('ClientRouter - basic filter', function (test) {
   Session.set('stop', true);
   Deps.flush();
   test.equal(renderedRouter.text().trim(), 'Two');
-  
   
   Session.set('stop', false);
   Deps.flush();
