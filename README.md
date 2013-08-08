@@ -44,10 +44,20 @@ work, you would need a template named `home` and a template named `aboutUs`.
 Similarly, by default the route is rendered at `/<name>`, but you can see above,
 that you can override this with the `path` option.
 
-### Basic options
 
- - `path`
- - `template`
+### Options
+
+#### Basic
+ - `path`  defaults to the route name
+ - `template`  defaults to the route name
+
+#### Extended
+ - `layout` defaults to simply {{{yield}}} within <body> tags
+ - `data` collection and other data items reference
+ - `waitOn` specificies collection which must be loaded before render
+ - `loadingTemplate` template to render while loading
+ - `notFoundTemplate` template to render if item is not in collection
+
 
 ### Layouts
 
