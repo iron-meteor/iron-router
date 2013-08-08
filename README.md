@@ -111,7 +111,11 @@ A *path helper* is a handlebard helper which calls a router path function which 
 ```handlebars
   <a href="{{pathFor 'postEdit'}}">Edit Post</a>
 ```
-Where the post data object has an {id: 555} will be replaced with
+Where the post data object has an {id: 555} and the route is defined:
+```javascript
+  this.route('postEdit', {path: 'posts/:id/edit'});
+```
+The html will be replaced with
 
 ```html
   <a href="/posts/555/edit">
@@ -164,8 +168,8 @@ All routes are handled by a RouteController.
 
 Route controller are created in four different ways:
 
-#### Controller generation
-**Explicit Handler**
+###Explicit Handler
+
 If a handler is described explicitly by a route e.g.
 
 ```javascript
@@ -177,7 +181,9 @@ this.route('postShow', {
     //...
 ```
 The Router will create a new RouteController where the controller action is the handler.
-**Named Controller**
+
+###Named Controller
+
 If a controller is described by a route, e.g.
 ```javascript
 this.route('postExplode', {
@@ -187,7 +193,8 @@ this.route('postExplode', {
 ```
 the specifically named controller or a new controllerClass created with the name will be used.
 
-**discovered Controller**
+###Automatically Discovered Controller
+
 If neither a handler nor a controller is not named, e.g.
 
 ```javascript
@@ -195,11 +202,11 @@ this.route('feed', {
   path: '/feed'
   });
 ```
-the router will search the namespace for 'feedController', i.e. name+'Controller' and create a new  matching controller Object.
+then the router will search the namespace for 'feedController', i.e. name+'Controller' and create a new  matching controller Object.
 
-**default controller**
-If you haven't created a RouteController for a route, one will be created automatically (anonymously)
-when the route is run.
+###default controller
+
+If you haven't created a RouteController for a route, one will be created automatically (anonymously) when the route is run.
 
 #### Controller fields
 Controllers also include other commonly used functional field which are called on common events: 
