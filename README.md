@@ -178,7 +178,7 @@ All routes are handled by a RouteController.
 
 Route controller are created in four different ways:
 
-###Explicit Handler
+####Explicit Handler
 
 If a handler is described explicitly by a route e.g.
 
@@ -192,7 +192,7 @@ this.route('postShow', {
 ```
 The Router will create a new RouteController where the controller action is the handler.
 
-###Named Controller
+####Named Controller
 
 If a controller is described by a route, e.g.
 ```javascript
@@ -203,7 +203,7 @@ this.route('postExplode', {
 ```
 the specifically named controller or a new controllerClass created with the name will be used.
 
-###Automatically Discovered Controller
+####Automatically Discovered Controller
 
 If neither a handler nor a controller is not named, e.g.
 
@@ -214,7 +214,7 @@ this.route('feed', {
 ```
 then the router will search the namespace for 'feedController', i.e. name+'Controller' and create a new  matching controller Object.
 
-###default controller
+####Default controller
 
 If you haven't created a RouteController for a route, one will be created automatically (anonymously) when the route is run.
 
