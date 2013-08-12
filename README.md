@@ -84,6 +84,8 @@ Router.path('showPost', {_id: '7'});
 
 ### Layouts
 
+By default the current template will be rendered directly into the `<body>` tag. If you want to share a common structure for all pages, you can use a layout.
+
 A *layout* is simply a template which specifies one or more *yields* which the
 router can render templates into.  For example, the following layout has two
 named yields (`sidebar` and `footer`) in addition to the main yield.
@@ -116,18 +118,38 @@ template. You don't have to use a layout: if none is specified, the router just
 uses a default layout which contains the only the main yield and no other named
 yields.
 
-For more information about configuring the layout, see the configuration section
-below. Named yields can be configured globally, but also at the the controller
-level.
+To render into a named yield, you can use the `renderTemplates` option:
 
-### Path helpers
+```js
+Router.map(function() {
+  this.route('home', {
+    template: 'homeMain',
+    renderTemplates: {
+      'homeFooter': {to: 'footer'}
+    }
+  });
+});
+```
 
 ### Hooks
+
+You can listen to the following hooks in a route's lifecycle:
+
+  - `onBeforeRun` - runs a single time before a route first renders
+    XXX: I think this should also not-rerun after HCR - Tom
+  
+  - `onBeforeRerun` - runs each time the route re-renders due to
+    XXX: what are the reasons a controller would re-run?
+  
+  - `onAfterRun` - after the first run
+  
+  - `onAfterRerun` - after the each subsequent run.
+  
 
 ## Configuration
 
 Configuration of Iron Router is hierarchical: settings flow from the Router
-to routes and finally to route controllers.
+to routes and finally to route controllers. Our examples so far have demonstrated settings at the Route level, however you can also set them on the Router as a whole, or within a Route Controller class.
 
 ### Global
 
@@ -150,15 +172,29 @@ Router.configure({
 
 ### Routes
 
+Options can be provided at `route()` type as in the examples given above.
+
 ### Controllers
 
-All routes are handled by a RouteController. If you haven't created a
-RouteController for a route, one will be created automatically (anonymously)
-when the route is run.
+All routes are handled by a RouteController, although you don't necessarily need to create on yourself. There are four ways of specifying a controller:
 
-** TODO: Provide examples for the 4 cases a RouteController gets created **
+ - `this.route('name', {controller: Controller})` - pass an subclass `RouteController` in directly
+ 
+ - `this.route('name')` - will search for `NameController` in the global namespace.
+
+ - `this.route('name', {handler: function() {}})` - create an anonymous controller with a simple routing handler function.
+ 
+ - `this.route('name', ...)` - creates an anonymous controller with the default route handler.
+ 
+### Route handlers
+
+The default handler renders the `template` into the main yield and the templates defined in `renderTemplates` into the appropriate named yields, whilst respecting the `waitOn` and `notFound` rules.
+
+To defined your own handler, either pass one in directly, or subclass `RouteController` and defined the `run()` method. Within a handler, you can call `this.onRender(template, {to: X, data: Y});` to render a given template to a yield with given data.
 
 ## Server Side Routing
+
+Is a work in progress.
 
 ## Coffeescript Support
 
