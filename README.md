@@ -25,22 +25,66 @@ what to render, you provide a *route map*, which is a list of route names and
 options:
 
 ```javascript
-js Router.map(function() { this.route('home', {path: '/'});
-this.route('aboutUs') });
+Router.map(function() { 
+  this.route('home', {path: '/'});
+  this.route('aboutUs');
+});
 ```
 
-By default the *name* of the route (the first argument to `this.route`) is also
-the name of the template to be rendered by this route. So for the code above to
-work, you would need a template named `home` and a template named `aboutUs`.
-Similarly, by default the route is rendered at `/<name>`, but you can see above,
-that you can override this with the `path` option.
+By default the *name* of the route (the first argument to `this.route()`) is also the name of the template to be rendered by this route. So for the code above to work, you would need a template named `home` and a template named `aboutUs`. Similarly, by default the route is rendered at `/<name>`, but as you can see above, you can override this with the `path` option.
 
-### Basic options
+So, with the above route definition, browsing to the path `/` will lead to the `home` template being rendered, and browsing to `/aboutUs` will lead to the `aboutUs` template being rendered.
 
- - `path`
- - `template`
+### Parameterized routes and route data
+
+Often we want to provide a parameterized route, where a single definition gives a route for each of a set of objects. Moreover, it's useful to pass the object specified by the parameter as the *data context* of our template:
+
+```js
+Router.map(function() { 
+  this.route('showPost', {
+    path: '/posts/:_id',
+    data: function() { return Posts.findOne(this.params._id); }
+  });
+});
+```
+
+This route will apply when any of `/posts/1`, `/posts/7` or `/posts/Ze92xH3E89YPyRs4i` is visited, and will render the `showPost` template with the data context (i.e. `this`) set to the relevant post from the `Posts` collection.
+
+### Waiting on data and dealing with 404s
+
+Usually you'll want to wait on a subscription to load the documents into your collection before try to find the correct post, and show a loading template in the meantime. Additionally, you may want to choose the template to show when the data is not there. All of these are possible:
+
+```js
+Router.map(function() { 
+  this.route('showPost', {
+    path: '/posts/:_id',
+    data: function() { return Posts.findOne(this.params._id); },
+    waitOn: postsSub,
+    loading: 'loadingTemplate',
+    notFound: 'notFoundTemplate'
+  });
+});
+```
+
+The argument to `waitOn` can be anything that provides a reactive `ready()` function, typically the result of a call to `Meteor.subscribe`.
+
+### Named routes
+
+The name of the route serves as an easy way to access it. We can go directly to a route with `Router.go('name')` (you can pass a path directly in here as well), get it's path with `Router.path('name')`, it's URL with `Router.url('name')`, and access either from a template with the `{{pathFor 'name'}}` and `{{urlFor 'name'}}` handlebars helpers.
+
+To provide parameters for paths, pass an object with the correctly named property avaliable:
+
+```js
+// it makes sense to use a post that came from the Posts collection:
+Router.path('showPost', post);
+
+// or in a pinch:
+Router.path('showPost', {_id: '7'});
+```
 
 ### Layouts
+
+By default the current template will be rendered directly into the `<body>` tag. If you want to share a common structure for all pages, you can use a layout.
 
 A *layout* is simply a template which specifies one or more *yields* which the
 router can render templates into.  For example, the following layout has two
@@ -74,18 +118,38 @@ template. You don't have to use a layout: if none is specified, the router just
 uses a default layout which contains the only the main yield and no other named
 yields.
 
-For more information about configuring the layout, see the configuration section
-below. Named yields can be configured globally, but also at the the controller
-level.
+To render into a named yield, you can use the `renderTemplates` option:
 
-### Path helpers
+```js
+Router.map(function() {
+  this.route('home', {
+    template: 'homeMain',
+    renderTemplates: {
+      'homeFooter': {to: 'footer'}
+    }
+  });
+});
+```
 
 ### Hooks
+
+You can listen to the following hooks in a route's lifecycle:
+
+  - `onBeforeRun` - runs a single time before a route first renders
+    XXX: I think this should also not-rerun after HCR - Tom
+  
+  - `onBeforeRerun` - runs each time the route re-renders due to
+    XXX: what are the reasons a controller would re-run?
+  
+  - `onAfterRun` - after the first run
+  
+  - `onAfterRerun` - after the each subsequent run.
+  
 
 ## Configuration
 
 Configuration of Iron Router is hierarchical: settings flow from the Router
-to routes and finally to route controllers.
+to routes and finally to route controllers. Our examples so far have demonstrated settings at the Route level, however you can also set them on the Router as a whole, or within a Route Controller class.
 
 ### Global
 
@@ -108,15 +172,29 @@ Router.configure({
 
 ### Routes
 
+Options can be provided at `route()` type as in the examples given above.
+
 ### Controllers
 
-All routes are handled by a RouteController. If you haven't created a
-RouteController for a route, one will be created automatically (anonymously)
-when the route is run.
+All routes are handled by a RouteController, although you don't necessarily need to create on yourself. There are four ways of specifying a controller:
 
-** TODO: Provide examples for the 4 cases a RouteController gets created **
+ - `this.route('name', {controller: Controller})` - pass an subclass `RouteController` in directly
+ 
+ - `this.route('name')` - will search for `NameController` in the global namespace.
+
+ - `this.route('name', {handler: function() {}})` - create an anonymous controller with a simple routing handler function.
+ 
+ - `this.route('name', ...)` - creates an anonymous controller with the default route handler.
+ 
+### Route handlers
+
+The default handler renders the `template` into the main yield and the templates defined in `renderTemplates` into the appropriate named yields, whilst respecting the `waitOn` and `notFound` rules.
+
+To defined your own handler, either pass one in directly, or subclass `RouteController` and defined the `run()` method. Within a handler, you can call `this.onRender(template, {to: X, data: Y});` to render a given template to a yield with given data.
 
 ## Server Side Routing
+
+Is a work in progress.
 
 ## Coffeescript Support
 
