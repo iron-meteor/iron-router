@@ -25,20 +25,62 @@ what to render, you provide a *route map*, which is a list of route names and
 options:
 
 ```javascript
-js Router.map(function() { this.route('home', {path: '/'});
-this.route('aboutUs') });
+Router.map(function() { 
+  this.route('home', {path: '/'});
+  this.route('aboutUs');
+});
 ```
 
-By default the *name* of the route (the first argument to `this.route`) is also
-the name of the template to be rendered by this route. So for the code above to
-work, you would need a template named `home` and a template named `aboutUs`.
-Similarly, by default the route is rendered at `/<name>`, but you can see above,
-that you can override this with the `path` option.
+By default the *name* of the route (the first argument to `this.route()`) is also the name of the template to be rendered by this route. So for the code above to work, you would need a template named `home` and a template named `aboutUs`. Similarly, by default the route is rendered at `/<name>`, but as you can see above, you can override this with the `path` option.
 
-### Basic options
+So, with the above route definition, browsing to the path `/` will lead to the `home` template being rendered, and browsing to `/aboutUs` will lead to the `aboutUs` template being rendered.
 
- - `path`
- - `template`
+### Parameterized routes and route data
+
+Often we want to provide a parameterized route, where a single definition gives a route for each of a set of objects. Moreover, it's useful to pass the object specified by the parameter as the *data context* of our template:
+
+```js
+Router.map(function() { 
+  this.route('showPost', {
+    path: '/posts/:_id',
+    data: function() { return Posts.findOne(this.params._id); }
+  });
+});
+```
+
+This route will apply when any of `/posts/1`, `/posts/7` or `/posts/Ze92xH3E89YPyRs4i` is visited, and will render the `showPost` template with the data context (i.e. `this`) set to the relevant post from the `Posts` collection.
+
+### Waiting on data and dealing with 404s
+
+Usually you'll want to wait on a subscription to load the documents into your collection before try to find the correct post, and show a loading template in the meantime. Additionally, you may want to choose the template to show when the data is not there. All of these are possible:
+
+```js
+Router.map(function() { 
+  this.route('showPost', {
+    path: '/posts/:_id',
+    data: function() { return Posts.findOne(this.params._id); },
+    waitOn: postsSub,
+    loading: 'loadingTemplate',
+    notFound: 'notFoundTemplate'
+  });
+});
+```
+
+The argument to `waitOn` can be anything that provides a reactive `ready()` function, typically the result of a call to `Meteor.subscribe`.
+
+### Named routes
+
+The name of the route serves as an easy way to access it. We can go directly to a route with `Router.go('name')` (you can pass a path directly in here as well), get it's path with `Router.path('name')`, it's URL with `Router.url('name')`, and access either from a template with the `{{pathFor 'name'}}` and `{{urlFor 'name'}}` handlebars helpers.
+
+To provide parameters for paths, pass an object with the correctly named property avaliable:
+
+```js
+// it makes sense to use a post that came from the Posts collection:
+Router.path('showPost', post);
+
+// or in a pinch:
+Router.path('showPost', {_id: '7'});
+```
 
 ### Layouts
 
