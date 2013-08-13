@@ -1,3 +1,8 @@
+XXX README cleanup
+XXX rendering tests
+XXX server side routing
+XXX test on 0.6.4
+
 # Iron Router
 
 A reactive, highly customizable router that is Meteor specific -- it knows about
