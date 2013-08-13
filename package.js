@@ -1,5 +1,5 @@
 Package.describe({
-  summary: 'Routing for Meteor'
+  summary: 'Routing specifically designed for Meteor'
 });
 
 Package.on_use(function (api) {
