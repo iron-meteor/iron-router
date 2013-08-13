@@ -2,8 +2,6 @@ Package.describe({
   summary: 'Routing for Meteor'
 });
 
-Npm.depends({connect: "2.7.10"});
-
 Package.on_use(function (api) {
   api.use([
     'meteor',
@@ -36,16 +34,32 @@ Package.on_use(function (api) {
     'lib/client/helpers.js'
   ], 'client');
 
+  api.add_files([
+    'lib/server/route_controller.js',
+    'lib/server/server_router.js'
+  ], 'server');
+
+  // for backward compat before Meteor linker changes
   if (typeof api.export !== 'undefined') {
+    api.use('webapp', 'server');
+    Npm.depends({connect: '2.7.10'});
+
     api.export([
-     'Location',
      'RouteContext',
      'Route',
      'IronRouter',
      'RouteController',
-     'Router',
-     'ClientRouter'
+     'Router'
+    ], ['client', 'server']);
+
+    api.export([
+      'Location',
+      'ClientRouter'
     ], 'client');
+
+    api.export([
+      'ServerRouter'
+    ], 'server');
 
     api.export([
      'RouterUtils',
