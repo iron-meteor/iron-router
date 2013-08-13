@@ -17,6 +17,7 @@ Package.on_use(function (api) {
   ], 'client');
 
   api.add_files([
+    'license.js',
     'lib/router_utils.js',
     'lib/route_path.js',
     'lib/route_context.js',
