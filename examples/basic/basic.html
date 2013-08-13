@@ -1,0 +1,61 @@
+<head>
+  <title>Basic Routing Example</title>
+</head>
+
+<body>
+</body>
+
+<template name="layout">
+  <nav>
+    <ul>
+      <li>
+        <a href="{{pathFor 'home'}}">Home</a>
+      </li>
+      <li>
+        <a href="{{pathFor 'items'}}">Items</a>
+      </li>
+    </ul>
+  </nav>
+
+  <aside>
+    {{yield "aside"}}
+  </aside>
+
+  <section class="main">
+    {{yield}}
+  </section>
+
+  <footer>
+    {{yield "footer"}}
+  </footer>
+</template>
+
+<template name="home">
+  <h1>Home Page</h1>
+</template>
+
+<template name="items">
+  <h1>Posts Page</h1>
+
+  <ul>
+    {{#each items}}
+      <li>{{body}}</li>
+    {{/each}}
+  </ul>
+</template>
+
+<template name="itemsAside">
+  <h3>Items Aside</h3>
+</template>
+
+<template name="itemsFooter">
+  <h3>Items Footer</h3>
+</template>
+
+<template name="loading">
+  <h1>Loading...</h1>
+</template>
+
+<template name="notFound">
+  <h1>Not Found!</h1>
+</template>

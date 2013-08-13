@@ -16,6 +16,9 @@ Meteorite-managed app:
 $ mrt add iron-router
 ```
 
+## Quick Start
+Check out the example JavaScript application in *examples/basic*.
+
 ## API
 
 ### Basics
