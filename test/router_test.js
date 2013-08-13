@@ -92,6 +92,18 @@ Tinytest.add('IronRouter - dispatch', function (test) {
     test.equal(callstack[1], 'cb');
     test.equal(onRun.length, 1);
 
+    // paths with query parameters are matched
+    callstack = [];
+    router.dispatch('/client?foo=bar', opts, function () {
+      callstack.push('cb');
+    });
+
+    test.equal(callstack[0], 'onRun');
+    test.equal(callstack[1], 'cb');
+    test.equal(onRun.length, 2);
+    test.equal(onUnhandled.length, 0);
+    test.equal(onRouteNotFound.length, 0);
+
     // onUnhandled gets called if route is found but is on server
     router.dispatch('/server', opts);
     test.equal(onUnhandled.length, 1);
