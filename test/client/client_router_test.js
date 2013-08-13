@@ -174,7 +174,8 @@ Tinytest.add('ClientRouter - onRun', function (test) {
 
   var route = new Route(router, 'test', {}, handler);
   var context = new RouteContext('/test', router, route, {});
-  router.onRun(context);
+  var controller = router.getControllerForContext(context);
+  router.onRun(controller, context);
 
   test.equal(runs, 1);
 
@@ -187,7 +188,8 @@ Tinytest.add('ClientRouter - onRun', function (test) {
 
   route = new Route(router, 'another', {}, handler);
   context = new RouteContext('/another', router, route, {});
-  router.onRun(context);
+  controller = router.getControllerForContext(context);
+  router.onRun(controller, context);
   Deps.flush();
 
   var newComputation = router._routeComputation;
@@ -198,7 +200,7 @@ Tinytest.add('ClientRouter - onRun', function (test) {
     reactive: false
   }, handler);
   context = new RouteContext('/notReactive', router, route, {});
-  router.onRun(context);
+  router.onRun(controller, context);
   Deps.flush();
   test.equal(runs, 4);
 

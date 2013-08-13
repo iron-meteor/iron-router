@@ -136,7 +136,7 @@ Tinytest.add('IronRouter - run', function (test) {
     this.route('server', {where: 'server'});
   });
 
-  router.onRun = function (context, options) {
+  router.onRun = function (controller, context, options) {
     callstack.push('onRun');
     onRun.push({context: context, options: options});
   };
@@ -159,7 +159,7 @@ Tinytest.add('IronRouter - run', function (test) {
     test.equal(onUnhandled.length, 1);
 
     // context switch
-    router.onRun = function (context, options) {
+    router.onRun = function (controller, context, options) {
       if (context.path == '/client')
         router.dispatch('/redirect');
     };

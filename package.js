@@ -23,6 +23,7 @@ Package.on_use(function (api) {
     'lib/route_path.js',
     'lib/route_context.js',
     'lib/route.js',
+    'lib/route_controller.js',
     'lib/router.js'
   ], ['client', 'server']);
 
