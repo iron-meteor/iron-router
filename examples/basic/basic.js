@@ -31,7 +31,6 @@ if (Meteor.isServer) {
       future.return(Items.find());
     }, 2000);
 
-    console.log('wtf');
     return future.wait();
   });
 }
