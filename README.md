@@ -87,6 +87,28 @@ The argument to `waitOn` can be a subscription handle, or an array of
 subscription handles. A subscription handle is what gets returned when you call
 `Meteor.subscribe`.
 
+If you need to pass parameters to subscriptions you can pass them in an action function you specified in the route configuration.
+```js
+Router.map(function(){
+  this.route('showPost',{
+    path: '/posts/:_id',
+    controller: 'PostsController',
+    action: 'show'
+  });
+});
+
+PostsController = RouteController.extend({
+  // with parameters
+  show: function () {
+    this.waitOn =  Meteor.subscribe('posts', this.params._id);
+    this.data = function () {
+      return Auctions.findOne(this.params._id);
+    }
+    this.render("showPost");
+  }
+});
+```
+
 ### Named routes
 
 The name of the route is as an easy way to access it. We can go directly to
@@ -255,6 +277,8 @@ will be automatically used to render the route called `/post`.
 
 - Basic example in CoffeeScript:
   https://github.com/cmather/iron-router-coffeescript-example
+- Helpful screencast: 
+  https://www.eventedmind.com/posts/meteor-routing-in-the-new-eventedmind-site
 
 ## Contributing
 We're happy to have contributors. If you're interested in contributing and not
