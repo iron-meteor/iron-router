@@ -255,6 +255,8 @@ will be automatically used to render the route called `/post`.
 
 - Basic example in CoffeeScript:
   https://github.com/cmather/iron-router-coffeescript-example
+- Helpful screencast: 
+  https://www.eventedmind.com/posts/meteor-routing-in-the-new-eventedmind-site
 
 ## Contributing
 We're happy to have contributors. If you're interested in contributing and not
