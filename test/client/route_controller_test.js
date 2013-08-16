@@ -14,7 +14,11 @@ Subscription.prototype.mark = function () {
 };
 
 Tinytest.add('RouteController - wait', function (test) {
-  var controller = new RouteController;
+
+  var router = Router;
+  var route = new Route(Router, 'test');
+  var context = new RouteContext('/test', router, route);
+  var controller = new RouteController(context);
 
   var onReadyCalled = false;
   var onReady = function () {
@@ -216,8 +220,74 @@ Tinytest.add('RouteController - run', function (test) {
   test.equal(_.indexOf(rendered, 'aside'), 1);
 });
 
+Tinytest.add('RouteController - runHooks', function (test) {
+  var router = new ClientRouter({
+    autoRender: false,
+    autoStart: false
+  });
+
+  var calls = [];
+
+  var Controller = RouteController.extend({
+    before: [
+      function () {
+        calls.push('before');
+      },
+
+      function () {
+        calls.push('before');
+      }
+    ]
+  });
+
+  var route = new Route(router, 'test');
+  var context = new RouteContext('/test', router, route);
+  var inst = new Controller(context);
+  inst.runHooks('before');
+  test.equal(calls.length, 2, 'both before filters called');
+});
+
+Tinytest.add('ClientRouter - stop and redirect in filter', function (test) {
+  var router = new ClientRouter({
+    autoRender: false,
+    autoStart: false
+  });
+
+  var afterFilterCalled = false;
+  var handlerCalled = false;
+
+  router.map(function () {
+    this.route('filters', {
+      path: '/',
+      before: [
+        function () {
+          this.redirect('two');
+        }
+      ],
+
+      after: [
+        function () {
+          afterFilterCalled = true;
+        }
+      ]
+    }, function handler () {
+      handlerCalled = true;
+    });
+
+    this.route('two');
+  });
+
+  router.start();
+  Deps.flush();
+  test.isFalse(afterFilterCalled);
+  test.isFalse(handlerCalled);
+});
+
 Tinytest.add('RouteController - inheritance', function (test) {
   var handle = new Subscription;
+  var router = Router;
+  var route = new Route(Router, 'test');
+  var context = new RouteContext('/test', router, route);
   var ApplicationController = RouteController.extend({
     template: 'one',
     loadingTemplate: 'loading',
@@ -228,7 +298,7 @@ Tinytest.add('RouteController - inheritance', function (test) {
     }
   });
 
-  var inst = new ApplicationController;
+  var inst = new ApplicationController(context);
   test.equal(inst.template, 'one');
   test.equal(inst.loadingTemplate, 'loading');
   test.equal(inst.notFoundTemplate, 'notFound');
