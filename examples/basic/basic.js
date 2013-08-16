@@ -19,6 +19,8 @@ if (Meteor.isServer) {
     }
   };
 
+  Meteor.startup(seed);
+
   var Future = Npm.require('fibers/future');
 
   Meteor.publish('items', function () {
@@ -55,6 +57,20 @@ if (Meteor.isClient) {
     waitOn: Subscriptions['items'],
 
     /*
+     * The data function will be called after the subscrition is ready, at
+     * render time.
+     */
+
+    data: function () {
+      // we can return anything here, but since I don't want to use 'this' in
+      // as the each parameter, I'm just returning an object here with a named
+      // property.
+      return {
+        items: Items.find()
+      };
+    },
+
+    /*
      * By default the router will call the *run* method which will render the
      * controller's template (or the template with the same name as the route)
      * to the main yield area {{yield}}. But you can provide your own action
@@ -73,8 +89,8 @@ if (Meteor.isClient) {
        *
        */
       this.render({
-        itemsAside: { to: 'aside' },
-        itemsFooter: { to: 'footer' }
+        itemsAside: { to: 'aside', waitOn: false, data: false },
+        itemsFooter: { to: 'footer', waitOn: false, data: false }
       });
     }
   });
