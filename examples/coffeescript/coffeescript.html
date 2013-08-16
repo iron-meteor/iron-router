@@ -3,7 +3,7 @@
 </head>
 
 <body>
-
+  <!-- empty body -->
 </body>
 
 <template name="layout">
@@ -12,9 +12,11 @@
 		<a href="{{pathFor 'posts'}}">Posts</a> |
 		<a href="{{pathFor 'dashboard'}}">DashBoard</a>
 	</nav>
+
 	<header>
 		{{yield "dashHeader"}}
 	</header>
+
 	{{yield}}
 </template>
 
@@ -22,30 +24,38 @@
 <template name="home">
 	<h1>Home Page</h1>
 </template>
+
 <template name="posts">
 	{{#each posts}}
-		<a href="{{pathFor 'showPost'}}"><h2>{{ title }}</h2></a>
+		<a href="{{pathFor 'showPost'}}">
+      <h2>
+        {{title}}
+      </h2>
+    </a>
 	{{/each}}	
 </template>
+
 <template name="showPost">
 	{{#with post}}
 		<h2>{{title}}</h2>
 		{{body}}
 	{{/with}}
 </template>
+
 <template name="dashHeader">
 	<h1>DashBoard Header</h1>
 </template>
+
 <template name="dashboard">
 	{{#each posts}}
 		<h2>{{title}}</h2>
 	{{/each}}
 </template>
 
-
 <template name="notFound">
 	<h1>This Page Does Not Exist!</h1>
 </template>
+
 <template name="loading">
 	<h1>Wait For It...</h1>	
 </template>
