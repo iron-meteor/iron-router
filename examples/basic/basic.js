@@ -51,7 +51,8 @@ if (Meteor.isClient) {
 
     /*
      * During rendering, wait on the items subscription and show the loading
-     * template while the subscription is not ready.
+     * template while the subscription is not ready. This can also be a function
+     * that returns on subscription handle or an array of subscription handles.
      */
 
     waitOn: Subscriptions['items'],
