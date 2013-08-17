@@ -17,7 +17,7 @@ $ mrt add iron-router
 ```
 
 ## Quick Start
-Check out the example JavaScript application in *examples/basic*.
+Check out the JavaScript and Coffeescript examples in *examples/*.
 
 ## API
 
@@ -83,11 +83,14 @@ Router.map(function() {
 });
 ```
 
-The argument to `waitOn` can be a subscription handle, or an array of
+The value of `waitOn` can be a subscription handle, an array of subscription
+handles or a function that returns a subscription handle or array of
 subscription handles. A subscription handle is what gets returned when you call
 `Meteor.subscribe`.
 
-If you need to pass parameters to subscriptions you can pass them in an action function you specified in the route configuration.
+If you need to pass route parameters to subscriptions you can pass them in an
+action function you specified in the route configuration.
+
 ```js
 Router.map(function(){
   this.route('showPost',{
@@ -98,13 +101,19 @@ Router.map(function(){
 });
 
 PostsController = RouteController.extend({
-  // with parameters
+  template: 'showPost',
+
+  waitOn: function () {
+    return Meteor.subscribe('posts', this.params._id);
+  },
+
+  data: function () {
+    return Posts.findOne(this.params._id);
+  },
+
   show: function () {
-    this.waitOn =  Meteor.subscribe('posts', this.params._id);
-    this.data = function () {
-      return Auctions.findOne(this.params._id);
-    }
-    this.render("showPost");
+    // render the RouteController's template into the main yield location
+    this.render();
   }
 });
 ```
@@ -277,8 +286,6 @@ will be automatically used to render the route called `/post`.
 
 - Basic example in CoffeeScript:
   https://github.com/cmather/iron-router-coffeescript-example
-- Helpful screencast: 
-  https://www.eventedmind.com/posts/meteor-routing-in-the-new-eventedmind-site
 
 ## Contributing
 We're happy to have contributors. If you're interested in contributing and not
