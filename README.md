@@ -77,8 +77,8 @@ Router.map(function() {
     path: '/posts/:_id',
     data: function() { return Posts.findOne(this.params._id); },
     waitOn: postsSub,
-    loading: 'loadingTemplate',
-    notFound: 'notFoundTemplate'
+    loadingTemplate: 'loading',
+    notFoundTemplate: 'notFound'
   });
 });
 ```
