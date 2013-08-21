@@ -67,15 +67,6 @@ Package.on_use(function (api) {
      'RoutePath',
     ], 'client', {testOnly: true});
   }
-
-  /*
-   * All kinds of breaking changes due to linker branch merge
-   * so commenting this out for now
-  api.add_files([
-    'lib/server/route_controller.js',
-    'lib/server/server_router.js'
-  ], 'server');
-  */
 });
 
 Package.on_test(function (api) {
@@ -87,7 +78,6 @@ Package.on_test(function (api) {
     'reactive-dict'
   ], ['client']);
 
-  //XXX change back to client and server
   api.add_files([
     'test/test_helpers.js',
     'test/router_utils_test.js',
@@ -102,12 +92,4 @@ Package.on_test(function (api) {
     'test/client/route_controller_test.js',
     'test/client/client_router_test.js'
   ], 'client');
-
-  /*
-   * XXX removing server tests for now
-  api.add_files([
-    'test/server/route_controller_test.js',
-    'test/server/server_router_test.js',
-  ], 'server');
-  */
 });
