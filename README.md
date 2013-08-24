@@ -28,7 +28,7 @@ what to render, you provide a *route map*, which is a list of route names and
 options:
 
 ```javascript
-Router.map(function() { 
+Router.map(function() {
   this.route('home', {path: '/'});
   this.route('aboutUs');
 });
@@ -51,7 +51,7 @@ a route for each of a set of objects. Moreover, it's useful to pass the object
 specified by the parameter as the *data context* of our template:
 
 ```js
-Router.map(function() { 
+Router.map(function() {
   this.route('showPost', {
     path: '/posts/:_id',
     data: function() { return Posts.findOne(this.params._id); }
@@ -64,6 +64,23 @@ This route will apply when any of `/posts/1`, `/posts/7` or
 with the data context (i.e. `this`) set to the relevant post from the `Posts`
 collection.
 
+Here is a list of supported formats for path expressions and parameters:
+
+```js
+// Required parameters:
+'/posts/:paramOne/:paramTwo'
+
+// Optional parameters:
+'/posts/:required/:optional?'
+
+// Wildcards:
+'/posts/*'
+'/posts/:file(*)'
+
+// Regex:
+/^\/commits\/(\d+)\.\.(\d+)/
+```
+
 ### Waiting on data and dealing with 404s
 
 Usually you'll want to wait on a subscription to load the documents into your
@@ -72,7 +89,7 @@ the meantime. Additionally, you may want to choose the template to show when the
 data is not there. All of these are possible:
 
 ```js
-Router.map(function() { 
+Router.map(function() {
   this.route('showPost', {
     path: '/posts/:_id',
     data: function() { return Posts.findOne(this.params._id); },
@@ -147,8 +164,8 @@ A *layout* is simply a template which specifies one or more *yields* which the
 router can render templates into.  For example, the following layout has two
 named yields (`sidebar` and `footer`) in addition to the main yield.
 
-```handlebars 
-<template name="layout"> 
+```handlebars
+<template name="layout">
   <aside>
     <!-- render to the sidebar yield -->
     {{yield 'sidebar'}}
@@ -193,13 +210,13 @@ Router.map(function() {
 You can listen to the following hooks in a route's lifecycle:
 
   - `onBeforeRun` - Called one time before a controller is run.
-  
+
   - `onBeforeRerun` - Called each time a controller is reactively re-run.
-  
+
   - `onAfterRun` - Called once after a controller is run.
-  
+
   - `onAfterRerun` - Called each time a controller is reactively re-run.
-  
+
 
 ## Configuration
 
@@ -222,7 +239,7 @@ Router.configure({
 
   loadingTemplate: 'loading',
 
-  renderTemplates: { 
+  renderTemplates: {
     /* render the templated named footer to the 'footer' yield */
     'footer': { to: 'footer' },
 
@@ -239,16 +256,16 @@ to create on yourself. There are four ways of specifying a controller:
 
  - `this.route('name', {controller: Controller})` - pass an subclass
    `RouteController` in directly
- 
+
  - `this.route('name')` - will search for `NameController` in the global
    namespace.
 
  - `this.route('name', {}, function () {/* handler logic */})` - create an
    anonymous controller with a simple routing handler function.
- 
+
  - `this.route('name', ...)` - creates an anonymous controller with the default
    route handler.
- 
+
 ### Route handlers
 
 The default handler renders the `template` into the main yield and the templates
@@ -270,7 +287,7 @@ The Router has very good support for coffeescript. The inheritance model for
 RouteControllers is the same as that of Coffeescript itself, so you can define
 new controllers in a very intuitive way:
 
-```coffeescript 
+```coffeescript
 class @PostController extends RouteController template: 'post'
   renderTemplates: 'sidebar': to: 'sidebar' 'footer': to: 'footer'
 
