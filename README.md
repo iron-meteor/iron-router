@@ -299,11 +299,6 @@ class @PostController extends RouteController template: 'post'
 The above controller is created in the global namespace with the use of `@`, and
 will be automatically used to render the route called `/post`.
 
-## Examples
-
-- Basic example in CoffeeScript:
-  https://github.com/cmather/iron-router-coffeescript-example
-
 ## Contributing
 We're happy to have contributors. If you're interested in contributing and not
 sure where to start, drop Chris or Tom a line. You can also look for Github
