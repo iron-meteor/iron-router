@@ -9,6 +9,7 @@ Router.map ->
 	@route "dashboard",
 		controller: "DashController"
 		action: "customAction"
+	@route "notFound", path: "*"
 
 # @route "home" - Specifies a root path maped to the home template
 #
