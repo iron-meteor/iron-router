@@ -1,4 +1,4 @@
-# IronRouter
+# Iron Router
 
 A reactive, highly customizable router that is Meteor specific -- it knows about
 your subscriptions, data sources and helps you take care of common problems.
@@ -8,7 +8,7 @@ MIT
 
 ## Installation
 
-IronRouter can be installed with
+Iron Router can be installed with
 [Meteorite](https://github.com/oortcloud/meteorite/). From inside a
 Meteorite-managed app:
 
