@@ -208,3 +208,27 @@ Tinytest.add('ClientRouter - onRun', function (test) {
   Deps.flush();
   test.equal(runs, 4);
 });
+
+Tinytest.addAsync('ClientRouter - subscription teardown', function (test, done) {
+  var router = new ClientRouter({
+    autoRender: false,
+    autoStart: false,
+    waitOn: function() { return Meteor.subscribe('counter'); }
+  });
+  router.map(function() {
+    this.route('one', {path: '/'});
+    this.route('two');
+  });
+  
+  router.go('one');
+  Deps.flush();
+  Meteor.call('counterValue', function(err, oldValue) {
+    router.go('two')
+    Deps.flush();
+    Meteor.call('counterValue', function(err, newValue) {
+      // hasn't be re-called
+      test.equal(oldValue, newValue);
+      done();
+  });
+  });
+});
