@@ -77,6 +77,10 @@ Package.on_test(function (api) {
     'templating',
     'reactive-dict'
   ], ['client']);
+  
+  api.add_files([
+    'test/test_publications.js'
+  ], 'server');
 
   api.add_files([
     'test/test_helpers.js',
