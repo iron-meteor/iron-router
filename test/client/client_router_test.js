@@ -157,54 +157,183 @@ Tinytest.add('ClientRouter - runController', function (test) {
   test.equal(calls.after, 2);
 });
 
-Tinytest.add('ClientRouter - onRun', function (test) {
-  //XXX test reactivity
-  //XXX tear down previous computation
+Tinytest.add('ClientRouter - onRun old comp stopped', function (test) {
+  /*
+   * Test Case 1: If previous route computation, stop it and create new
+   * computation. New computation should not be stopped.
+   */
+  
+  var router = new ClientRouter({
+    autoRender: false,
+    autoStart: false
+  });
+
+  var handler = function () {};
+  var route = new Route(router, 'test', {}, handler);
+  var context = new RouteContext('/test', router, route, {});
+  var controller = router.getControllerForContext(context);
+
+  router.onRun(controller, context);
+  var oldComputation = router._routeComputation;
+  
+  Deps.flush();
+
+  // at this point the computation has been set up and the route is done
+  // running. now we create a new computation, make sure it's not stopped, and
+  // the previous computation is stopped.
+  router.onRun(controller, context);
+  var newComputation = router._routeComputation;
+  test.notEqual(oldComputation, newComputation, 'New computation equals old computation');
+
+  // new computation should not be stopped
+  test.isFalse(newComputation.stopped, 'new comp should not be stopped');
+
+  // old computation should be stopped
+  test.isTrue(oldComputation.stopped, 'old comp should be stopped');
+});
+
+Tinytest.add('ClientRouter - onRun with old comp invalidated', function (test) {
+  /*
+   * Test Case 2: Previous computation gets invalidated. Previous computation
+   * should be stopped, and the new route should create a new computation which
+   * should not be stopped.
+   */
 
   var router = new ClientRouter({
     autoRender: false,
     autoStart: false
   });
 
-  var runs = 0;
-  var handler = function () {
-    var reactiveVar = Session.get('testVar');
-    runs++;
-  };
-
+  var handler = function () {};
   var route = new Route(router, 'test', {}, handler);
   var context = new RouteContext('/test', router, route, {});
   var controller = router.getControllerForContext(context);
+
+  router.onRun(controller, context);
+  var oldComputation = router._routeComputation;
+  
+  Deps.flush();
+
+  // now we'll invalidate the old computation, simulation and update to a Mong
+  // document, for example.
+  oldComputation.invalidate();
+
+  // But we won't flush yet. Now let's run a new route.
+  router.onRun(controller, context);
+  var newComputation = router._routeComputation;
+
+  // okay, now the old computation should still have been stopped
+  // but the new one should be created and not stopped.
+  test.notEqual(oldComputation, newComputation, 'New computation equals old computation');
+
+  // new computation should not be stopped
+  test.isFalse(newComputation.stopped, 'new comp should not be stopped');
+
+  // old computation should be stopped
+  test.isTrue(oldComputation.stopped, 'old comp should be stopped');
+});
+
+Tinytest.add('ClientRouter - onRun same subscription with new route', function (test) {
+  /*
+   * Test Case 1: The same subscription shouldn't be set up twice. In other
+   * words, we don't break Meteor's subscription optimization which says if the
+   * new subscription is the same as the old one, don't create a new one.
+   */
+  var router = new ClientRouter({
+    autoRender: false,
+    autoStart: false
+  });
+
+  var subscribeToPosts = function () {
+    Meteor.subscribe('/posts');
+  };
+
+  var findAllPostsSubscriptions = function () {
+    return _.where(_.values(Meteor.connection._subscriptions), {
+      name: '/posts'
+    });
+  };
+
+  var route = new Route(router, 'test', {}, subscribeToPosts);
+  var context = new RouteContext('/test', router, route, {});
+  var controller = router.getControllerForContext(context);
+
+  router.onRun(controller, context);
+  Deps.flush();
+
+  var sub = findAllPostsSubscriptions()[0];
+
+  // okay now we'll run the same route again. we want to see if a new
+  // subscription gets created, or if it's the same. it should be the same.
   router.onRun(controller, context);
 
-  test.equal(runs, 1);
 
-  Session.set('testVar', Random.id());
-  Deps.flush();
-  test.equal(runs, 2);
+  // at this point, the old route has been stopped and the new route has run,
+  // although it hasn't been flushed yet. so the old subscription should
+  // temporarily be marked as inactive, but gets marked as active again when the
+  // new route runs. test that the subscription has the same id and that there
+  // is only one subscription for /posts.
 
-  var prevComputation = router._routeComputation;
-  test.isFalse(prevComputation.stopped);
+  test.isFalse(sub.inactive, 'old subscription never got reactivated');
 
-  route = new Route(router, 'another', {}, handler);
-  context = new RouteContext('/another', router, route, {});
+  var subs = findAllPostsSubscriptions();
+  test.equal(subs.length, 1, 'new post subscription was not supposed to be created');
+});
+
+Tinytest.add('ClientRouter - onRun subscription stop', function (test) {
+  /*
+   * Test Case 2: Subscriptions from previous route computations should be
+   * stopped automatically, unless it is the same subscription on the new
+   * computation.
+   */
+  var router = new ClientRouter({
+    autoRender: false,
+    autoStart: false
+  });
+
+  var subscribeToPostOne = function () {
+    Meteor.subscribe('/post', 1);
+  };
+
+  var subscribeToPostTwo = function () {
+    Meteor.subscribe('/post', 2);
+  };
+
+  var findSubscriptionsByName = function (name) {
+    return _.where(_.values(Meteor.connection._subscriptions), {
+      name: name
+    });
+  };
+
+  var findSubscriptionByNameAndParams = function (name, params) {
+    return _.find(_.values(Meteor.connection._subscriptions), function (s) {
+      return s.name === name
+        && _.difference(s.params, params).length === 0;
+    });
+  };
+
+  var firstRoute = new Route(router, 'test', {}, subscribeToPostOne);
+  var context = new RouteContext('/test', router, firstRoute, {});
+  var controller = router.getControllerForContext(context);
+  router.onRun(controller, context);
+
+  // first subscription has been set up and is active
+  var subs = findSubscriptionsByName('/post');
+  test.equal(subs.length, 1, 'should only be one sub at this point');
+  test.isFalse(subs[0].inactive, 'sub should be active');
+
+  // now go to the new route
+  var secondRoute = new Route(router, 'test', {}, subscribeToPostTwo);
+  context = new RouteContext('/test', router, secondRoute, {});
   controller = router.getControllerForContext(context);
   router.onRun(controller, context);
-  Deps.flush();
 
-  var newComputation = router._routeComputation;
-  test.isTrue(prevComputation.stopped);
-  test.equal(runs, 3);
+  // there should be two subscriptions at this point
+  // but one should be active and the other inactive
 
-  route = new Route(router, 'notReactive', {
-    reactive: false
-  }, handler);
-  context = new RouteContext('/notReactive', router, route, {});
-  router.onRun(controller, context);
-  Deps.flush();
-  test.equal(runs, 4);
+  var firstSub = findSubscriptionByNameAndParams('/post', [1]);
+  test.isTrue(firstSub.inactive, 'first sub should be inactive');
 
-  Session.set('testVar', Random.id());
-  Deps.flush();
-  test.equal(runs, 4);
+  var secondSub = findSubscriptionByNameAndParams('/post', [2]);
+  test.isFalse(secondSub.inactive, 'second sub should be active');
 });
