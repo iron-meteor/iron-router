@@ -271,12 +271,18 @@ RouteControllers is the same as that of Coffeescript itself, so you can define
 new controllers in a very intuitive way:
 
 ```coffeescript 
-class @PostController extends RouteController template: 'post'
-  renderTemplates: 'sidebar': to: 'sidebar' 'footer': to: 'footer'
+class @PostController extends RouteController
+  template: 'post'
+
+  renderTemplates:
+    'sidebar': to: 'sidebar'
+    'footer': to: 'footer'
 
   data: -> title: 'Hello World'
 
-  run: -> console.log 'running' super
+  run: ->
+    console.log 'running'
+    super
 ```
 
 The above controller is created in the global namespace with the use of `@`, and
