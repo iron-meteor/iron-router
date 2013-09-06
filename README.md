@@ -235,7 +235,7 @@ Router.configure({
 ### Controllers
 
 All routes are handled by a RouteController, although you don't necessarily need
-to create on yourself. There are four ways of specifying a controller:
+to create one yourself. There are four ways of specifying a controller:
 
  - `this.route('name', {controller: Controller})` - pass an subclass
    `RouteController` in directly
