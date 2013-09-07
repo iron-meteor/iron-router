@@ -4,6 +4,7 @@ Package.describe({
 
 Package.on_use(function (api) {
   api.use([
+    'reactive-dict',
     'meteor',
     'deps',
     'underscore',
@@ -28,7 +29,7 @@ Package.on_use(function (api) {
 
   api.add_files([
     'lib/client/location.js',
-    'lib/client/yield_partials_dict.js',
+    'lib/client/router_renderer.js',
     'lib/client/client_router.js',
     'lib/client/default_layout.html',
     'lib/client/route_controller.js',
