@@ -20,7 +20,6 @@ Package.on_use(function (api) {
   api.add_files([
     'license.js',
     'lib/router_utils.js',
-    'lib/route_path.js',
     'lib/route_context.js',
     'lib/route.js',
     'lib/route_controller.js',
@@ -47,25 +46,17 @@ Package.on_use(function (api) {
     Npm.depends({connect: '2.7.10'});
 
     api.export([
-     'RouteContext',
      'Route',
-     'IronRouter',
      'RouteController',
      'Router'
     ], ['client', 'server']);
 
     api.export([
-      'IronLocation',
-      'ClientRouter'
+      'IronLocation'
     ], 'client');
 
     api.export([
-      'ServerRouter'
-    ], 'server');
-
-    api.export([
-     'RouterUtils',
-     'RoutePath',
+     'RouterUtils'
     ], 'client', {testOnly: true});
   }
 });
