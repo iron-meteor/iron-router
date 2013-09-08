@@ -14,13 +14,12 @@ Package.on_use(function (api) {
   api.use([
     'templating',
     'handlebars',
-    'universal-events'
+    'jquery'
   ], 'client');
 
   api.add_files([
     'license.js',
     'lib/router_utils.js',
-    'lib/route_context.js',
     'lib/route.js',
     'lib/route_controller.js',
     'lib/router.js'
