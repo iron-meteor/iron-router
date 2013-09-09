@@ -19,7 +19,7 @@ Package.on_use(function (api) {
 
   api.add_files([
     'license.js',
-    'lib/router_utils.js',
+    'lib/utils.js',
     'lib/route.js',
     'lib/route_controller.js',
     'lib/router.js'
@@ -54,8 +54,8 @@ Package.on_use(function (api) {
     ], 'client');
 
     api.export([
-     'RouterUtils'
-    ], 'client', {testOnly: true});
+     'Utils'
+    ], ['client', 'server'], {testOnly: true});
   }
 });
 
