@@ -28,7 +28,7 @@ Package.on_use(function (api) {
   api.add_files([
     'lib/client/location.js',
     'lib/client/layout_controller.js',
-    'lib/client/client_router.js',
+    'lib/client/router.js',
     'lib/client/default_layout.html',
     'lib/client/route_controller.js',
     'lib/client/helpers.js'
@@ -36,7 +36,7 @@ Package.on_use(function (api) {
 
   api.add_files([
     'lib/server/route_controller.js',
-    'lib/server/server_router.js'
+    'lib/server/router.js'
   ], 'server');
 
   // for backward compat before Meteor linker changes
@@ -45,7 +45,6 @@ Package.on_use(function (api) {
     Npm.depends({connect: '2.7.10'});
 
     api.export([
-     'Route',
      'RouteController',
      'Router'
     ], ['client', 'server']);
