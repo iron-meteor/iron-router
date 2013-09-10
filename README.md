@@ -279,7 +279,87 @@ Router.map(function () {
 When you navigate to 'http://localhost:3000/' the above route will automatically
 render the template named `home`.
 
+You can change the template that is autmoatically rendered by providing a
+template option.
+
+```javascript
+Router.map(function () {
+  this.route('home', {
+    path: '/',
+    template: 'myHomeTemplate'
+  });
+});
+```
+
+The above example will math the `http://localhost:3000/` url (the `/` path) and
+automatically render the template named `myHomeTemplate`.
+
 ### Using a Layout with Yields
+Often times it's useful to have a layout template for a route. Then your route
+template renders into the layout. You can actually render multiple templates
+into the layout. You can specify a layout template by providing the
+`layoutTemplate` option to your route.
+
+```javascript
+Router.map(function () {
+  this.route('home', {
+    path: '/',
+    template: 'myHomeTemplate',
+    layoutTemplate: 'layout'
+  });
+});
+```
+
+The layout template must declare where it wants various child templates to
+render. You can do this by using the `{{yield}}` helper. A basic layout would
+look like this:
+
+```html
+<template name="layout">
+  <div>
+    {{yield}}
+  </div>
+</template>
+```
+
+But you can also specify "named" yields. This allows you to render templates
+into any number of areas in the layout. For example:
+
+```html
+<template name="layout">
+  <aside>
+    {{yield 'aside'}}
+  </aside>
+
+  <div>
+    {{yield}}
+  </div>
+
+  <footer>
+    {{yield 'footer'}}
+  </footer>
+</template>
+```
+
+You can specify which templates to render into the named yields using the
+`yieldTemplates` option of your route. For example:
+
+```javascript
+Router.map(function () {
+  this.route('home', {
+    path: '/',
+    template: 'myHomeTemplate',
+    layoutTemplate: 'layout',
+    yieldTemplates: {
+      'myAsideTemplate': {to: 'aside'},
+      'myFooter': {to: 'footer'}
+    }
+  });
+});
+```
+
+The above example will render the template named `myAsideTemplate` to the yield
+named `aside` and the template named `myFooter` to the yield named `footer`.
 
 ### Using a Custom Action Function
 
