@@ -401,6 +401,7 @@ this:
 <template name="myHomeTemplate">
   {{title}} - {{description}}
 </template>
+```
 
 The data property can also be a function which is evaluated when the route is
 actually run.
@@ -427,6 +428,7 @@ Router.map(function () {
     }
   });
 });
+```
 
 You can also set the data property to false. This indicates that you don't want
 to set the data context to a new value, but instead, maintain the previous
