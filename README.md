@@ -152,6 +152,12 @@ Router.map(function () {
     // matches: '/commits/789..101112'
     path: /^\/commits\/(\d+)\.\.(\d+)/
   });
+
+  // Catch All Route and the End for not found template
+  // this will be matched last (if all other routes didn't match)
+  this.route('notFound', {
+    path: '*'
+  });
 });
 ```
 
@@ -359,11 +365,138 @@ Router.map(function () {
 ```
 
 The above example will render the template named `myAsideTemplate` to the yield
-named `aside` and the template named `myFooter` to the yield named `footer`.
+named `aside` and the template named `myFooter` to the yield named `footer`. The
+main template `myHomeTemplate` specified by the `template` option will be
+rendered into the **main** yield. This is the yield without a name
+in the center that looks like this: `{{yield}}`.
+
+### Data
+You can provide a data context for the current route by providing a `data`
+option to your route. The `data` value can either be an object or a function
+that gets evaluated later (when your route is run). For example:
+
+```javascript
+Router.map(function () {
+  this.route('home', {
+    path: '/',
+    template: 'myHomeTemplate',
+    layoutTemplate: 'layout',
+    yieldTemplates: {
+      'myAsideTemplate': {to: 'aside'},
+      'myFooter': {to: 'footer'}
+    },
+
+    data: {
+      title: 'Some Title',
+      description: 'Some Description'
+    }
+  });
+});
+```
+
+Given the above data context, our templates could use the data context like
+this:
+
+```html
+<template name="myHomeTemplate">
+  {{title}} - {{description}}
+</template>
+
+The data property can also be a function which is evaluated when the route is
+actually run.
+
+```javascript
+Router.map(function () {
+  this.route('home', {
+    path: '/',
+    template: 'myHomeTemplate',
+    layoutTemplate: 'layout',
+    yieldTemplates: {
+      'myAsideTemplate': {to: 'aside'},
+      'myFooter': {to: 'footer'}
+    },
+
+    data: function () {
+      // this.params is available inside the data function
+      var params = this.params;
+
+      return {
+        title: 'Some Title',
+        description: 'Some Description'
+      }
+    }
+  });
+});
+
+You can also set the data property to false. This indicates that you don't want
+to set the data context to a new value, but instead, maintain the previous
+value. This is useful if you you don't want to re-render templates that have
+already been rendered if the data context doesn't need to change.
+
+```javascript
+Router.map(function () {
+  this.route('home', {
+    path: '/',
+    template: 'myHomeTemplate',
+    layoutTemplate: 'layout',
+    yieldTemplates: {
+      'myAsideTemplate': {to: 'aside'},
+      'myFooter': {to: 'footer'}
+    },
+
+    data: false // don't set a new data context (keep the previous one)
+  });
+});
+```
+
+If your data value or function returns null or undefined, the Router can
+automatically render a not found template. This is useful if you want to render
+a not found template for data that doesn't exist. The only thing you need to do
+is provide a `notFoundTemplate` option to your route.
+
+```javascript
+Router.map(function () {
+  this.route('home', {
+    path: '/',
+    template: 'myHomeTemplate',
+    layoutTemplate: 'layout',
+    yieldTemplates: {
+      'myAsideTemplate': {to: 'aside'},
+      'myFooter': {to: 'footer'}
+    },
+
+    // render notFound template when data is null or undefined
+    notFoundTemplate: 'notFound', 
+    data: function () {
+
+      // return Posts.findOne({_id: this.params._id});
+      // if the post isn't found then render the notFound template
+
+      // if data function returns null then notFound template is rendered.
+      return null;
+    }
+  });
+});
+```
+
+Note, the notFoundTemplate is only for data. It doesn't get rendered
+automatically for browser paths that aren't matched. For example, the following
+will **NOT** render the notFoundTemplate.
+
+```javascript
+// given a browser url of: http://localhost:3000/boguspath
+
+Router.map(function () {
+  this.route('home', {
+    notFoundTemplate: 'notFound' // this is only for data, not for bad paths
+  });
+});
+```
 
 ### Using a Custom Action Function
+XXX to be continued.
 
-### Data and Subscriptions
+### Before and After Hooks
 
 ### Global Router Configuration
 
