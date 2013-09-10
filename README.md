@@ -29,6 +29,7 @@ A client and server side router designed specifically for Meteor.
   $ cd my-project
   $ meteor add iron-router
   ```
+
 ## Getting Started
 Once you add the iron-router package the global `Router` object is available on
 the client and on the server. So you can create your routes and configure the
@@ -154,7 +155,114 @@ Router.map(function () {
 });
 ```
 
+### Query Strings and Hash Segments
+Query strings and hashes aren't used to match routes. But they are made
+available as properties of `this.params` inside of your route functions. We
+haven't talked about the various route functions yet, but here is an example:
+
+```javascript
+Router.map(function () {
+  this.route('postShow', {
+    path: '/posts/:_id',
+    data: function () {
+      // the data function is an example where this.params is available
+
+      // we can access params using this.params
+      // see the below paths that would match this route
+      var params = this.params;
+
+      // query params are added as normal properties to this.params.
+      // given a browser path of: '/posts/5?sort_by=created_at
+      // this.params.sort_by => 'created_at'
+
+      // the hash fragment is available on the hash property
+      // given a browser path of: '/posts/5?sort_by=created_at#someAnchorTag
+      // this.params.hash => 'someAnchorTag'
+    }
+  });
+});
+```
+
 ### Path Functions and Helpers
+Once your application becomes large enough, it becomes a pain to hard code link
+urls everywhere. If you end up changing your route path a little, you need to
+find all of the href tags in your application and change those as well. It's
+must better if we can call a function to return a url given a parameters object.
+There are a few Handlebars helpers you can use directly in your HTML. You can
+also call the `path` and `url` methods on a route itself. 
+
+Let's say we have a route named "postShow" defined like this:
+
+```javascript
+Router.map(function () {
+  this.route('postShow', {
+    path: '/posts/:_id'
+  });
+});
+```
+
+You can call the Route's path function to get a path for a given parameters
+object. For example:
+
+```javascript
+Router.routes['postShow'].path({_id: 1}) => '/posts/1'
+```
+
+You can pass query parameters and a hash value as an optino like this:
+
+```javascript
+Router.routes['postShow'].path({_id: 1}, {
+  query: 'sort_by=created_at',
+  hash: 'someAnchorTag'
+});
+```
+
+The query option can also be a regular JavaScript object. It will automatically
+be turned into a query string. The above example would also work here:
+
+```javascript
+Router.routes['postShow'].path({_id: 1}, {
+  query: {
+    sort_by: 'created_at'
+  },
+
+  hash: 'someAnchorTag'
+});
+```
+
+You can get paths and urls for named routes directly in your html using a few
+global Handlbars helpers. The Handlebars helpers use the current data context as
+the first parameter to the `path` function shown above.
+
+```html
+<!-- given a context of {_id: 1} this will render '/posts/1' -->
+<a href="{{pathFor 'postShow'}}">Post Show</a>
+```
+
+You can change the data context before using the pathFor helper using the
+Handlebars `{{#with ...}}` helper like this:
+
+```html
+{{#with someOtherPost}}
+  <!-- someOtherPost now sets the data context -->
+  <!-- so say someOtherPost = { _id: 5 } then this renders '/posts/5' -->
+  <a href="{{pathFor 'postShow'}}">Post Show</a>
+{{/with}}
+```
+
+You can pass query parameters using the Handlebars helper like
+this:
+
+```html
+<!-- given a context of {_id: 1} this will render '/posts/1?sort_by=created_at' -->
+<a href="{{pathFor 'postShow' sort_by=created_at}}">Post Show</a>
+```
+And you can pass a hash value using the Handlbars helper like this:
+
+```html
+<!-- given a context of {_id: 1} this will render '/posts/1?sort_by=created_at#someAnchorTag' -->
+<a href="{{pathFor 'postShow' sort_by=created_at hash=someAnchorTag}}">Post Show</a>
+```
 
 ### Rendering Templates
 
