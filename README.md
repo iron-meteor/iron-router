@@ -97,7 +97,7 @@ be: `http://localhost:3000/` and the `home` route will match this path.
 ### Dynamic Path Segments
 Paths get compiled into a regular expression and can support dynamic segments.
 You can even use a regular expression as your path value. The values of these
-parameters are made available inside of any route functions using
+params are made available inside of any route functions using
 `this.params`. You'll see examples of different route functions below. But to
 get us started, here are a few examples of dynamic paths:
 
@@ -184,10 +184,10 @@ Router.map(function () {
 ```
 
 ### Path Functions and Helpers
-Once your application becomes large enough, it becomes a pain to hard code link
-urls everywhere. If you end up changing your route path a little, you need to
-find all of the href tags in your application and change those as well. It's
-must better if we can call a function to return a url given a parameters object.
+Once your application becomes large enough, it becomes a pain to hard code urls
+everywhere. If you end up changing your route path a little, you need to find
+all of the href tags in your application and change those as well. It's much
+better if we can call a function to return a url given a parameters object.
 There are a few Handlebars helpers you can use directly in your HTML. You can
 also call the `path` and `url` methods on a route itself. 
 
@@ -201,14 +201,14 @@ Router.map(function () {
 });
 ```
 
-You can call the Route's path function to get a path for a given parameters
+You can call the Route's path function to get a path for a given parameter
 object. For example:
 
 ```javascript
 Router.routes['postShow'].path({_id: 1}) => '/posts/1'
 ```
 
-You can pass query parameters and a hash value as an optino like this:
+You can pass query params and a hash value as an option like this:
 
 ```javascript
 Router.routes['postShow'].path({_id: 1}, {
@@ -230,9 +230,9 @@ Router.routes['postShow'].path({_id: 1}, {
 });
 ```
 
-You can get paths and urls for named routes directly in your html using a few
-global Handlbars helpers. The Handlebars helpers use the current data context as
-the first parameter to the `path` function shown above.
+You can get paths and urls for named routes directly in your html using a global
+Handlbars helper. The Handlebars helper uses the current data context as the
+first parameter to the `path` function shown above.
 
 ```html
 <!-- given a context of {_id: 1} this will render '/posts/1' -->
@@ -250,7 +250,7 @@ Handlebars `{{#with ...}}` helper like this:
 {{/with}}
 ```
 
-You can pass query parameters using the Handlebars helper like
+You can pass query params using the Handlebars helper like
 this:
 
 ```html
@@ -265,8 +265,21 @@ And you can pass a hash value using the Handlbars helper like this:
 ```
 
 ### Rendering Templates
+The default action for a route is to render a template. You can specify a
+template as an option to the route. If you don't provide a template, the route
+will assume the template name is the same as the route name. For example:
 
-### Using a Layout
+```javascript
+Router.map(function () {
+  this.route('home', {
+    path: '/'
+  });
+});
+```
+When you navigate to 'http://localhost:3000/' the above route will automatically
+render the template named `home`.
+
+### Using a Layout with Yields
 
 ### Using a Custom Action Function
 
