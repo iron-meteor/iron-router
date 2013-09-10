@@ -299,3 +299,17 @@ will be automatically used to render the route called `/post`.
 We're happy to have contributors. If you're interested in contributing and not
 sure where to start, drop Chris or Tom a line. You can also look for Github
 issues marked *contribute*.
+
+### Client vs. Server Routes
+By default, routes are created to run on the client. If you want your route to
+only be a server route you can provide the `where` option.
+
+```javascript
+Router.map(function () {
+  this.route('home'); // client route
+
+  this.route('serverRoute', {
+    where: 'server', // server route
+  });
+});
+```
