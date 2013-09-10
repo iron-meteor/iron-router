@@ -6,7 +6,9 @@
     `before` and `after`)
   * `Router.current()` now returns a `RouteController` instance
   * The `waitOn` option now applies to the before/after filters and your action
-    method; no more just to the render method
+    method; no more to the render method
+     * All before hooks, the action, and after hooks will wait
+  * data option now applies only to the Route or RouteController, not to the render method
   * pathFor and urlFor semantics have changed:
     1. `{{pathFor contextObject queryKey=queryValue hash=anchorTag}}`
     2. ```
@@ -28,5 +30,8 @@
 * before/after filters are class level methods on RouteController
 * Cleaned up API signatures and passing of options from Router->Route->RouteController
 * Fix onclick handler and moved into lib/client/location.js
+* Client and Server Router now inherit from IronRouter
+* Client and Server RouteController now inherit from IronRouterController
+* Removed unnecessary global symbol exports (still accessible through Package['iron-router'] namespace)
 
 ## v0.5.4

@@ -26,7 +26,7 @@ Package.on_use(function (api) {
 
   api.add_files([
     'lib/client/location.js',
-    'lib/client/layout_controller.js',
+    'lib/client/page_controller.js',
     'lib/client/router.js',
     'lib/client/default_layout.html',
     'lib/client/route_controller.js',
