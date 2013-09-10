@@ -2,6 +2,13 @@
 
 A client and server side router designed specifically for Meteor.
 
+## History
+
+**Latest Version:** 0.6.0
+
+See the History.md file for changes (including breaking changes) across
+versions.
+
 ## Installation
 
 1. Using [Meteorite](https://github.com/oortcloud/meteorite)
