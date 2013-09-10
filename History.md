@@ -2,6 +2,7 @@
 
 * **WARNING:** Breaking Changes
   * The `layout` option is now called `layoutTemplate`
+  * The `renderTemplates` option is now called `yieldTemplates`
   * RouteController `onBefore..` and `onAfter..` methods removed (now just use
     `before` and `after`)
   * `Router.current()` now returns a `RouteController` instance
@@ -34,5 +35,6 @@
 * Client and Server Router now inherit from IronRouter
 * Client and Server RouteController now inherit from IronRouterController
 * Removed unnecessary global symbol exports (still accessible through Package['iron-router'] namespace)
+* Client RouteController has a getData method to access the Router current data context
 
 ## v0.5.4

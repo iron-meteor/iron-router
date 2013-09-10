@@ -463,10 +463,13 @@ Router.map(function () {
 });
 ```
 
-You can also set the data property to false. This indicates that you don't want
-to set the data context to a new value, but instead, maintain the previous
-value. This is useful if you you don't want to re-render templates that have
-already been rendered if the data context doesn't need to change.
+If you provide a data function or object value it sets a Router level data
+context that is maintained across routes. This allows for scenarios where you
+don't want to change the data context from one route to another.
+
+If the data property is set to false, the router's data context will be
+maintained. This is the default value of the data property, so you only need to
+set it if you're using custom RouteControllers.
 
 ```javascript
 Router.map(function () {
@@ -479,7 +482,30 @@ Router.map(function () {
       'myFooter': {to: 'footer'}
     },
 
-    data: false // don't set a new data context (keep the previous one)
+    data: false // don't set a new data context (keep the existing one)
+  });
+});
+```
+
+You can access the current data context using the `getData` function inside of
+any of your route functions (or RouteController functions). For example:
+
+```javascript
+Router.map(function () {
+  this.route('post', {
+    path: '/posts/:slug',
+
+    waitOn: function () {
+      return Meteor.subscribe('posts');
+    },
+
+    data: function () {
+      return Posts.findOne({slug: this.params.slug});
+    },
+
+    before: function () {
+      var post = this.getData();
+    }
   });
 });
 ```
