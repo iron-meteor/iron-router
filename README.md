@@ -189,6 +189,32 @@ Router.map(function () {
 });
 ```
 
+## Client Side Routing
+
+### Rendering the Router
+By default, the Router is rendered (appended) automatically to the document body
+when the DOM is ready. You can override this behavior and render the Router
+whever you'd like by setting a configuration option and using a Handlebars
+helper like this:
+
+```javascript
+Router.configure({
+  autoRender: false
+});
+```
+
+```html
+<body>
+  <div>
+    Some static content goes here
+  </div>
+
+  <div>
+    {{renderRouter}}
+  </div>
+</body>
+```
+
 ### Path Functions and Helpers
 Once your application becomes large enough, it becomes a pain to hard code urls
 everywhere. If you end up changing your route path a little, you need to find
@@ -495,21 +521,417 @@ Router.map(function () {
 });
 ```
 
+To render a not found template for bad url paths you can create a catch all
+route as the last route like this:
+
+```javascript
+// given a browser url of: http://localhost:3000/boguspath
+
+Router.map(function () {
+  this.route('home', {
+    notFoundTemplate: 'notFound' // this is only for data, not for bad paths
+  });
+
+  this.route('notFound', {
+    path: '*' // catch all route
+  });
+});
+
+### Waiting on Subscriptions
+Sometimes it's useful to wait until you have data before rendering a page. For
+example, let's say you want to show a not found template if the user navigates
+to a good url (say, /posts/5) but there is no post with an id of 5. You can't
+make this determination until the data from the server has been sent.
+
+To solve this problem, you can **wait** on a subscription, or anything with a
+reactive `ready()` method. To do this, you can provide a `waitOn` option to your
+route like this:
+
+Router.map(function () {
+  this.route('postShow', {
+    path: '/posts/:_id',
+
+    waitOn: function () {
+      return Meteor.subscribe('posts');
+    }
+  });
+});
+
+The `waitOn` function can return any object that has a `ready` method. It can
+also return an array of these objects if you'd like to wait on multiple
+subscriptions.
+
+```javascript
+Router.map(function () {
+  this.route('postShow', {
+    path: '/posts/:_id',
+
+    waitOn: function () {
+      // NOTE: this.params is available inside the waitOn function.
+      var slug = this.params.slug;
+      return [Meteor.subscribe('posts'), Meteor.subscribe('comments', slug)];
+    }
+  });
+});
+```
+
+When your route is run, it will wait on any subscriptions you've provided in
+your `waitOn` function before running your before hooks, action method, and
+after hooks. Under the hood, the waitOn function calls the `wait(handles, onReady,
+onWaiting)` method of a RouteController (more on RouteControllers below). If you
+need to customize this behavior you can skip providing a `waitOn` property and
+just use the `wait` method directly in a custom action function or a before
+hook.
+
 ### Using a Custom Action Function
-XXX to be continued.
+So far, we haven't had to write much code to get our routes to work. We've just
+provided configuration options to the route. Under the hood, when a route is
+run, a RouteController gets created and an **action** method gets called on that
+RouteController. On the client, the default action function just renders the
+main template and then all of the yield templates. We can provide our own
+action function like this:
+
+```javascript
+Router.map(function () {
+  this.route('postShow', {
+    path: '/posts/:_id',
+
+    action: function () {
+      // this => instance of RouteController
+      // access to:
+      //  this.params
+      //  this.wait
+      //  this.render
+      //  this.stop
+      //  this.redirect
+    }
+  });
+});
+```
+
+### Custom Rendering
+If you provide a custom action function you'll need to control rendering
+manually. You can do this by calling the `render` function. If you call
+`this.render()` with no parameters, it will render the main template. For
+example, given a simple layout and a template named "postShow":
+
+```html
+<template name="layout">
+  {{yield}}
+</template>
+
+<template name="postShow">
+  <h1>Post</h1>
+</template>
+```
+
+```javascript
+Router.map(function () {
+  this.route('postShow', {
+    path: '/posts/:_id',
+
+    action: function () {
+      // render the postShow template into the main yield of the template
+      this.render();
+    }
+  });
+});
+```
+
+You can provide a different template name to render into the main yield by
+providing the name of the template as the first parameter to the 'render'
+function.
+
+```javascript
+Router.map(function () {
+  this.route('postShow', {
+    path: '/posts/:_id',
+
+    action: function () {
+      // render someOtherTemplate into the main yield of the template
+      this.render('someOtherTemplate');
+    }
+  });
+});
+```
+
+You can render a template into a **named yield** by passing the `to` option to
+the render method and specifying the name of the yield to render into.
+
+```html
+<template name="layout">
+  <aside>
+    {{yield 'aside'}}
+  </aside>
+
+  <div>
+    <!-- main yield -->
+    {{yield}}
+  </div>
+
+  <footer>
+    <!-- named yield -->
+    {{yield 'footer'}}
+  </footer>
+</template>
+```
+
+```javascript
+Router.map(function () {
+  this.route('postShow', {
+    path: '/posts/:_id',
+
+    action: function () {
+      // render the main template
+      this.render();
+
+      // render myCustomFooter into the footer yield
+      this.render('myCustomFooter', { to: 'footer' });
+
+      // render myCustomAside into the aside yield
+      this.render('myCustomAside', { to: 'aside' });
+    }
+  });
+});
+```
+
+Finally, you can save some typing by passing an object of template to options as
+the first parameter to the render function.
+
+```javascript
+Router.map(function () {
+  this.route('postShow', {
+    path: '/posts/:_id',
+
+    action: function () {
+      // render the main template
+      this.render();
+
+      // combine render calls
+      this.render({
+        'myCustomFooter': { to: 'footer' },
+        'myCustomAside': { to: 'aside' }
+      });
+    }
+  });
+});
+```
+
+*Note: layouts are at the route level, not the template level and you have one
+layout per route or a globally defined layout.*
 
 ### Before and After Hooks
+Sometimes you want to execute some code *before* or *after* your action function
+is called. This is particularly useful for things like showing a login page
+anytime a user is not logged in. You might also put mixpanel tracking code in a
+before/after hook. You can declare before and after hooks by providing `before`
+and `after` options to the route. The value can be a function or an array of
+functions which will be executed in the order they are defined.
+
+```javascript
+Router.map(function () {
+  this.route('postShow', {
+    path: '/posts/:_id',
+
+    before: function () {
+      if (!Meteor.user()) {
+        // render the login template but keep the url in the browser the same
+        this.render('login');
+
+        // stop the rest of the before hooks and the action function 
+        this.stop();
+      }
+    },
+
+    action: function () {
+      // render the main template
+      this.render();
+
+      // combine render calls
+      this.render({
+        'myCustomFooter': { to: 'footer' },
+        'myCustomAside': { to: 'aside' }
+      });
+    },
+
+    after: function () {
+      // this is run after our action function
+    }
+  });
+});
+```
+
+Hooks and your action function are reactive by default. This means that if you
+use a reactive data source inside of one of these functions, and that reactive
+data source invalidates the computation, these functions will be run again.
+
+### Non Reactive Routes
+You can make your route non-reactive by providing the `reactive: false` option
+to the route.
+
+```javascript
+Router.map(function () {
+  this.route('nonReactiveRoute', {
+    reactive: false,
+
+    action: function () {
+      // this function will not be re-run because of reactive data
+      // changes.
+    }
+  });
+});
+```
 
 ### Global Router Configuration
+So far we've been defining all of our route options on the routes themselves.
+But sometimes it makes sense to define global options that apply to all routes.
+This is most often used for the `layoutTemplate`, `notFoundTemplate`, and
+`loadingTemplate` options. You can globally configure the Router like this:
 
-### Server Side Routing
+```javascript
+Router.configure({
+  layoutTemplate: 'layout',
+  notFoundTemplate: 'notFound',
+  loadingTemplate: 'loading'
+});
+```
+
+## Server Side Routing
+Defining routes and configuring the Router is almost identical on the server and
+the client. By default, routes are created as client routes. You can specify
+that a route is intended for the server by providing a `where` property to the
+route like this:
+
+```javascript
+Router.map(function () {
+  this.route('serverRoute', {
+    where: 'server',
+
+    action: function () {
+      // some special server side properties are available here
+    }
+  });
+});
+```
+
+Server action functions (RouteControllers) have different properties and methods
+available. Namely, there is no rendering on the server yet. So the `render`
+method is not available. Also, you cannot `waitOn` subscriptions or call the
+`wait` method on the server. Server routes get the bare `request`, `response`,
+and `next` properties of the Connect request, as well as the params object just
+like in the client.
+
+```javascript
+Router.map(function () {
+  this.route('serverFile', {
+    path: '/files/:filename',
+
+    action: function () {
+      var filename = this.params.filename;
+
+      this.response.writeHead(200);
+      this.response.writeHead('Content-Type', 'text/html');
+      this.response.write('hello from server');
+      this.response.end();
+    }
+  });
+});
+```
 
 ## Route Controllers
+Most of the time, you can define how you want your routes to behave by simply
+providing configuration options to the route. But as your application gets
+larger, you may want to separate the logic for handling a particular route into
+a separate class. This is useful for putting route handling logic into separate
+files, but also for utilizing features like inheritance. You can do this by
+inheriting from `RouteController`. This works on both the client and the server,
+but each has slightly different methods as described above.
 
-### Client RouteController
+Although we haven't been working with `RouteController`s directly, under the
+hood they were getting creating automatically for us when our routes were run.
+These are called "anonymous" `RouteController`s. But we can create our own like
+this:
 
-### Server RouteController
+```javascript
+PostShowController = RouteController.extend({
+  /* most of the options we've been using in our routes can be used here */
+});
+```
 
-## Router Concepts
+How does a route know about our custom RouteController? Let's say we have a
+route named "postShow." When the route is run, it will look for a global object
+named "PostShowController," after the name of the route. We can change this
+behavior by providing a `controller` option to the route like so:
+
+```javascript
+Router.map(function () {
+
+  // provide a String to evaluate later
+  this.route('postShow', {
+    controller: 'CustomController'
+  });
+
+  // provide the actual controller symbol if it's already defined
+  this.route('postShow', {
+    controller: CustomController
+  });
+});
+```
+
+We can define almost all of the same options on our RouteController as we have
+for our routes. For example:
+
+```javascript
+PostShowController = RouteController.extend({
+  template: 'postShow',
+
+  layoutTemplate: 'postLayout',
+
+  before: function () {
+  },
+
+  after: function () {
+  },
+
+  waitOn: function () {
+    return Meteor.subscribe('post', this.params._id);
+  },
+
+  data: function () {
+    return Posts.findOne({_id: this.params._id});
+  },
+
+  action: function () {
+    /* if we want to override default behavior */
+  }
+});
+```
+
+Note that `before` and `after` are class level methods of our new controller. We
+can pass them as properties to the `extend` method for convenience. But we can
+also do this:
+
+```javascript
+PostShowController.before(function () {});
+PostShowController.after(function () {});
+```
+
+In Coffeescript we can use the language's native inheritance.
+
+```coffeescript
+class @PostShowController extends RouteController
+  @before ->
+    # do some before stuff and note this is a class level method call '@'
+
+  @after ->
+    # call the class level after method using '@'
+
+  layout: 'layout'
+
+  template: 'myTemplate'
+```
+
+
+## Router Advanced Concepts
 
 ## Filing Issues and Contributing
