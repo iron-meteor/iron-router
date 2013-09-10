@@ -37,9 +37,9 @@ if (Meteor.isServer) {
 
 if (Meteor.isClient) {
   Router.configure({
-    layout: 'layout',
     notFoundTemplate: 'notFound',
-    loadingTemplate: 'loading'
+    loadingTemplate: 'loading',
+    layoutTemplate: 'layout'
   });
 
   Subscriptions = {
