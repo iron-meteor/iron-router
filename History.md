@@ -22,7 +22,8 @@
 * Better support for query string parameters
 * PageController class for handling layout and template rendering and storing a global data context
   * Layouts and templates now only re-render if the actual template has changed (allows for maintaining a layout/template across routes with no flicker)
-  * Data context is maintained across routes by default
+  * Data context is set globally on the Router pageController and is maintained
+  * across routes by default (you can override this by saying `data: false` in your route)
   * See the lib/client/page_controller.js file for details
 * No more silly RouteContext; all this stuff is in the RouteController instance
 * Partial support for IE8-9. Pages make a server request if pushState is not supported by the browser. This is a performance penalty, but it works
