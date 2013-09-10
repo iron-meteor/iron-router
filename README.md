@@ -548,6 +548,7 @@ To solve this problem, you can **wait** on a subscription, or anything with a
 reactive `ready()` method. To do this, you can provide a `waitOn` option to your
 route like this:
 
+```javascript
 Router.map(function () {
   this.route('postShow', {
     path: '/posts/:_id',
@@ -557,6 +558,7 @@ Router.map(function () {
     }
   });
 });
+```
 
 The `waitOn` function can return any object that has a `ready` method. It can
 also return an array of these objects if you'd like to wait on multiple
