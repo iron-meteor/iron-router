@@ -8,10 +8,12 @@
   * `Router.current()` now returns a `RouteController` instance
   * The `waitOn` option now applies to the before/after filters and your action
     method; no more to the render method
+     * *NOTE: this is still being worked on a bit*
      * All before hooks, the action, and after hooks will wait
   * data option now applies only to the Route or RouteController, not to the render method
-  * pathFor and urlFor semantics have changed:
+  * pathFor and urlFor semantics have changed slightly (hash and query params can now be the key value pairs of the Handlebars expression)
     1. `{{pathFor contextObject queryKey=queryValue hash=anchorTag}}`
+    or
     2. ```
         {{#with contextObject}} 
           {{pathFor queryKey=queryValue hash=anchorTag}}
@@ -23,7 +25,8 @@
 * Better support for query string parameters
 * PageController class for handling layout and template rendering and storing a global data context
   * Layouts and templates now only re-render if the actual template has changed (allows for maintaining a layout/template across routes with no flicker)
-  * Data context is set globally on the Router pageController and is maintained
+  * Data context is set globally on the Router
+  * *Note: Still being worked on a bit*
   * across routes by default (you can override this by saying `data: false` in your route)
   * See the lib/client/page_controller.js file for details
 * No more silly RouteContext; all this stuff is in the RouteController instance
