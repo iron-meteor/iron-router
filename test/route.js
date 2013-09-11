@@ -179,7 +179,6 @@ Tinytest.add('Route - normalizePath', function (test) {
   test.equal(route.normalizePath('http://localhost:3000/posts'), '/posts');
   test.equal(route.normalizePath('/posts?q=s'), '/posts');
   test.equal(route.normalizePath('/posts#anchorTag'), '/posts');
-  test.equal(route.normalizePath('/posts/'), '/posts');
 });
 
 Tinytest.add('Route - getController', function (test) {

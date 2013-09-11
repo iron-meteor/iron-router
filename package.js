@@ -9,7 +9,7 @@ Package.on_use(function (api) {
   api.use('ejson', ['client', 'server']);
 
   api.use('templating', 'client');
-  api.use('handlebars', 'client', {weak: true});
+  api.use('handlebars', 'client');
   api.use('jquery', 'client');
 
   api.add_files('lib/utils.js', ['client', 'server']);
