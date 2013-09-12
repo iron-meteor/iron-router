@@ -9,8 +9,7 @@ Tinytest.add('RouteController - constructor options', function (test) {
     after: function () {}
   };
 
-  var router = Router;
-  var controller = new RouteController(router, options);
+  var controller = new RouteController(options);
 
   test.equal(controller.route, options.route);
   test.equal(controller.path, options.path);

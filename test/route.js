@@ -185,12 +185,9 @@ Tinytest.add('Route - getController', function (test) {
   var route;
   var root = Utils.global();
 
-  root.TestController = function (router, options)  {
-    if (arguments.length < 2)
+  root.TestController = function (options)  {
+    if (arguments.length < 1)
       throw new Error('Argument length check');
-
-    if (router !== Router)
-      throw new Error('Router not passed as first param');
 
     this.options = options;
   };
