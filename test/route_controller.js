@@ -1,4 +1,4 @@
-Tinytest.add('RouteController - constructor options', function (test) {
+Tinytest.add('IronRouteController - constructor options', function (test) {
   var options = {
     route: {},
     path: '/test',
@@ -9,7 +9,7 @@ Tinytest.add('RouteController - constructor options', function (test) {
     after: function () {}
   };
 
-  var controller = new RouteController(options);
+  var controller = new IronRouteController(options);
 
   test.equal(controller.route, options.route);
   test.equal(controller.path, options.path);
@@ -20,7 +20,7 @@ Tinytest.add('RouteController - constructor options', function (test) {
   test.equal(controller.hooks.after[0], options.after);
 });
 
-Tinytest.add('RouteController - inheritance', function (test) {
+Tinytest.add('IronRouteController - inheritance', function (test) {
   var before = function () {};
   var after = function () {};
 
@@ -28,13 +28,13 @@ Tinytest.add('RouteController - inheritance', function (test) {
     before: before,
     after: after
   };
-  var MyController = RouteController.extend(proto);
+  var MyController = IronRouteController.extend(proto);
 
   test.equal(MyController.hooks.before[0], before);
   test.equal(MyController.hooks.after[0], after);
 });
 
-Tinytest.add('RouteController - runHooks', function (test) {
+Tinytest.add('IronRouteController - runHooks', function (test) {
   var hookCalls;
 
   var before = function () {
@@ -49,7 +49,7 @@ Tinytest.add('RouteController - runHooks', function (test) {
     before: before,
     after: after
   };
-  var MyController = RouteController.extend(proto);
+  var MyController = IronRouteController.extend(proto);
 
   test.equal(MyController.hooks.before[0], before);
   test.equal(MyController.hooks.after[0], after);
@@ -75,10 +75,10 @@ Tinytest.add('RouteController - runHooks', function (test) {
   test.equal(hookCalls[1], 'protoAfter');
 });
 
-Tinytest.add('RouteController - runHooks with arrays', function (test) {
+Tinytest.add('IronRouteController - runHooks with arrays', function (test) {
   var hookCalls;
 
-  var MyController = RouteController.extend({
+  var MyController = IronRouteController.extend({
     before: [
       function () {
         hookCalls.push('protoBefore 1');
