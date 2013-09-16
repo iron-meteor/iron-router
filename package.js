@@ -38,11 +38,14 @@ Package.on_use(function (api) {
     api.export('Router', ['client', 'server']);
     api.export('IronLocation', 'client');
 
-    api.export('PageManager', 'client', {testOnly: true});
-
     api.export('Utils', ['client', 'server'], {testOnly: true});
     api.export('IronRouteController', ['client', 'server'], {testOnly: true});
     api.export('IronRouter', ['client', 'server'], {testOnly: true});
+
+    api.export('PageManager', 'client', {testOnly: true});
+    api.export('ClientRouter', 'client', {testOnly: true});
+
+    api.export('ServerRouter', 'server', {testOnly: true});
   }
 });
 
@@ -58,4 +61,7 @@ Package.on_test(function (api) {
   api.add_files('test/route.js', ['client', 'server']);
   api.add_files('test/route_controller.js', ['client', 'server']);
   api.add_files('test/router.js', ['client', 'server']);
+
+  api.add_files('test/client/templates.html', 'client');
+  api.add_files('test/client/router.js', 'client');
 });
