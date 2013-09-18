@@ -13,10 +13,27 @@ Subscription.prototype.mark = function () {
   this._deps.changed();
 };
 
-Tinytest.add('RouteController - wait', function (test) {
+MockRouter = function() {
+  this.rendered = {};
+  this.layout = null;
+  this.data = null;
+}
 
-  var router = Router;
-  var route = new Route(Router, 'test');
+MockRouter.prototype.setTemplate = function(name, to) {
+  to = to || '__main__';
+  this.rendered[to] = name;
+}
+
+MockRouter.prototype.setLayout = function(name) {
+  this.layout = name;
+}
+
+MockRouter.prototype.setData = function(data) {
+  this.data = data;
+}
+
+
+Tinytest.add('RouteController - wait', function (test) {
   var controller = new RouteController;
 
   var onReadyCalled = false;
@@ -89,4 +106,71 @@ Tinytest.add('RouteController - wait', function (test) {
   Deps.flush();
   
   test.isTrue(onReadyCalled);
+});
+
+// really not a lot to test here, but here goes
+Tinytest.add('RouteController - render', function (test) {
+  var router = new MockRouter;
+  var controller = new RouteController({router: router});
+  
+  controller.render('template');
+  test.equal(router.rendered.__main__, 'template');
+  
+  controller.render('template', {to: 'aside'});
+  test.equal(router.rendered.aside, 'template');
+  
+  controller.render({
+    'other': {},
+    'andAnother': {to: 'aside'}
+  });
+  test.equal(router.rendered.__main__, 'other');
+  test.equal(router.rendered.aside, 'andAnother');
+});
+
+Tinytest.add('RouteController - runActionWithHooks - loading', function (test) {
+  var router = new MockRouter;
+  var handle = new Subscription;
+  var controller = new RouteController({
+    router: router,
+    waitOn: handle,
+    loadingTemplate: 'loading',
+    template: 'template'
+  });
+  
+  Deps.autorun(function() {
+    controller.runActionWithHooks();
+  });
+  
+  test.equal(router.rendered.__main__, 'loading');
+  
+  handle.mark();
+  Deps.flush();
+  test.equal(router.rendered.__main__, 'template');
+});
+
+Tinytest.add('RouteController - runActionWithHooks - notFound', function (test) {
+  var router = new MockRouter;
+  var dataDep = new Deps.Dependency;
+  var found = null;
+  var controller = new RouteController({
+    router: router,
+    template: 'template',
+    notFoundTemplate: 'notFound',
+    data: function() {
+      dataDep.depend();
+      return found;
+    }
+  });
+  
+  Deps.autorun(function() {
+    controller.runActionWithHooks();
+  });
+  
+  test.equal(router.rendered.__main__, 'notFound');
+  
+  found = true;
+  dataDep.changed();
+  Deps.flush();
+  test.equal(router.rendered.__main__, 'template');
+  test.equal(router.data, true);
 });
