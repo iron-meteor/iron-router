@@ -64,4 +64,5 @@ Package.on_test(function (api) {
 
   api.add_files('test/client/templates.html', 'client');
   api.add_files('test/client/router.js', 'client');
+  api.add_files('test/client/route_controller.js', 'client');  
 });
