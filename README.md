@@ -303,6 +303,18 @@ And you can pass a hash value using the Handlbars helper like this:
 <a href="{{pathFor 'postShow' sort_by=created_at hash=someAnchorTag}}">Post Show</a>
 ```
 
+Additionally, you can use `currentPathIs` and `currentRouteIs` helpers for conditionally displaying content:
+
+```html
+{{#if currentPathIs '/posts'}}
+    You're on posts!
+{{/if}}
+
+{{#unless currentRouteIs 'postsRoute'}}
+    You're not on posts!
+{{/unless}}
+```
+
 ### Rendering Templates
 The default action for a route is to render a template. You can specify a
 template as an option to the route. If you don't provide a template, the route
