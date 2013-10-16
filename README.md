@@ -801,6 +801,21 @@ Hooks and your action function are reactive by default. This means that if you
 use a reactive data source inside of one of these functions, and that reactive
 data source invalidates the computation, these functions will be run again.
 
+### Unload hook
+The unload hook is called, on the old route, when nagvigating to a new one. This could for example be used to clean up variables, or Session-data.
+
+```javascript
+Router.map(function () {
+  this.route('postShow', {
+    path: '/login',
+
+    unload: function () {
+      // This is called when you navigate to a new route
+    }
+  });
+});
+```
+
 ### Non Reactive Routes
 You can make your route non-reactive by providing the `reactive: false` option
 to the route.
