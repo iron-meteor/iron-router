@@ -801,8 +801,10 @@ Hooks and your action function are reactive by default. This means that if you
 use a reactive data source inside of one of these functions, and that reactive
 data source invalidates the computation, these functions will be run again.
 
-### Unload hook
-The unload hook is called, on the old route, when nagvigating to a new one. This could for example be used to clean up variables, or Session-data.
+### Unload Hook
+Unload hooks will be called before a RouteController is unloaded and a new
+RouteController is run. This hooks is useful for cleaning up Session data for
+example.
 
 ```javascript
 Router.map(function () {
@@ -811,6 +813,7 @@ Router.map(function () {
 
     unload: function () {
       // This is called when you navigate to a new route
+      Session.set('postId', null);
     }
   });
 });
