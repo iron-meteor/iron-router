@@ -1,3 +1,8 @@
+TODO:
+ - Router.go
+ - load, before, after, unload hooks
+ - action function
+
 # Iron Router
 
 A client and server side router designed specifically for Meteor.
