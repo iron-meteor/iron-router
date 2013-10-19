@@ -41,11 +41,13 @@ Tinytest.add('ClientRouter - run with computations', function (test) {
   });
 
   var firstController = {
-    runActionWithHooks: function () {}
+    runActionWithHooks: function () {},
+    runHooks: function () {}
   };
 
   var secondController = {
-    runActionWithHooks: function () {}
+    runActionWithHooks: function () {},
+    runHooks: function () {}
   };
 
   var redirectDep = new Deps.Dependency;
@@ -58,7 +60,8 @@ Tinytest.add('ClientRouter - run with computations', function (test) {
       // or Router.go, but since we're testing
       // the run method we'll just call it directly
       router.run(firstController);
-    }
+    },
+    runHooks: function () {}
   };
 
   var currentController;

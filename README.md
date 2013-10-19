@@ -2,6 +2,8 @@ TODO:
  - Router.go
  - load, before, after, unload hooks
  - action function
+ - this.subscribe().wait()
+ - global hooks
 
 # Iron Router
 
@@ -764,10 +766,9 @@ layout per route or a globally defined layout.*
 ### Before and After Hooks
 Sometimes you want to execute some code *before* or *after* your action function
 is called. This is particularly useful for things like showing a login page
-anytime a user is not logged in. You might also put mixpanel tracking code in a
-before/after hook. You can declare before and after hooks by providing `before`
-and `after` options to the route. The value can be a function or an array of
-functions which will be executed in the order they are defined.
+anytime a user is not logged in. You can declare before and after hooks by
+providing `before` and `after` options to the route. The value can be a function
+or an array of functions which will be executed in the order they are defined.
 
 ```javascript
 Router.map(function () {
