@@ -181,7 +181,7 @@ Tinytest.add('Route - normalizePath', function (test) {
 
   test.equal(route.normalizePath('/posts'), '/posts');
   test.equal(route.normalizePath('posts'), '/posts');
-  test.equal(route.normalizePath('http://localhost:3000/posts'), '/posts');
+  test.equal(route.normalizePath(Meteor.absoluteUrl('posts')), '/posts');
   test.equal(route.normalizePath('/posts?q=s'), '/posts');
   test.equal(route.normalizePath('/posts#anchorTag'), '/posts');
 });
