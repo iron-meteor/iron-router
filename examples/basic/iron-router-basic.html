@@ -1,0 +1,11 @@
+<head>
+  <title>iron-router-basic</title>
+</head>
+
+<template name="one">
+  {{#link route='two'}}Two{{/link}}
+</template>
+
+<template name="two">
+  {{#link route='one'}}One{{/link}}
+</template>
