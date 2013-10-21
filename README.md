@@ -39,7 +39,7 @@ versions.
      add iron-router`
 
   ```sh
-  $ git clone https://github.com/eventedmind/iron-router.git /Users/cmather/code/packages
+  $ git clone https://github.com/EventedMind/iron-router.git /Users/cmather/code/packages
   $ cd my-project
   $ meteor add iron-router
   ```
