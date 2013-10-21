@@ -1,16 +1,16 @@
-var controller = {
-  runActionWithHooks: function () {},
+var controllerMock = {
+  run: function () {},
   runHooks: function () {}
 };
 
 var routes = [{
   where: 'client',
   test: function (path) { return path == 'client'; },
-  getController: function (path, options) { return controller; }
+  getController: function (path, options) { return EJSON.clone(controllerMock); }
 }, {
   where: 'server',
   test: function (path) { return path == 'server' },
-  getController: function () { return controller; }
+  getController: function () { return EJSON.clone(controllerMock); }
 }];
 
 if (Meteor.isClient) {
@@ -52,20 +52,8 @@ if (Meteor.isClient) {
   });
 
   Tinytest.add('IronRouter - client run', function (test) {
-    // 1. onRun option to IronRouter
-    var onRunCalled = false;
-    var router = new IronRouter({
-      onRun: function () {
-        onRunCalled = true;
-      }
-    });
-    router.routes = routes;
-    controller.where = 'client';
-    router.run(controller);
-    test.isTrue(onRunCalled, 'onRun option not called');
-
-    // 2. runActionWithHooks
     var router = new IronRouter;
+    var controller = EJSON.clone(controllerMock);
     router.routes = routes;
 
     var onUnhandledCalled = false;
