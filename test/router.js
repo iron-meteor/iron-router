@@ -150,3 +150,43 @@ if (Meteor.isServer) {
   */
 }
 
+Tinytest.add('IronRouter - before hooks', function (test) {
+  var router = typeof ClientRouter === 'undefined' ? new ServerRouter : new ClientRouter;
+  var where = typeof ClientRouter === 'undefined' ? 'server' : 'client';
+
+  var firstHookCalled = 0;
+  router.before({only: 'one'}, function() { firstHookCalled += 1; })
+
+  var secondHookCalled = 0;
+  router.before({except: 'two'}, function() { secondHookCalled += 1; })
+
+  var thirdHookCalled = 0;
+  router.before(function() { thirdHookCalled += 1; })
+
+  router.map(function() {
+    this.route('one', {where: where});
+    this.route('two', {where: where});
+    this.route('three', {where: where});
+  });
+
+  // mock
+  router.setLayout = _.identity;
+  router.setTemplate = _.identity;
+  var serverOptionsMock = {next: _.identity}; 
+
+  router.dispatch('one', serverOptionsMock);
+  test.equal(firstHookCalled, 1);
+  test.equal(secondHookCalled, 1);
+  test.equal(thirdHookCalled, 1);
+
+  router.dispatch('two', serverOptionsMock);
+  test.equal(firstHookCalled, 1);
+  test.equal(secondHookCalled, 1);
+  test.equal(thirdHookCalled, 2);
+
+  router.dispatch('three', serverOptionsMock);
+  test.equal(firstHookCalled, 1);
+  test.equal(secondHookCalled, 2);
+  test.equal(thirdHookCalled, 3);  
+});
+
