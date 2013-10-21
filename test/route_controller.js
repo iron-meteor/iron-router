@@ -1,31 +1,58 @@
-Tinytest.add('IronRouteController - constructor options', function (test) {
-  var options = {
-    route: {},
-    path: '/test',
-    params: [],
-    where: 'where',
-    action: 'action',
-    before: function () {},
-    after: function () {}
-  };
+Tinytest.add('IronRouteController - inheritance', function (test) {
+  var App = IronRouteController.extend({
+    action: function () {
+      return 'app';
+    }
+  });
 
-  var controller = new IronRouteController(options);
+  var Child = App.extend({
+    action: function () {
+      var superVal = Child.__super__.action.call(this);
+      return [superVal, 'child'];
+    }
+  });
 
-  test.equal(controller.route, options.route);
-  test.equal(controller.path, options.path);
-  test.equal(controller.params, options.params);
-  test.equal(controller.where, options.where);
-  test.equal(controller.action, options.action);
+  var inst = new Child;
+  test.equal(inst.action(), ['app', 'child']);
 });
 
-Tinytest.add('IronRouteController - inheritance', function (test) {
-  var before = function () {};
-  var after = function () {};
-
-  var proto = {
-    before: before,
-    after: after
+Tinytest.add('IronRouteController - runHooks', function (test) {
+  var calls = [];
+  var call = function (idx) {
+    return function () {
+      calls.push(idx);
+    }
   };
-  var MyController = IronRouteController.extend(proto);
 
+  var opts = {
+    before: [call(0)]
+  };
+
+  var A = IronRouteController.extend({
+    before: [call(1), call(2)]
+  });
+
+  var B = A.extend({
+    before: [call(3), call(4)]
+  });
+
+  /*
+   * Given:
+   *  A prototype['before'] => [f1, f2]
+   *    B inherits A proto['before'] => [f3, f4]
+   *  
+   *  Router options => [f5, f6]
+   *  Route options => [f7, f8]
+   *
+   *  runHooks('before') => [f1..f8]
+   *    
+   */
+
+  test.equal(calls.length, 0, 'call list not empty');
+  var bInst = new B(opts);
+  bInst.runHooks('before');
+
+  for (var i = 0; i < 5; i++) {
+    test.equal(calls[i], i, 'runHooks has the wrong exec order');
+  }
 });
