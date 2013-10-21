@@ -1,3 +1,6 @@
+/*****************************************************************************/
+/* Mocks and Stubs */
+/*****************************************************************************/
 var controllerMock = {
   run: function () {},
   runHooks: function () {}
@@ -6,13 +9,60 @@ var controllerMock = {
 var routes = [{
   where: 'client',
   test: function (path) { return path == 'client'; },
-  getController: function (path, options) { return EJSON.clone(controllerMock); }
+  getController: function (path, options) { return EJSON.clone(controllerMock); },
+  path: function (params, options) {
+    return [params, options];
+  },
+  url: function (params, options) {
+    return [params, options];
+  }
 }, {
   where: 'server',
   test: function (path) { return path == 'server' },
-  getController: function () { return EJSON.clone(controllerMock); }
+  getController: function () { return EJSON.clone(controllerMock); },
+  path: function (params, options) {
+    return [params, options];
+  },
+  url: function (params, options) {
+    return [params, options];
+  }
 }];
 
+// simulate the named routes
+routes.client = routes[0];
+routes.server = routes[1];
+
+/*****************************************************************************/
+/* Client and Server */
+/*****************************************************************************/
+Tinytest.add('IronRouter - path', function (test) {
+  var router = new IronRouter;
+  router.routes = routes;
+
+  var params = [];
+  var opts = {};
+  var res = router.path('client', params, opts);
+
+  test.equal(res[0], params);
+  test.equal(res[1], opts);
+});
+
+Tinytest.add('IronRouter - url', function (test) {
+  var router = new IronRouter;
+  router.routes = routes;
+
+  var params = [];
+  var opts = {};
+
+  var res = router.url('client', params, opts);
+
+  test.equal(res[0], params);
+  test.equal(res[1], opts);
+});
+
+/*****************************************************************************/
+/* Client */
+/*****************************************************************************/
 if (Meteor.isClient) {
   Tinytest.add('IronRouter - client dispatch', function (test) {
     var router = new IronRouter;
@@ -50,30 +100,11 @@ if (Meteor.isClient) {
     test.isTrue(runController, 'run not called with a controller');
     test.isTrue(runCallback, 'run not called with a callback');
   });
-
-  Tinytest.add('IronRouter - client run', function (test) {
-    var router = new IronRouter;
-    var controller = EJSON.clone(controllerMock);
-    router.routes = routes;
-
-    var onUnhandledCalled = false;
-    router.onUnhandled = function (path, options) {
-      onUnhandledCalled = true;
-    };
-    controller.where = 'server';
-    router.run(controller);
-    test.isTrue(onUnhandledCalled, 'onUnhandled not called for server controller');
-    
-    controller.where = 'client';
-    var runActionCalled = false;
-    controller.runActionWithHooks = function () {
-      runActionCalled = true;
-    };
-    router.run(controller);
-    test.isTrue(runActionCalled, 'runActionWithHooks not called');
-  });
 }
 
+/*****************************************************************************/
+/* Server */
+/*****************************************************************************/
 if (Meteor.isServer) {
   Tinytest.add('IronRouter - server dispatch', function (test) {
     var router = new IronRouter;
@@ -111,42 +142,4 @@ if (Meteor.isServer) {
     test.isTrue(runController, 'run not called with a controller');
     test.isTrue(runCallback, 'run not called with a callback');
   });
-
-  //XXX bring back server run test
-  /*
-  Tinytest.add('IronRouter - server run', function (test) {
-    // 1. onRun option to IronRouter
-    var onRunCalled = false;
-    var router = new IronRouter({
-      onRun: function () {
-        onRunCalled = true;
-      }
-    });
-    router.routes = routes;
-    controller.where = 'server';
-    router.run(controller);
-    test.isTrue(onRunCalled, 'onRun option not called');
-
-    // 2. runActionWithHooks
-    var router = new IronRouter;
-    router.routes = routes;
-
-    var onUnhandledCalled = false;
-    router.onUnhandled = function (path, options) {
-      onUnhandledCalled = true;
-    };
-    controller.where = 'client';
-    router.run(controller);
-    test.isTrue(onUnhandledCalled, 'onUnhandled not called for client controller');
-    
-    controller.where = 'server';
-    var runActionCalled = false;
-    controller.runActionWithHooks = function () {
-      runActionCalled = true;
-    };
-    router.run(controller);
-    test.isTrue(runActionCalled, 'runActionWithHooks not called');
-  });
-  */
 }
-

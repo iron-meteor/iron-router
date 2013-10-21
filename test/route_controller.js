@@ -28,7 +28,4 @@ Tinytest.add('IronRouteController - inheritance', function (test) {
   };
   var MyController = IronRouteController.extend(proto);
 
-  //XXX test inheritance of hooks
 });
-
-//XXX bring back hook tests
