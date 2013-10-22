@@ -1,5 +1,4 @@
 TODO:
- - Router.go
  - load, before, after, unload hooks
  - action function
  - this.subscribe().wait()
@@ -390,6 +389,19 @@ And you can pass a hash value using the Handlbars helper like this:
 ```html
 <!-- given a context of {_id: 1} this will render '/posts/1?sort_by=created_at#someAnchorTag' -->
 <a href="{{pathFor 'postShow' sort_by=created_at hash=someAnchorTag}}">Post Show</a>
+```
+
+### Changing routes programmatically
+
+Sometimes you'll need to change the route without the user clicking a link. For this you can use `Router.go`:
+
+```js
+// you can pass a fully formed URL path in
+Router.go('/posts/7');
+
+// but more likely, you'll want to use a route name and pass in arguments,
+// as you would in `pathFor`
+Router.go('postShow', {_id: 7});
 ```
 
 ### Rendering Templates
