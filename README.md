@@ -90,8 +90,19 @@ Router.map(function () {
 ```
 
 **app.html**
+```html
+<template name="layout">
+  {{yield}}
+</template>
 
+<template name="posts">
+  Posts
+</template>
 
+<template name="post">
+  Post
+</template>
+```
 
 ## Installation
 
