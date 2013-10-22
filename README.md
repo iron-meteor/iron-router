@@ -1,7 +1,5 @@
 TODO:
- - load, before, after, unload hooks
  - action function
- - global hooks
 
 # Iron Router
 
@@ -756,6 +754,22 @@ Router.map(function () {
     }
   });
 });
+```
+
+### Using hooks
+
+There are four types of hooks that a route provides. All can be added at the global level, in a route definition, or defined for a controller.
+
+- `before` - runs before the action function (possibly many times if reactivity is involved).
+- `after` - runs after the action function (also reactively)
+- `load` - runs _just once_ when the route is first loaded. NOTE that this doesn't run again if your page reloads via hot-code-reload, so make sure any variables you set will persist over HCR (for example Session variables).
+- `unload` - runs _just once_ when you leave the route for a new route.
+
+You can also define global hooks which apply to a set of named routes:
+
+```js
+// this hook will run on almost all routes
+Router.before({except: ['login', 'signup', 'forgotPassword']}, mustBeSignedIn);
 ```
 
 ### Custom Rendering
