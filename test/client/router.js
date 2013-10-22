@@ -48,4 +48,81 @@ Tinytest.add('ClientRouter - run computations', function (test) {
   test.isFalse(newComp.stopped, 'new run comp is stopped');
 });
 
-//XXX todo: rendering and re-rendering
+Tinytest.add('ClientRouter - rendering', function (test) {
+  var router = new ClientRouter({
+    autoRender: false,
+    autoStart: false,
+    layoutTemplate: 'layout'
+  });
+
+  var frag = Spark.render(function () {
+    return router.render();
+  });
+
+  var div = new OnscreenDiv(frag);
+
+  try {
+    router.setLayout('layout');
+    Deps.flush();
+    test.equal(div.text().trim(), 'layout', 'layout not rendered');
+
+    router.setLayout(null);
+    Deps.flush();
+    test.equal(div.text().trim(), '', 'layout did not change');
+
+    router.setLayout('layout');
+    Deps.flush();
+    test.equal(div.text().trim(), 'layout', 'layout did not change back');
+
+    var counts = {};
+
+    var _one = Template.one;
+    Template.one = function () {
+      counts.one = counts.one || 0;
+      counts.one++;
+      return _one.apply(this, arguments);
+    };
+
+    var _two = Template.two;
+    Template.two = function () {
+      counts.two = counts.two || 0;
+      counts.two++;
+      return _two.apply(this, arguments);
+    };
+
+    var _aside = Template.aside;
+    Template.aside = function () {
+      counts.aside = counts.aside || 0;
+      counts.aside++;
+      return _aside.apply(this, arguments);
+    };
+
+    var _footer = Template.footer;
+    Template.footer = function () {
+      counts.footer = counts.footer || 0;
+      counts.footer++;
+      return _footer.apply(this, arguments);
+    };
+
+    router.setTemplate('aside', /* to */ 'aside');
+    router.setTemplate('one', /* to main */ undefined);
+    router.setTemplate('footer', /* to */ 'footer');
+    Deps.flush();
+
+    test.equal(counts.aside, 1);
+    test.equal(counts.one, 1);
+    test.equal(counts.footer, 1);
+
+    router.setTemplate('aside', /* to */ 'aside');
+    router.setTemplate('two', /* to main */ undefined);
+    router.setTemplate('footer', /* to */ 'footer');
+    Deps.flush();
+
+    test.equal(counts.aside, 1, 'tmpl should have alrady been rendered');
+    test.equal(counts.two, 1);
+    test.equal(counts.footer, 1, 'tmpl should have already been rendered');
+
+  } finally {
+    div.kill();
+  }
+});
