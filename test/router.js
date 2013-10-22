@@ -172,7 +172,7 @@ Tinytest.add('IronRouter - before hooks', function (test) {
   // mock
   router.setLayout = _.identity;
   router.setTemplate = _.identity;
-  var serverOptionsMock = {next: _.identity}; 
+  var serverOptionsMock = {next: _.identity, response: {end: _.identity}}; 
 
   router.dispatch('one', serverOptionsMock);
   test.equal(firstHookCalled, 1);
