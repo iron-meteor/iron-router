@@ -638,6 +638,7 @@ Router.configure({
   notFoundTemplate: 'notFound' // this will render
 });
 ```
+
 ### Waiting on Subscriptions
 Sometimes it's useful to wait until you have data before rendering a page. For
 example, let's say you want to show a not found template if the user navigates
@@ -667,7 +668,7 @@ subscriptions.
 ```javascript
 Router.map(function () {
   this.route('postShow', {
-    path: '/posts/:_id',
+    path: '/posts/:slug',
 
     waitOn: function () {
       // NOTE: this.params is available inside the waitOn function.
