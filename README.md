@@ -16,6 +16,83 @@ A client and server side router designed specifically for Meteor.
 See the History.md file for changes (including breaking changes) across
 versions.
 
+## Quick Start
+
+```sh
+$ mrt add iron-router
+```
+
+**app.js**
+```javascript
+Router.configure({
+  layoutTemplate: 'layout'
+});
+
+Router.map(function () {
+  /**
+   * The route's name is "home"
+   * The route's template is also "home"
+   * The default action will render the home template
+   */
+  this.route('home', {
+    path: '/',
+    template: 'home'
+  });
+
+  /**
+   * The route's name is "posts"
+   * The route's path is "/posts"
+   * The route's template is inferred to be "posts"
+   */
+  this.route('posts', {
+    path: '/posts'
+  });
+
+  this.route('post', {
+    path: '/posts/:_id',
+
+    load: function () {
+      // called on first load
+    },
+
+    // before hooks are run before your action
+    before: [
+      function () {
+        this.subscribe('post', this.params._id).wait();
+        this.subscribe('posts'); // don't wait
+      },
+
+      function () {
+        // we're done waiting on all subs
+        if (this.ready()) {
+          NProgress.done(); 
+        } else {
+          NProgress.start();
+          this.stop(); // stop downstream funcs from running
+        }
+      }
+    ],
+
+    action: function () {
+      var params = this.params; // including query params
+      var hash = this.hash;
+      var isFirstRun = this.isFirstRun;
+
+      this.render(); // render all
+      this.render('specificTemplate', {to: 'namedYield'});
+    },
+
+    unload: function () {
+      // before a new route is run
+    }
+  });
+});
+```
+
+**app.html**
+
+
+
 ## Installation
 
 1. Using [Meteorite](https://github.com/oortcloud/meteorite)
@@ -44,7 +121,7 @@ versions.
   $ meteor add iron-router
   ```
 
-## Getting Started
+## Key Concepts
 Once you add the iron-router package the global `Router` object is available on
 the client and on the server. So you can create your routes and configure the
 router outside of your `Meteor.isClient` and `Meteor.isServer` blocks. Or, if
