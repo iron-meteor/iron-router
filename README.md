@@ -629,37 +629,15 @@ Router.map(function () {
 });
 ```
 
-Note, the notFoundTemplate is only for data. It doesn't get rendered
-automatically for browser paths that aren't matched. For example, the following
-will **NOT** render the notFoundTemplate.
+If you provide a global `notFoundTemplate`, it will get rendered automatically if a user visits a un-matched path, assuming it's not already handled on the server-side:
 
 ```javascript
 // given a browser url of: http://localhost:3000/boguspath
 
-Router.map(function () {
-  this.route('home', {
-    notFoundTemplate: 'notFound' // this is only for data, not for bad paths
-  });
+Router.configure({
+  notFoundTemplate: 'notFound' // this will render
 });
 ```
-
-To render a not found template for bad url paths you can create a catch all
-route as the last route like this:
-
-```javascript
-// given a browser url of: http://localhost:3000/boguspath
-
-Router.map(function () {
-  this.route('home', {
-    notFoundTemplate: 'notFound' // this is only for data, not for bad paths
-  });
-
-  this.route('notFound', {
-    path: '*' // catch all route
-  });
-});
-```
-
 ### Waiting on Subscriptions
 Sometimes it's useful to wait until you have data before rendering a page. For
 example, let's say you want to show a not found template if the user navigates
