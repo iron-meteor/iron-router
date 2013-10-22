@@ -30,5 +30,8 @@
 * Client and Server Router now inherit from IronRouter
 * Client and Server RouteController now inherit from IronRouterController
 * Removed unnecessary global symbol exports (still accessible through Package['iron-router'] namespace)
+* Global `notFoundTemplate` will render if a route is not found.
+* Added `load` hook which fires exactly once per route load (and respects hot-code-reload!)
+* Added `Router.before()` and friends which let you add global hooks with a bit more subtlety.
 
 ## v0.5.4
