@@ -254,12 +254,6 @@ Router.map(function () {
     // matches: '/commits/789..101112'
     path: /^\/commits\/(\d+)\.\.(\d+)/
   });
-
-  // Catch All Route and the End for not found template
-  // this will be matched last (if all other routes didn't match)
-  this.route('notFound', {
-    path: '*'
-  });
 });
 ```
 
