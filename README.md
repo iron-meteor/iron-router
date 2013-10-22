@@ -1,7 +1,6 @@
 TODO:
  - load, before, after, unload hooks
  - action function
- - this.subscribe().wait()
  - global hooks
 
 # Iron Router
@@ -698,6 +697,40 @@ onWaiting)` method of a RouteController (more on RouteControllers below). If you
 need to customize this behavior you can skip providing a `waitOn` property and
 just use the `wait` method directly in a custom action function or a before
 hook.
+
+### Custom subscriptions
+
+Sometimes you may want to set up a subscription during a route, but not wait on it. The simplest way to do so is to simply call `this.subscribe()` in a `before` hook:
+
+```js
+Router.map(function () {
+  this.route('postShow', {
+    path: '/posts/:_id',
+    before: function() {
+      this.subscribe('posts', this.params._id);
+    }
+  });
+});
+```
+
+This is more or less equivalent to calling `Meteor.subscribe()`, but with one difference - the handle that `this.subscribe()` returns has a special method `.ready()`, which you can use to add the subscription to this route's wait list. 
+
+```js
+Router.map(function () {
+  this.route('postShow', {
+    path: '/posts/:_id',
+    
+    // this is equivalent to 
+    // waitOn: function() { 
+    //   return Meteor.subscribe('posts', this.params.:id); }
+    // }
+    
+    before: function() {
+      this.subscribe('posts', this.params._id).wait();
+    }
+  });
+});
+```
 
 ### Using a Custom Action Function
 So far, we haven't had to write much code to get our routes to work. We've just
