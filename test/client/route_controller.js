@@ -32,80 +32,85 @@ MockRouter.prototype.setData = function(data) {
   this.data = data;
 }
 
+MockRouter.prototype.getData = function() {
+  return this.data;
+}
 
-Tinytest.add('RouteController - wait', function (test) {
+Tinytest.add('RouteController - wait and ready', function (test) {
   var controller = new RouteController;
 
-  var onReadyCalled = false;
-  var onReady = function () {
-    onReadyCalled = true;
+  var sub1 = new Subscription;
+  var sub2 = new Subscription;
+
+  controller.wait(sub1);
+  controller.wait(sub2);
+
+  var ready = false;
+  Deps.autorun(function () {
+    ready = controller.ready();
+  });
+
+  test.isFalse(ready, 'controller should be waiting on two subs');
+
+  sub1.mark();
+  Deps.flush();
+  test.isFalse(ready, 'controller should be waiting on one more sub');
+
+  sub2.mark();
+  Deps.flush();
+  test.isTrue(ready, 'controller should be ready now');
+});
+
+Tinytest.add('RouteController - run', function (test) {
+  var calls = {};
+  var logCall = function (key) {
+    calls[key] = calls[key] || 0;
+    calls[key]++;
   };
 
-  var onWaitCalled = false;
-  var onWait = function () {
-    onWaitCalled = true;
-  };
+  var sub1 = new Subscription;
 
-  var handle = new Subscription;
+  var C = RouteController.extend({
+    waitOn: function () {
+      return sub1;
+    },
 
-  Deps.autorun(function () {
-    controller.wait([handle], onReady, onWait);
+    before: [function () {
+      logCall('upstreamBefore');
+      if (!this.ready())
+        this.stop();
+
+    }, function () {
+      logCall('downstreamBefore');
+    }],
+
+    action: function () {
+      logCall('action');
+    },
+
+    after: function () {
+      logCall('after');
+    }
   });
 
-  test.isTrue(onWaitCalled);
-
-  handle.mark();
-  Deps.flush();
-
-  test.isTrue(onReadyCalled);
-
-
-  // test multiple handles
-  var first = new Subscription;
-  var second = new Subscription;
-
-  onReadyCalled = false;
-  onWaitCalled = true;
+  var inst = new C;
+  
   Deps.autorun(function () {
-    controller.wait([first, second], onReady, onWait);
+    inst.run();
   });
 
-  test.isTrue(onWaitCalled);
-  first.mark();
+  test.equal(calls['upstreamBefore'], 1);
+  test.isFalse(calls['downstreamBefore']);
+  test.isFalse(calls['action']);
+  test.isFalse(calls['after']);
+
+  sub1.mark();
   Deps.flush();
-  
-  test.isFalse(onReadyCalled);
 
-  second.mark();
-  Deps.flush();
-  
-  test.isTrue(onReadyCalled);
-
-  // test function
-  var first = new Subscription;
-  var second = new Subscription;
-
-  onReadyCalled = false;
-  onWaitCalled = true;
-
-  function getHandle () {
-    return [first, second];
-  }
-
-  Deps.autorun(function () {
-    controller.wait([getHandle], onReady, onWait);
-  });
-
-  test.isTrue(onWaitCalled);
-  first.mark();
-  Deps.flush();
-  
-  test.isFalse(onReadyCalled);
-
-  second.mark();
-  Deps.flush();
-  
-  test.isTrue(onReadyCalled);
+  test.equal(calls['upstreamBefore'], 2);
+  test.equal(calls['downstreamBefore'], 1);
+  test.equal(calls['action'], 1);
+  test.equal(calls['after'], 1);
 });
 
 // really not a lot to test here, but here goes
@@ -114,20 +119,13 @@ Tinytest.add('RouteController - render', function (test) {
   var controller = new RouteController({router: router});
   
   controller.render('template');
-  test.equal(router.rendered.__main__, 'template');
+  test.equal(router.rendered.__main__, 'template', 'main tmpl not rendered');
   
   controller.render('template', {to: 'aside'});
-  test.equal(router.rendered.aside, 'template');
-  
-  controller.render({
-    'other': {},
-    'andAnother': {to: 'aside'}
-  });
-  test.equal(router.rendered.__main__, 'other');
-  test.equal(router.rendered.aside, 'andAnother');
+  test.equal(router.rendered.aside, 'template', 'yield tmpl not rendered');
 });
 
-Tinytest.add('RouteController - runActionWithHooks - loading', function (test) {
+Tinytest.add('RouteController - autoRenderLoadingHook', function (test) {
   var router = new MockRouter;
   var handle = new Subscription;
   var controller = new RouteController({
@@ -138,7 +136,7 @@ Tinytest.add('RouteController - runActionWithHooks - loading', function (test) {
   });
   
   Deps.autorun(function() {
-    controller.runActionWithHooks();
+    controller.run();
   });
   
   test.equal(router.rendered.__main__, 'loading');
@@ -148,7 +146,7 @@ Tinytest.add('RouteController - runActionWithHooks - loading', function (test) {
   test.equal(router.rendered.__main__, 'template');
 });
 
-Tinytest.add('RouteController - runActionWithHooks - notFound', function (test) {
+Tinytest.add('RouteController - autoRenderNotFoundHook', function (test) {
   var router = new MockRouter;
   var dataDep = new Deps.Dependency;
   var found = null;
@@ -163,7 +161,7 @@ Tinytest.add('RouteController - runActionWithHooks - notFound', function (test) 
   });
   
   Deps.autorun(function() {
-    controller.runActionWithHooks();
+    controller.run();
   });
   
   test.equal(router.rendered.__main__, 'notFound');
