@@ -149,10 +149,10 @@ Tinytest.add('IronRouter - before hooks', function (test) {
   var where = typeof ClientRouter === 'undefined' ? 'server' : 'client';
 
   var firstHookCalled = 0;
-  router.before({only: 'one'}, function() { firstHookCalled += 1; })
+  router.before(function() { firstHookCalled += 1; }, {only: 'one'})
 
   var secondHookCalled = 0;
-  router.before({except: 'two'}, function() { secondHookCalled += 1; })
+  router.before(function() { secondHookCalled += 1; }, {except: 'two'})
 
   var thirdHookCalled = 0;
   router.before(function() { thirdHookCalled += 1; })

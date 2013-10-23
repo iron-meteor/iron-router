@@ -769,7 +769,7 @@ You can also define global hooks which apply to a set of named routes:
 
 ```js
 // this hook will run on almost all routes
-Router.before({except: ['login', 'signup', 'forgotPassword']}, mustBeSignedIn);
+Router.before(mustBeSignedIn, {except: ['login', 'signup', 'forgotPassword']});
 ```
 
 ### Custom Rendering
