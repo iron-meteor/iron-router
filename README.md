@@ -352,7 +352,7 @@ Router.routes['postShow'].path({_id: 1}, {
 ```
 
 You can get paths and urls for named routes directly in your html using a global
-Handlbars helper. The Handlebars helper uses the current data context as the
+Handlebars helper. The Handlebars helper uses the current data context as the
 first parameter to the `path` function shown above.
 
 ```html
