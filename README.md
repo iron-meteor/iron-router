@@ -1,6 +1,3 @@
-TODO:
- - action function
-
 # Iron Router
 
 A client and server side router designed specifically for Meteor.
