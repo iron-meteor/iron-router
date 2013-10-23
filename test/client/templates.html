@@ -1,0 +1,43 @@
+<template name="layout">
+  layout
+
+  <aside>
+    {{yield 'aside'}}
+  </aside>
+
+  <article>
+    {{yield}}
+  </article>
+
+  <footer>
+    {{yield 'footer'}}
+  </footer>
+</template>
+
+<template name="one">
+  one
+</template>
+
+<template name="two">
+  two
+</template>
+
+<template name="aside">
+  aside
+</template>
+
+<template name="asideTwo">
+  asideTwo 
+</template>
+
+<template name="footer">
+  footer
+</template>
+
+<template name="footerTwo">
+  footerTwo
+</template>
+
+<template name="data">
+{{text}}
+</template>
