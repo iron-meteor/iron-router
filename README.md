@@ -425,7 +425,7 @@ Router.map(function () {
 });
 ```
 
-The above example will math the `http://localhost:3000/` url (the `/` path) and
+The above example will map the `http://localhost:3000/` url (the `/` path) and
 automatically render the template named `myHomeTemplate`.
 
 ### Using a Layout with Yields
