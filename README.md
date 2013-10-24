@@ -557,30 +557,9 @@ Router.map(function () {
   });
 });
 ```
-
-If you provide a data function or object value it sets a Router level data
-context that is maintained across routes. This allows for scenarios where you
-don't want to change the data context from one route to another.
-
-If the data property is set to false, the router's data context will be
-maintained. This is the default value of the data property, so you only need to
-set it if you're using custom RouteControllers.
-
-```javascript
-Router.map(function () {
-  this.route('home', {
-    path: '/',
-    template: 'myHomeTemplate',
-    layoutTemplate: 'layout',
-    yieldTemplates: {
-      'myAsideTemplate': {to: 'aside'},
-      'myFooter': {to: 'footer'}
-    },
-
-    data: false // don't set a new data context (keep the existing one)
-  });
-});
-```
+You can set the global data context of the Router by calling the `setData`
+function of the Router or a RouteController. The data context only invalidates
+computations if the data has actually changed from the last time it was set.
 
 You can access the current data context using the `getData` function inside of
 any of your route functions (or RouteController functions). For example:
@@ -693,22 +672,27 @@ need to customize this behavior you can skip providing a `waitOn` property and
 just use the `wait` method directly in a custom action function or a before
 hook.
 
-### Custom subscriptions
-
-Sometimes you may want to set up a subscription during a route, but not wait on it. The simplest way to do so is to simply call `this.subscribe()` in a `before` hook:
+### Waiting on Subscriptions
 
 ```js
 Router.map(function () {
   this.route('postShow', {
     path: '/posts/:_id',
     before: function() {
-      this.subscribe('posts', this.params._id);
+      // wait on post
+      this.subscribe('post', this.params._id).wait(); // wait
+
+      // don't wait on posts
+      this.subscribe('posts');
     }
   });
 });
 ```
 
-This is more or less equivalent to calling `Meteor.subscribe()`, but with one difference - the handle that `this.subscribe()` returns has a special method `.ready()`, which you can use to add the subscription to this route's wait list. 
+Callin `wait` on a subscription handle doesn't actually block anything. It just
+adds the subscription handle to a list of handles we are reactively waiting on.
+When all of these handles are ready `this.ready()` on the RouteController will
+be true.
 
 ```js
 Router.map(function () {
