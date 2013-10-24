@@ -2,6 +2,40 @@
 
 A client and server side router designed specifically for Meteor.
 
+**Table of Contents**
+
+- [History](#history)
+- [Quick Start](#quick-start)
+- [Installation](#installation)
+- [Key Concepts](#key-concepts)
+  - [Named Routes](#named-routes)
+  - [Route Options](#route-options)
+  - [Route Paths and Parameters](#route-paths-and-parameters)
+  - [Dynamic Path Segments](#dynamic-path-segments)
+  - [Query Strings and Hash Segments](#query-strings-and-hash-segments)
+- [Client Side Routing](#client-side-routing)
+  - [Rendering the Router](#rendering-the-router)
+  - [Path Functions and Helpers](#path-functions-and-helpers)
+  - [Changing routes programmatically](#changing-routes-programmatically)
+  - [Rendering Templates](#rendering-templates)
+  - [Using a Layout with Yields](#using-a-layout-with-yields)
+  - [Data](#data)
+  - [Waiting on Subscriptions (waitOn)](#waiting-on-subscriptions-waiton)
+  - [Waiting on Subscriptions (wait)](#waiting-on-subscriptions-wait)
+  - [Using a Custom Action Function](#using-a-custom-action-function)
+  - [Using hooks](#using-hooks)
+  - [Custom Rendering](#custom-rendering)
+  - [Before and After Hooks](#before-and-after-hooks)
+  - [Unload Hook](#unload-hook)
+  - [Non Reactive Routes](#non-reactive-routes)
+  - [Global Router Configuration](#global-router-configuration)
+- [Server Side Routing](#server-side-routing)
+- [Route Controllers](#route-controllers)
+- [Filing Issues and Contributing](#filing-issues-and-contributing)
+- [Examples](#examples)
+  - [Parsing Url Parameters (OAuth Example)](#parsing-url-parameters-oauth-example)
+- [License](#license)
+
 ## History
 
 **Latest Version:** 0.6.0
@@ -624,7 +658,8 @@ Router.configure({
 });
 ```
 
-### Waiting on Subscriptions
+### Waiting on Subscriptions (`waitOn`)
+
 Sometimes it's useful to wait until you have data before rendering a page. For
 example, let's say you want to show a not found template if the user navigates
 to a good url (say, /posts/5) but there is no post with an id of 5. You can't
@@ -672,7 +707,7 @@ need to customize this behavior you can skip providing a `waitOn` property and
 just use the `wait` method directly in a custom action function or a before
 hook.
 
-### Waiting on Subscriptions
+### Waiting on Subscriptions (`wait()`)
 
 ```js
 Router.map(function () {
