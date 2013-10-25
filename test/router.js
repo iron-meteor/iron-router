@@ -155,7 +155,7 @@ Tinytest.add('IronRouter - before hooks', function (test) {
   router.before(function() { secondHookCalled += 1; }, {except: 'two'})
 
   var thirdHookCalled = 0;
-  router.before(function() { thirdHookCalled += 1; })
+  router.configure({before: function() { thirdHookCalled += 1; }})
 
   router.map(function() {
     this.route('one', {where: where});
