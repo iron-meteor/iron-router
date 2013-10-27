@@ -17,24 +17,28 @@ MockRouter = function() {
   this.rendered = {};
   this.layout = null;
   this.data = null;
-}
+};
 
 MockRouter.prototype.setTemplate = function(name, to) {
   to = to || '__main__';
   this.rendered[to] = name;
-}
+};
 
 MockRouter.prototype.setLayout = function(name) {
   this.layout = name;
-}
+};
 
 MockRouter.prototype.setData = function(data) {
   this.data = data;
-}
+};
 
 MockRouter.prototype.getData = function() {
   return this.data;
-}
+};
+
+MockRouter.prototype.clearUnusedYields = function (used) {
+  this.usedYields = used;
+};
 
 Tinytest.add('RouteController - wait and ready', function (test) {
   var controller = new RouteController;
