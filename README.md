@@ -104,7 +104,7 @@ Router.map(function () {
       var params = this.params; // including query params
       var hash = this.hash;
       var isFirstRun = this.isFirstRun;
-
+      
       this.render(); // render all
       this.render('specificTemplate', {to: 'namedYield'});
     },
@@ -1099,6 +1099,12 @@ PostShowController = RouteController.extend({
 
   action: function () {
     /* if we want to override default behavior */
+    
+    // eg. override some data
+    var data = this.data();
+    data.varName = 'newValue';
+    this.setData(data);
+    
   }
 });
 ```
