@@ -154,6 +154,9 @@ Tinytest.add('RouteController - autoRenderNotFoundHook', function (test) {
     router: router,
     template: 'template',
     notFoundTemplate: 'notFound',
+    yieldTemplates: {
+      one: {to: 'one'}
+    },
     data: function() {
       dataDep.depend();
       return found;
@@ -165,10 +168,12 @@ Tinytest.add('RouteController - autoRenderNotFoundHook', function (test) {
   });
   
   test.equal(router.rendered.__main__, 'notFound');
+  test.equal(router.rendered.one, 'one');
   
   found = true;
   dataDep.changed();
   Deps.flush();
   test.equal(router.rendered.__main__, 'template');
+  test.equal(router.rendered.one, 'one');
   test.equal(router.data, true);
 });
