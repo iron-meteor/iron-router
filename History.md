@@ -1,5 +1,9 @@
 ## v0.6.1
-* XXX Add Tom fixes here
+* Bug fix: notFound template rendered with layout
+* Bug fix: loading and notFound render yeilds again
+* Bug fix: IE8 issue with 'class' property name on link handlebars helper
+* Bug fix: Global hook regression
+* Readme fixes
 
 ## v0.6.0
 
