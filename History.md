@@ -6,7 +6,6 @@
 * Readme fixes
 
 ## v0.6.0
-
 * **WARNING:** Breaking Changes
   * The `layout` option is now called `layoutTemplate`
   * The `renderTemplates` option is now called `yieldTemplates`
