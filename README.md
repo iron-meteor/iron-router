@@ -789,112 +789,17 @@ Router.before(mustBeSignedIn, {except: ['login', 'signup', 'forgotPassword']});
 ```
 
 ### Custom Rendering
-If you provide a custom action function you'll need to control rendering
-manually. You can do this by calling the `render` function. If you call
-`this.render()` with no parameters, it will render the main template. For
-example, given a simple layout and a template named "postShow":
+You can render manually by calling the `render` function. There are three ways
+to call the render method:
 
-```html
-<template name="layout">
-  {{yield}}
-</template>
-
-<template name="postShow">
-  <h1>Post</h1>
-</template>
-```
-
-```javascript
-Router.map(function () {
-  this.route('postShow', {
-    path: '/posts/:_id',
-
-    action: function () {
-      // render the postShow template into the main yield of the template
-      this.render();
-    }
-  });
-});
-```
-
-You can provide a different template name to render into the main yield by
-providing the name of the template as the first parameter to the 'render'
-function.
-
-```javascript
-Router.map(function () {
-  this.route('postShow', {
-    path: '/posts/:_id',
-
-    action: function () {
-      // render someOtherTemplate into the main yield of the template
-      this.render('someOtherTemplate');
-    }
-  });
-});
-```
-
-You can render a template into a **named yield** by passing the `to` option to
-the render method and specifying the name of the yield to render into.
-
-```html
-<template name="layout">
-  <aside>
-    {{yield 'aside'}}
-  </aside>
-
-  <div>
-    <!-- main yield -->
-    {{yield}}
-  </div>
-
-  <footer>
-    <!-- named yield -->
-    {{yield 'footer'}}
-  </footer>
-</template>
-```
-
-```javascript
-Router.map(function () {
-  this.route('postShow', {
-    path: '/posts/:_id',
-
-    action: function () {
-      // render the main template
-      this.render();
-
-      // render myCustomFooter into the footer yield
-      this.render('myCustomFooter', { to: 'footer' });
-
-      // render myCustomAside into the aside yield
-      this.render('myCustomAside', { to: 'aside' });
-    }
-  });
-});
-```
-
-Finally, you can save some typing by passing an object of template to options as
-the first parameter to the render function.
-
-```javascript
-Router.map(function () {
-  this.route('postShow', {
-    path: '/posts/:_id',
-
-    action: function () {
-      // render the main template
-      this.render();
-
-      // combine render calls
-      this.render({
-        'myCustomFooter': { to: 'footer' },
-        'myCustomAside': { to: 'aside' }
-      });
-    }
-  });
-});
-```
+  1. `this.render()`: Render all of the templates for the Route or
+     RouteController. This renders the main template into the main yield region,
+     and all of the yieldTemplates into their associated {{yield 'name'}}
+     regions.
+  2. `this.render('templateName')`: Render the template named 'templateName'
+     into the main yield `{{yield}}`.
+  3. `this.render('templateName', {to: 'region'})`: Render the template named
+     'templateName' into the region named 'region' `{{yield 'region'}}`. 
 
 *Note: layouts are at the route level, not the template level and you have one
 layout per route or a globally defined layout.*

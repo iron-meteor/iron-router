@@ -1,3 +1,6 @@
+## v0.6.1
+* XXX Add Tom fixes here
+
 ## v0.6.0
 
 * **WARNING:** Breaking Changes
