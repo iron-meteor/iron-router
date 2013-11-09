@@ -18,7 +18,7 @@ Package.on_use(function (api) {
   api.add_files('lib/router.js', ['client', 'server']);
 
   api.add_files('lib/client/location.js', 'client');
-  api.add_files('lib/client/page_manager.js', 'client');
+  api.add_files('lib/client/page.js', 'client');
   api.add_files('lib/client/router.js', 'client');
   api.add_files('lib/client/default_layout.html', 'client');
   api.add_files('lib/client/route_controller.js', 'client');
@@ -37,12 +37,12 @@ Package.on_use(function (api) {
     api.export('Route', ['client', 'server']);
     api.export('Router', ['client', 'server']);
     api.export('IronLocation', 'client');
+    api.export('Page', 'client');
 
     api.export('Utils', ['client', 'server'], {testOnly: true});
     api.export('IronRouteController', ['client', 'server'], {testOnly: true});
     api.export('IronRouter', ['client', 'server'], {testOnly: true});
 
-    api.export('PageManager', 'client', {testOnly: true});
     api.export('ClientRouter', 'client', {testOnly: true});
 
     api.export('ServerRouter', 'server', {testOnly: true});
