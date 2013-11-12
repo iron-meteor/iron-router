@@ -174,3 +174,45 @@ Tinytest.add('ClientRouter - before hooks', function (test) {
   test.equal(thirdHookCalled, 3);  
   test.equal(fourthHookCalled, 3);
 });
+
+
+Tinytest.add('ClientRouter - load hooks', function (test) {
+  var router = new ClientRouter({
+    autoStart: false,
+    autoRender: false
+  });
+  
+  var oneLoadHookCalled = 0;
+  var oneBeforeHookCalled = 0;
+  var twoLoadHookCalled = 0;
+  var twoBeforeHookCalled = 0;
+  
+  router.map(function() {
+    this.route('one', {
+      load: function() { oneLoadHookCalled += 1; },
+      before: function() { oneBeforeHookCalled += 1; }
+    });
+    this.route('two', {
+      load: function() { 
+        twoLoadHookCalled += 1;
+        this.redirect('one');
+      },
+      before: function() { twoBeforeHookCalled += 1; },
+    });
+  });
+  
+  router.setLayout = _.identity;
+  router.setTemplate = _.identity;
+  
+  router.dispatch('one');
+  test.equal(oneLoadHookCalled, 1);
+  test.equal(oneBeforeHookCalled, 1);
+  
+  router.dispatch('two');
+  test.equal(oneLoadHookCalled, 2);
+  test.equal(oneBeforeHookCalled, 2);
+  test.equal(twoLoadHookCalled, 1);
+  // show have redirected before this happens
+  test.equal(twoBeforeHookCalled, 0);
+  
+});

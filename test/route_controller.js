@@ -21,7 +21,7 @@ Tinytest.add('IronRouteController - runHooks', function (test) {
   var call = function (idx) {
     return function () {
       calls.push(idx);
-    }
+    };
   };
 
   var opts = {
@@ -36,10 +36,14 @@ Tinytest.add('IronRouteController - runHooks', function (test) {
     before: [call(3), call(4)]
   });
 
+  var C = B.extend({
+  });
+
   /*
    * Given:
    *  A prototype['before'] => [f1, f2]
    *    B inherits A proto['before'] => [f3, f4]
+   *      C inherits B proto['before'] => []
    *  
    *  Router options => [f5, f6]
    *  Route options => [f7, f8]
@@ -49,10 +53,12 @@ Tinytest.add('IronRouteController - runHooks', function (test) {
    */
 
   test.equal(calls.length, 0, 'call list not empty');
-  var bInst = new B(opts);
-  bInst.runHooks('before');
+  var cInst = new C(opts);
+  cInst.runHooks('before');
 
   for (var i = 0; i < 5; i++) {
     test.equal(calls[i], i, 'runHooks has the wrong exec order');
   }
+
+  test.equal(calls.length, 5, 'runHooks collected to many hooks');
 });
