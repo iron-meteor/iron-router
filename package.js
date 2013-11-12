@@ -17,10 +17,10 @@ Package.on_use(function (api) {
   api.add_files('lib/route_controller.js', ['client', 'server']);
   api.add_files('lib/router.js', ['client', 'server']);
 
+  api.add_files('lib/client/default_layout.html', 'client');
   api.add_files('lib/client/location.js', 'client');
   api.add_files('lib/client/page_manager.js', 'client');
   api.add_files('lib/client/router.js', 'client');
-  api.add_files('lib/client/default_layout.html', 'client');
   api.add_files('lib/client/route_controller.js', 'client');
   api.add_files('lib/client/helpers.js', 'client');
 
