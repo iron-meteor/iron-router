@@ -930,10 +930,8 @@ Router.map(function () {
     action: function () {
       var filename = this.params.filename;
 
-      this.response.writeHead(200);
-      this.response.writeHead('Content-Type', 'text/html');
-      this.response.write('hello from server');
-      this.response.end();
+      this.response.writeHead(200, {'Content-Type': 'text/html'});
+      this.response.end('hello from server');
     }
   });
 });
