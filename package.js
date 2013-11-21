@@ -38,11 +38,11 @@ Package.on_use(function (api) {
     api.export('Router', ['client', 'server']);
     api.export('IronLocation', 'client');
 
-    api.export('Utils', ['client', 'server'], {testOnly: true});
+    api.export('Utils', ['client', 'server']);
     api.export('IronRouteController', ['client', 'server'], {testOnly: true});
     api.export('IronRouter', ['client', 'server'], {testOnly: true});
 
-    api.export('PageManager', 'client', {testOnly: true});
+    api.export('PageManager', 'client');
     api.export('ClientRouter', 'client', {testOnly: true});
 
     api.export('ServerRouter', 'server', {testOnly: true});
