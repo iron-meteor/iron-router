@@ -915,6 +915,8 @@ Router.map(function () {
 });
 ```
 
+Note that `where` must be placed in `Router.map`, not on the controller.
+
 Server action functions (RouteControllers) have different properties and methods
 available. Namely, there is no rendering on the server yet. So the `render`
 method is not available. Also, you cannot `waitOn` subscriptions or call the
@@ -1017,6 +1019,8 @@ PostShowController.before(function () {});
 PostShowController.after(function () {});
 ```
 
+(But note `where` is not available on controllers, only in `Router.map`.)
+
 In Coffeescript we can use the language's native inheritance.
 
 ```coffeescript
@@ -1031,6 +1035,7 @@ class @PostShowController extends RouteController
 
   template: 'myTemplate'
 ```
+
 
 ## Filing Issues and Contributing
 Contributors are very welcome. There are many things you can help with,
