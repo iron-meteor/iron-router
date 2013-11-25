@@ -1036,7 +1036,6 @@ class @PostShowController extends RouteController
   template: 'myTemplate'
 ```
 
-
 ## Filing Issues and Contributing
 Contributors are very welcome. There are many things you can help with,
 including finding and fixing bugs, creating examples for the examples folder,
