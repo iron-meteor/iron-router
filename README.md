@@ -447,7 +447,7 @@ Router.map(function () {
 When you navigate to 'http://localhost:3000/' the above route will automatically
 render the template named `home`.
 
-You can change the template that is autmoatically rendered by providing a
+You can change the template that is automatically rendered by providing a
 template option.
 
 ```javascript
