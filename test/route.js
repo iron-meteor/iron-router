@@ -7,6 +7,7 @@ var paths = {
   required: '/posts/:param',
   multi: '/posts/:paramOne/:paramTwo',
   optional: '/posts/:paramOne/:paramTwo?',
+  simpleOptional: '/:param?',
   wildcard: '/posts/*',
   namedWildcard: '/posts/:file(*)',
   regex: /^\/commits\/(\d+)\.\.(\d+)/
@@ -46,6 +47,14 @@ Tinytest.add('Route - matching', function (test) {
   test.isTrue(route.test('/posts/1/2'));
   test.isTrue(route.exec('/posts/1/2'));
 
+  route = new Route(Router, 'simpleOptional', {
+    path: paths.simpleOptional
+  });
+  test.isTrue(route.test('/'));
+  test.isTrue(route.exec('/'));
+  test.isTrue(route.test('/1'));
+  test.isTrue(route.exec('/1'));
+  
   route = new Route(Router, 'wildcard', {
     path: paths.wildcard
   });
@@ -101,7 +110,17 @@ Tinytest.add('Route - params', function (test) {
   params = route.params('/posts/1/2');
   test.equal(params.paramOne, '1');
   test.equal(params.paramTwo, '2');
+  
+  route = new Route(Router, 'simpleOptional', {
+    path: paths.simpleOptional
+  });
+  
+  params = route.params('/');
+  test.isUndefined(params.param);
 
+  params = route.params('/1');
+  test.equal(params.param, '1');
+  
   route = new Route(Router, 'wildcard', {
     path: paths.wildcard
   });
@@ -162,6 +181,12 @@ Tinytest.add('Route - resolve', function (test) {
     hash: 'anchorTag'
   };
   test.equal(route.resolve(params, options), '/posts/1/?q=s#anchorTag');
+
+  route = new Route(Router, 'simpleOptional', {
+    path: paths.simpleOptional
+  });
+  test.equal(route.resolve(), '/');
+  test.equal(route.resolve({param: '1'}), '/1');
 
   route = new Route(Router, 'wildcard', {
     path: paths.wildcard
