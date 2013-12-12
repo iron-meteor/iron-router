@@ -14,18 +14,19 @@ Package.on_use(function (api) {
 
   api.add_files('lib/utils.js', ['client', 'server']);
   api.add_files('lib/route.js', ['client', 'server']);
-  api.add_files('lib/route_controller.js', ['client', 'server']);
+  //api.add_files('lib/route_controller.js', ['client', 'server']);
   api.add_files('lib/router.js', ['client', 'server']);
 
   api.add_files('lib/client/location.js', 'client');
   api.add_files('lib/client/page.js', 'client');
+  api.add_files('lib/client/route.js', 'client');
   api.add_files('lib/client/router.js', 'client');
   api.add_files('lib/client/default_layout.html', 'client');
-  api.add_files('lib/client/route_controller.js', 'client');
+  //api.add_files('lib/client/route_controller.js', 'client');
   api.add_files('lib/client/helpers.js', 'client');
 
 
-  api.add_files('lib/server/route_controller.js', 'server');
+  //api.add_files('lib/server/route_controller.js', 'server');
   api.add_files('lib/server/router.js', 'server');
 
   // for backward compat before Meteor linker changes
@@ -33,14 +34,14 @@ Package.on_use(function (api) {
     api.use('webapp', 'server');
     Npm.depends({connect: '2.7.10'});
 
-    api.export('RouteController', ['client', 'server']);
+    //api.export('RouteController', ['client', 'server']);
     api.export('Route', ['client', 'server']);
     api.export('Router', ['client', 'server']);
     api.export('IronLocation', 'client');
     api.export('Page', 'client');
 
     api.export('Utils', ['client', 'server'], {testOnly: true});
-    api.export('IronRouteController', ['client', 'server'], {testOnly: true});
+    //api.export('IronRouteController', ['client', 'server'], {testOnly: true});
     api.export('IronRouter', ['client', 'server'], {testOnly: true});
 
     api.export('ClientRouter', 'client', {testOnly: true});
