@@ -171,6 +171,12 @@ Tinytest.add('Route - resolve', function (test) {
   };
   test.equal(route.resolve(params), '/posts/1');
 
+
+  params = {
+    param: 1
+  };
+  test.equal(route.resolve(params), '/posts/1');
+
   params = {
     param: '1'
   };
