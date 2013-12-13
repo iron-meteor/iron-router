@@ -8,6 +8,7 @@ Package.on_use(function (api) {
   api.use('underscore', ['client', 'server']);
   api.use('ejson', ['client', 'server']);
 
+  api.use('ui', 'client');
   api.use('templating', 'client');
   api.use('handlebars', 'client');
   api.use('jquery', 'client');
