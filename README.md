@@ -14,7 +14,7 @@ A client and server side router designed specifically for Meteor.
   - [Dynamic Path Segments](#dynamic-path-segments)
   - [Query Strings and Hash Segments](#query-strings-and-hash-segments)
 - [Client Side Routing](#client-side-routing)
-  - [Rendering the Router](#rendering-the-router)
+reRendering the Router](#rendering-the-router)
   - [Path Functions and Helpers](#path-functions-and-helpers)
   - [Changing routes programmatically](#changing-routes-programmatically)
   - [Rendering Templates](#rendering-templates)
@@ -27,7 +27,6 @@ A client and server side router designed specifically for Meteor.
   - [Custom Rendering](#custom-rendering)
   - [Before and After Hooks](#before-and-after-hooks)
   - [Unload Hook](#unload-hook)
-  - [Non Reactive Routes](#non-reactive-routes)
   - [Global Router Configuration](#global-router-configuration)
 - [Server Side Routing](#server-side-routing)
 - [Route Controllers](#route-controllers)
@@ -861,23 +860,6 @@ Router.map(function () {
     unload: function () {
       // This is called when you navigate to a new route
       Session.set('postId', null);
-    }
-  });
-});
-```
-
-### Non Reactive Routes
-You can make your route non-reactive by providing the `reactive: false` option
-to the route.
-
-```javascript
-Router.map(function () {
-  this.route('nonReactiveRoute', {
-    reactive: false,
-
-    action: function () {
-      // this function will not be re-run because of reactive data
-      // changes.
     }
   });
 });
