@@ -14,7 +14,7 @@ A client and server side router designed specifically for Meteor.
   - [Dynamic Path Segments](#dynamic-path-segments)
   - [Query Strings and Hash Segments](#query-strings-and-hash-segments)
 - [Client Side Routing](#client-side-routing)
-reRendering the Router](#rendering-the-router)
+  - [Rendering the Router](#rendering-the-router)
   - [Path Functions and Helpers](#path-functions-and-helpers)
   - [Changing routes programmatically](#changing-routes-programmatically)
   - [Rendering Templates](#rendering-templates)
