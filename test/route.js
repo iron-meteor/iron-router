@@ -188,21 +188,35 @@ Tinytest.add('Route - resolve', function (test) {
   };
   test.equal(route.resolve(params, options), '/posts/1/?q=s#anchorTag');
 
-  route = new Route(Router, 'simpleOptional', {
-    path: paths.simpleOptional
-  });
-  test.equal(route.resolve(), '/');
-  test.equal(route.resolve({param: '1'}), '/1');
-
   route = new Route(Router, 'wildcard', {
     path: paths.wildcard
   });
   params = ['some/file/path'];
   test.equal(route.resolve(params), '/posts/some/file/path');
 
-  route = new Route(Router, 'namedWildcard', {
-    path: paths.namedWildcard
+  route = new Route(Router, 'optional', {
+    path: paths.optional
   });
+  params = {
+    paramOne: 'a',
+    paramTwo: 'b'
+  };
+  test.equal(route.resolve(params), '/posts/a/b');
+  params = {
+    paramOne: 'a'
+  };
+  test.equal(route.resolve(params), '/posts/a');
+
+  route = new Route(Router, 'simpleOptional', {
+    path: paths.simpleOptional
+  });
+  params = {
+    param: 'a'
+  };
+  test.equal(route.resolve(params), '/a');
+  params = {};
+  test.equal(route.resolve(params), '/');
+  test.equal(route.resolve(), '/');
 });
 
 Tinytest.add('Route - normalizePath', function (test) {
