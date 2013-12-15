@@ -7,6 +7,7 @@ var paths = {
   required: '/posts/:param',
   multi: '/posts/:paramOne/:paramTwo',
   optional: '/posts/:paramOne/:paramTwo?',
+  optionalAll: '/:all?',
   wildcard: '/posts/*',
   namedWildcard: '/posts/:file(*)',
   regex: /^\/commits\/(\d+)\.\.(\d+)/
@@ -169,9 +170,28 @@ Tinytest.add('Route - resolve', function (test) {
   params = ['some/file/path'];
   test.equal(route.resolve(params), '/posts/some/file/path');
 
-  route = new Route(Router, 'namedWildcard', {
-    path: paths.namedWildcard
+  route = new Route(Router, 'optional', {
+    path: paths.optional
   });
+  params = {
+    paramOne: 'a',
+    paramTwo: 'b'
+  };
+  test.equal(route.resolve(params), '/posts/a/b');
+  params = {
+    paramOne: 'a'
+  };
+  test.equal(route.resolve(params), '/posts/a');
+
+  route = new Route(Router, 'optionalAll', {
+    path: paths.optionalAll
+  });
+  params = {
+    all: 'a'
+  };
+  test.equal(route.resolve(params), '/a');
+  params = {};
+  test.equal(route.resolve(params), '/');
 });
 
 Tinytest.add('Route - normalizePath', function (test) {
