@@ -222,12 +222,6 @@ Tinytest.add('Route - resolve', function (test) {
 
   test.equal(route.resolve(), null);
 
-  route = new Route(Router, 'wildcard', {
-    path: paths.wildcard
-  });
-  params = ['some/file/path'];
-  test.equal(route.resolve(params), '/posts/some/file/path');
-
   route = new Route(Router, 'optional', {
     path: paths.optional
   });
@@ -270,6 +264,12 @@ Tinytest.add('Route - resolve', function (test) {
     paramTwo: 'b'
   };
   test.equal(route.resolve(params), '/b');
+
+  route = new Route(Router, 'wildcard', {
+    path: paths.wildcard
+  });
+  params = ['some/file/path'];
+  test.equal(route.resolve(params), '/posts/some/file/path');
 });
 
 Tinytest.add('Route - normalizePath', function (test) {
