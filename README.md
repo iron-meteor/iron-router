@@ -897,6 +897,8 @@ Router.map(function () {
 });
 ```
 
+Note that `where` must be placed in `Router.map`, not on the controller.
+
 Server action functions (RouteControllers) have different properties and methods
 available. Namely, there is no rendering on the server yet. So the `render`
 method is not available. Also, you cannot `waitOn` subscriptions or call the
@@ -996,6 +998,8 @@ also do this:
 PostShowController.before(function () {});
 PostShowController.after(function () {});
 ```
+
+(But note `where` is not available on controllers, only in `Router.map`.)
 
 In Coffeescript we can use the language's native inheritance.
 
