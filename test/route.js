@@ -29,6 +29,8 @@ Tinytest.add('Route - matching', function (test) {
   });
   test.isTrue(route.test('/posts/1'));
   test.isTrue(route.exec('/posts/1'));
+  test.isTrue(route.test('/posts/1/'));
+  test.isTrue(route.exec('/posts/1/'));
   test.isFalse(route.test('/posts/1/2'));
   test.isNull(route.exec('/posts/1/2'));
 
@@ -37,6 +39,8 @@ Tinytest.add('Route - matching', function (test) {
   });
   test.isTrue(route.test('/posts/1/2'));
   test.isTrue(route.exec('/posts/1/2'));
+  test.isTrue(route.test('/posts/1/2/'));
+  test.isTrue(route.exec('/posts/1/2/'));
   test.isFalse(route.test('/posts/1/2/3'));
   test.isNull(route.exec('/posts/1/2/3'));
 
@@ -47,6 +51,10 @@ Tinytest.add('Route - matching', function (test) {
   test.isTrue(route.exec('/posts/1'));
   test.isTrue(route.test('/posts/1/2'));
   test.isTrue(route.exec('/posts/1/2'));
+  test.isTrue(route.test('/posts/1/2/'));
+  test.isTrue(route.exec('/posts/1/2/'));
+  test.isFalse(route.test('/posts/1/2/3'));
+  test.isNull(route.exec('/posts/1/2/3'));
 
   route = new Route(Router, 'simpleOptional', {
     path: paths.simpleOptional
@@ -55,6 +63,10 @@ Tinytest.add('Route - matching', function (test) {
   test.isTrue(route.exec('/'));
   test.isTrue(route.test('/1'));
   test.isTrue(route.exec('/1'));
+  test.isTrue(route.test('/1/'));
+  test.isTrue(route.exec('/1/'));
+  test.isFalse(route.test('/1/2'));
+  test.isNull(route.exec('/1/2'));
 
   route = new Route(Router, 'twoOptional', {
     path: paths.twoOptional
@@ -67,6 +79,10 @@ Tinytest.add('Route - matching', function (test) {
   test.isTrue(route.exec('/1/'));
   test.isTrue(route.test('/1/2'));
   test.isTrue(route.exec('/1/2'));
+  test.isTrue(route.test('/1/2/'));
+  test.isTrue(route.exec('/1/2/'));
+  test.isFalse(route.test('/1/2/3'));
+  test.isNull(route.exec('/1/2/3'));
 
   route = new Route(Router, 'wildcard', {
     path: paths.wildcard
