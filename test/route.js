@@ -171,7 +171,6 @@ Tinytest.add('Route - resolve', function (test) {
   };
   test.equal(route.resolve(params), '/posts/1');
 
-
   params = {
     param: 1
   };
@@ -187,6 +186,8 @@ Tinytest.add('Route - resolve', function (test) {
     hash: 'anchorTag'
   };
   test.equal(route.resolve(params, options), '/posts/1/?q=s#anchorTag');
+
+  test.equal(route.resolve(), null);
 
   route = new Route(Router, 'wildcard', {
     path: paths.wildcard
