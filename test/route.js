@@ -9,6 +9,7 @@ var paths = {
   optional: '/posts/:paramOne/:paramTwo?',
   simpleOptional: '/:param?',
   twoOptional: '/:paramOne?/:paramTwo?',
+  mixedOptional: '/:paramOne?/:paramTwo/:paramThree?',
   wildcard: '/posts/*',
   namedWildcard: '/posts/:file(*)',
   regex: /^\/commits\/(\d+)\.\.(\d+)/
@@ -83,6 +84,26 @@ Tinytest.add('Route - matching', function (test) {
   test.isTrue(route.exec('/1/2/'));
   test.isFalse(route.test('/1/2/3'));
   test.isNull(route.exec('/1/2/3'));
+
+  route = new Route(Router, 'mixedOptional', {
+    path: paths.mixedOptional
+  });
+  test.isFalse(route.test('/'));
+  test.isNull(route.exec('/'));
+  test.isTrue(route.test('/1'));
+  test.isTrue(route.exec('/1'));
+  test.isTrue(route.test('/1/'));
+  test.isTrue(route.exec('/1/'));
+  test.isTrue(route.test('/1/2'));
+  test.isTrue(route.exec('/1/2'));
+  test.isTrue(route.test('/1/2/'));
+  test.isTrue(route.exec('/1/2/'));
+  test.isTrue(route.test('/1/2/3'));
+  test.isTrue(route.exec('/1/2/3'));
+  test.isTrue(route.test('/1/2/3/'));
+  test.isTrue(route.exec('/1/2/3/'));
+  test.isFalse(route.test('/1/2/3/4'));
+  test.isNull(route.exec('/1/2/3/4'));
 
   route = new Route(Router, 'wildcard', {
     path: paths.wildcard
@@ -169,6 +190,35 @@ Tinytest.add('Route - params', function (test) {
   params = route.params('/1/2');
   test.equal(params.paramOne, '1');
   test.equal(params.paramTwo, '2');
+
+  route = new Route(Router, 'mixedOptional', {
+    path: paths.mixedOptional
+  });
+
+  params = route.params('/1');
+  test.isUndefined(params.paramOne);
+  test.equal(params.paramTwo, '1');
+  test.isUndefined(params.paramThree);
+
+  params = route.params('/1/');
+  test.isUndefined(params.paramOne);
+  test.equal(params.paramTwo, '1');
+  test.isUndefined(params.paramThree);
+
+  params = route.params('/1/2');
+  test.equal(params.paramOne, '1');
+  test.equal(params.paramTwo, '2');
+  test.isUndefined(params.paramThree);
+
+  params = route.params('/1/2/');
+  test.equal(params.paramOne, '1');
+  test.equal(params.paramTwo, '2');
+  test.isUndefined(params.paramThree);
+
+  params = route.params('/1/2/3');
+  test.equal(params.paramOne, '1');
+  test.equal(params.paramTwo, '2');
+  test.equal(params.paramThree, '3');
 
   route = new Route(Router, 'wildcard', {
     path: paths.wildcard
@@ -280,6 +330,45 @@ Tinytest.add('Route - resolve', function (test) {
     paramTwo: 'b'
   };
   test.equal(route.resolve(params), '/b');
+
+  route = new Route(Router, 'mixedOptional', {
+    path: paths.mixedOptional
+  });
+  test.equal(route.resolve({}), null);
+  test.equal(route.resolve(), null);
+  params = {
+    paramOne: 'a'
+  };
+  test.equal(route.resolve(params), null);
+  params = {
+    paramOne: 'a',
+    paramTwo: 'b'
+  };
+  test.equal(route.resolve(params), '/a/b');
+  params = {
+    paramTwo: 'b'
+  };
+  test.equal(route.resolve(params), '/b');
+  params = {
+    paramTwo: 'b',
+    paramThree: 'c'
+  };
+  test.equal(route.resolve(params), '/b/c');
+  params = {
+    paramOne: 'a',
+    paramThree: 'c'
+  };
+  test.equal(route.resolve(params), null);
+  params = {
+    paramThree: 'c'
+  };
+  test.equal(route.resolve(params), null);
+  params = {
+    paramOne: 'a',
+    paramTwo: 'b',
+    paramThree: 'c'
+  };
+  test.equal(route.resolve(params), '/a/b/c');
 
   route = new Route(Router, 'wildcard', {
     path: paths.wildcard
