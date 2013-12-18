@@ -31,7 +31,7 @@ Package.on_use(function (api) {
   // for backward compat before Meteor linker changes
   if (typeof api.export !== 'undefined') {
     api.use('webapp', 'server');
-    Npm.depends({connect: '2.7.10'});
+    Npm.depends({connect: 'https://github.com/senchalabs/connect/tarball/719991ca30653d6d540efacaebe0ea3e663cdb07'});
 
     api.export('RouteController', ['client', 'server']);
     api.export('Route', ['client', 'server']);
