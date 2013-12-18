@@ -27,7 +27,6 @@ A client and server side router designed specifically for Meteor.
   - [Custom Rendering](#custom-rendering)
   - [Before and After Hooks](#before-and-after-hooks)
   - [Unload Hook](#unload-hook)
-  - [Non Reactive Routes](#non-reactive-routes)
   - [Global Router Configuration](#global-router-configuration)
 - [Server Side Routing](#server-side-routing)
 - [Route Controllers](#route-controllers)
@@ -447,7 +446,7 @@ Router.map(function () {
 When you navigate to 'http://localhost:3000/' the above route will automatically
 render the template named `home`.
 
-You can change the template that is autmoatically rendered by providing a
+You can change the template that is automatically rendered by providing a
 template option.
 
 ```javascript
@@ -866,23 +865,6 @@ Router.map(function () {
 });
 ```
 
-### Non Reactive Routes
-You can make your route non-reactive by providing the `reactive: false` option
-to the route.
-
-```javascript
-Router.map(function () {
-  this.route('nonReactiveRoute', {
-    reactive: false,
-
-    action: function () {
-      // this function will not be re-run because of reactive data
-      // changes.
-    }
-  });
-});
-```
-
 ### Global Router Configuration
 So far we've been defining all of our route options on the routes themselves.
 But sometimes it makes sense to define global options that apply to all routes.
@@ -932,10 +914,8 @@ Router.map(function () {
     action: function () {
       var filename = this.params.filename;
 
-      this.response.writeHead(200);
-      this.response.writeHead('Content-Type', 'text/html');
-      this.response.write('hello from server');
-      this.response.end();
+      this.response.writeHead(200, {'Content-Type': 'text/html'});
+      this.response.end('hello from server');
     }
   });
 });
