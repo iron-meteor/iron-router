@@ -699,8 +699,13 @@ Router.map(function () {
 ```
 
 When your route is run, it will wait on any subscriptions you've provided in
-your `waitOn` function before running your before hooks, action method, and
-after hooks. Under the hood, the waitOn function calls the `wait(handles, onReady,
+your `waitOn` function. If you've provided a `loadingTemplate`, the default action 
+will be to render that template.
+
+While waiting, you can check if your subscriptions are ready in your before hooks, 
+action method, and after hooks, by checking `this.ready()`. 
+
+Under the hood, the waitOn function calls the `wait(handles, onReady,
 onWaiting)` method of a RouteController (more on RouteControllers below). If you
 need to customize this behavior you can skip providing a `waitOn` property and
 just use the `wait` method directly in a custom action function or a before
