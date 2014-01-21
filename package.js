@@ -26,8 +26,8 @@ Package.on_use(function (api) {
   api.add_files('lib/client/default_layout.html', 'client');
   api.add_files('lib/client/helpers.js', 'client');
 
-
-  //api.add_files('lib/server/route_controller.js', 'server');
+  api.add_files('lib/server/route_match.js', 'server');
+  api.add_files('lib/server/route.js', 'server');
   api.add_files('lib/server/router.js', 'server');
 
   // for backward compat before Meteor linker changes
@@ -46,6 +46,7 @@ Package.on_use(function (api) {
     api.export('IronRouter', ['client', 'server'], {testOnly: true});
     api.export('ClientRouter', 'client', {testOnly: true});
     api.export('ServerRouter', 'server', {testOnly: true});
+    api.export('RouteMatch', ['client', 'server'], {testOnly: true});
   }
 });
 
