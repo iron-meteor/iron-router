@@ -13,17 +13,17 @@ Package.on_use(function (api) {
   api.use('handlebars', 'client');
   api.use('jquery', 'client');
 
-  api.add_files('lib/utils.js', ['client', 'server']);
-  api.add_files('lib/route.js', ['client', 'server']);
-  //api.add_files('lib/route_controller.js', ['client', 'server']);
-  api.add_files('lib/router.js', ['client', 'server']);
+  api.add_files('lib/utils.js');
+  api.add_files('lib/wait_list.js');
+  api.add_files('lib/route_match.js');
+  api.add_files('lib/route.js');
+  api.add_files('lib/router.js');
 
   api.add_files('lib/client/location.js', 'client');
   api.add_files('lib/client/page.js', 'client');
   api.add_files('lib/client/route.js', 'client');
   api.add_files('lib/client/router.js', 'client');
   api.add_files('lib/client/default_layout.html', 'client');
-  //api.add_files('lib/client/route_controller.js', 'client');
   api.add_files('lib/client/helpers.js', 'client');
 
 
@@ -36,17 +36,15 @@ Package.on_use(function (api) {
     Npm.depends({connect: '2.7.10'});
 
     //api.export('RouteController', ['client', 'server']);
-    api.export('Route', ['client', 'server']);
-    api.export('Router', ['client', 'server']);
+    api.export('Route');
+    api.export('Router');
+
     api.export('IronLocation', 'client');
     api.export('Page', 'client');
 
     api.export('Utils', ['client', 'server'], {testOnly: true});
-    //api.export('IronRouteController', ['client', 'server'], {testOnly: true});
     api.export('IronRouter', ['client', 'server'], {testOnly: true});
-
     api.export('ClientRouter', 'client', {testOnly: true});
-
     api.export('ServerRouter', 'server', {testOnly: true});
   }
 });
@@ -68,5 +66,5 @@ Package.on_test(function (api) {
 
   api.add_files('test/client/templates.html', 'client');
   api.add_files('test/client/router.js', 'client');
-  api.add_files('test/client/route_controller.js', 'client');  
+  api.add_files('test/client/route_controller.js', 'client');
 });
