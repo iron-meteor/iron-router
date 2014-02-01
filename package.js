@@ -2,6 +2,11 @@ Package.describe({
   summary: 'Routing specifically designed for Meteor'
 });
 
+Npm.depends({
+  'connect': '2.7.10',
+  'blueimp-md5': '1.1.0'
+});
+
 Package.on_use(function (api) {
   api.use('reactive-dict', ['client', 'server']);
   api.use('deps', ['client', 'server']);
@@ -17,13 +22,14 @@ Package.on_use(function (api) {
   api.add_files('lib/route_controller.js', ['client', 'server']);
   api.add_files('lib/router.js', ['client', 'server']);
 
+  api.add_files('.npm/package/node_modules/blueimp-md5/js/md5.js', 'client');
   api.add_files('lib/client/location.js', 'client');
   api.add_files('lib/client/page_manager.js', 'client');
+  api.add_files('lib/client/subscription_manager.js', 'client');
   api.add_files('lib/client/router.js', 'client');
   api.add_files('lib/client/default_layout.html', 'client');
   api.add_files('lib/client/route_controller.js', 'client');
   api.add_files('lib/client/helpers.js', 'client');
-
 
   api.add_files('lib/server/route_controller.js', 'server');
   api.add_files('lib/server/router.js', 'server');
@@ -31,7 +37,6 @@ Package.on_use(function (api) {
   // for backward compat before Meteor linker changes
   if (typeof api.export !== 'undefined') {
     api.use('webapp', 'server');
-    Npm.depends({connect: '2.7.10'});
 
     api.export('RouteController', ['client', 'server']);
     api.export('Route', ['client', 'server']);
