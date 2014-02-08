@@ -24,6 +24,7 @@ Package.on_use(function (api) {
   api.add_files('lib/client/route.js', 'client');
   api.add_files('lib/client/router.js', 'client');
   api.add_files('lib/client/default_layout.html', 'client');
+  api.add_files('lib/client/helpers.html', 'client');
   api.add_files('lib/client/helpers.js', 'client');
 
   api.add_files('lib/server/route_match.js', 'server');
