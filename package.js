@@ -25,7 +25,8 @@ Package.on_use(function (api) {
   api.add_files('lib/client/helpers.js', 'client');
   api.add_files('lib/client/history.js', 'client');
   //api.add_files('lib/client/history.adapter.native.js', 'client');
-  api.add_files('lib/client/history.adapter.jquery.js', 'client');
+  //api.add_files('lib/client/history.adapter.jquery.js', 'client');
+  api.add_files('lib/client/native.history.js', 'client');
 
 
   api.add_files('lib/server/route_controller.js', 'server');
