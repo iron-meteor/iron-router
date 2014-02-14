@@ -711,6 +711,18 @@ need to customize this behavior you can skip providing a `waitOn` property and
 just use the `wait` method directly in a custom action function or a before
 hook.
 
+You can also wait for certain subscription on a global level, by passing a `waitOn`
+function in the Router.configure call:
+
+```js
+Router.configure({
+  waitOn: function () {
+    return Meteor.subscribe('recordSetThatYouNeedNoMatterWhat');
+  }
+});
+```
+
+
 ### Waiting on Subscriptions (`wait()`)
 
 ```js
