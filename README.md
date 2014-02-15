@@ -1022,10 +1022,10 @@ In Coffeescript we can use the language's native inheritance.
 
 ```coffeescript
 class @PostShowController extends RouteController
-  @before ->
+  before: ->
     # do some before stuff and note this is a class level method call '@'
 
-  @after ->
+  after: ->
     # call the class level after method using '@'
 
   layout: 'layout'
