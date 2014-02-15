@@ -178,7 +178,7 @@ Router.map(function () {
 });
 ```
 
-This creates a route with the name "home." The route is named so that you can
+This creates a route with the name "home". The route is named so that you can
 quickly get the route by name like this: `Router.routes['home']`. 
 
 By default, routes are created as client routes. This means, the route will only
