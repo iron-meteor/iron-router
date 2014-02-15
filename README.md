@@ -316,7 +316,7 @@ Router.map(function () {
 ### Rendering the Router
 By default, the Router is rendered (appended) automatically to the document body
 when the DOM is ready. You can override this behavior and render the Router
-whever you'd like by setting a configuration option and using a Handlebars
+whenever you'd like by setting a configuration option and using a Handlebars
 helper like this:
 
 ```javascript
