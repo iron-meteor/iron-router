@@ -866,7 +866,7 @@ data source invalidates the computation, these functions will be run again.
 
 ### Unload Hook
 Unload hooks will be called before a RouteController is unloaded and a new
-RouteController is run. This hooks is useful for cleaning up Session data for
+RouteController is run. This hook is useful for cleaning up Session data for
 example.
 
 ```javascript
