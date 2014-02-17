@@ -926,6 +926,7 @@ like in the client.
 ```javascript
 Router.map(function () {
   this.route('serverFile', {
+    where: 'server',
     path: '/files/:filename',
 
     action: function () {
