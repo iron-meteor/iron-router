@@ -44,7 +44,7 @@ versions.
 
 ## Concepts
 
-Iron-router takes over generating the `body` of the page. You wont' need to define the `<body>` element as you would for HTML pages; rather, you define a "layout" (usually a `<template name="layout">...</template>`, which contains static elements that don't change across pages of the app, and also one or more `{{yield}}` tags, which will bring in content from other templates. In a layout file, the `{{yield}}` tag (technically a template helper) without any parameters is called the main yield, and it will pull in the route template specified by the `template` option. All these will become clearer as you'll go through the examples below.
+Iron-router takes over generating the `<body>` of the page. You won't need to define the `<body>` element as you would for HTML pages; rather, you define a "layout" (usually a `<template name="layout">...</template>`, which contains static elements that don't change across pages of the app, and also one or more `{{yield}}` tags (technically template helpers), which will bring in content from other templates. In a layout file, the `{{yield}}` tag without any parameters is called the "main yield", and it will pull in the route template specified by the `template` option of the `route()` method call. All these will become clearer as you'll go through the examples below.
 
 ## Quick Start
 
