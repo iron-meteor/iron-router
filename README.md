@@ -606,7 +606,7 @@ Router.map(function () {
   this.route('post', {
     path: '/posts/:slug',
 
-    waitOn: function () {
+    waitOn: function () {  // wait for the subscription to be ready; see below
       return Meteor.subscribe('posts');
     },
 
