@@ -345,7 +345,7 @@ Router.configure({
 Once your application becomes large enough, it becomes a pain to hard code urls
 everywhere. If you end up changing your route path a little, you need to find
 all of the href tags in your application and change those as well. It's much
-better if we can call a function to return a url given a parameters object.
+better if we can call a function to return a URL given a parameters object.
 There are a few Handlebars helpers you can use directly in your HTML. You can
 also call the `path` and `url` methods on a route itself. 
 
@@ -651,7 +651,8 @@ Router.map(function () {
 });
 ```
 
-If you provide a global `notFoundTemplate`, it will get rendered automatically if a user visits a un-matched path, assuming it's not already handled on the server-side:
+If you provide a global `notFoundTemplate`, it will get rendered automatically if
+a user visits an un-matched path, assuming it's not already handled on the server-side:
 
 ```javascript
 // given a browser url of: http://localhost:3000/boguspath
@@ -706,8 +707,8 @@ When your route is run, it will wait on any subscriptions you've provided in
 your `waitOn` function. If you've provided a `loadingTemplate`, the default action 
 will be to render that template.
 
-While waiting, you can check if your subscriptions are ready in your before hooks, 
-action method, and after hooks, by checking `this.ready()`. 
+While waiting, you can check if your subscriptions are ready in your `before` hooks, 
+`action` method, and `after` hooks, by checking `this.ready()`. 
 
 Under the hood, the waitOn function calls the `wait(handles, onReady,
 onWaiting)` method of a RouteController (more on RouteControllers below). If you
@@ -744,7 +745,7 @@ Router.map(function () {
 });
 ```
 
-Callin `wait` on a subscription handle doesn't actually block anything. It just
+Calling `wait` on a subscription handle doesn't actually block anything. It just
 adds the subscription handle to a list of handles we are reactively waiting on.
 When all of these handles are ready `this.ready()` on the RouteController will
 be true.
@@ -814,7 +815,7 @@ to call the render method:
 
   1. `this.render()`: Render all of the templates for the Route or
      RouteController. This renders the main template into the main yield region,
-     and all of the yieldTemplates into their associated {{yield 'name'}}
+     and all of the yieldTemplates into their associated `{{yield 'name'}}`
      regions.
   2. `this.render('templateName')`: Render the template named 'templateName'
      into the main yield `{{yield}}`.
@@ -952,7 +953,7 @@ inheriting from `RouteController`. This works on both the client and the server,
 but each has slightly different methods as described above.
 
 Although we haven't been working with `RouteController`s directly, under the
-hood they were getting creating automatically for us when our routes were run.
+hood they were getting created automatically for us when our routes were run.
 These are called "anonymous" `RouteController`s. But we can create our own like
 this:
 
@@ -1118,7 +1119,7 @@ StripeRedirectController = RouteController.extend({
 });
 ````
 
-Once you have access to the parameters, there are numerous ways to pass those variables throughout your app.  Session.set() is just one method.  You'll need to choose whether you want to use reactive Session variable or not.  
+Once you have access to the parameters, there are numerous ways to pass those variables throughout your app.  `Session.set()` is just one method.  You'll need to choose whether you want to use reactive `Session` variables or not.  
 
 
 ## License
