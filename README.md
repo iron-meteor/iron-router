@@ -802,6 +802,9 @@ You can also define global hooks which apply to a set of named routes:
 ```js
 // this hook will run on almost all routes
 Router.before(mustBeSignedIn, {except: ['login', 'signup', 'forgotPassword']});
+
+// this hook will only run on certain routes
+Router.before(mustBeAdmin, {only: ['adminDashboard', 'adminUsers', 'adminUsersEdit']});
 ```
 
 ### Custom Rendering
