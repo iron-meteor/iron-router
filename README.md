@@ -2,9 +2,9 @@
 
 ### WARNING: THIS IS AN ALPHA QUALITY PROJECT
 
-This is your favorite [Iron Router](https://github.com/EventedMind/iron-router) with a built in subscription manager. Usually Iron Router forget previous route's subscriptions when it's switching to a new route. It makes meteor to unsubscribe all the subscriptions of the previous route, which have not been used in the current route. This adds unwanted overhead to the app and shuttered the user experience. See [this video](http://youtu.be/19nYAYTt2Wo?t=14s) for a better explanation.
+This is your favorite [Iron Router](https://github.com/EventedMind/iron-router) with a built in subscription manager. Usually Iron Router forget previous route's subscriptions when it's switching to a new route. It makes meteor to unsubscribe all the subscriptions of the previous route, which have not been used in the current route. This adds unwanted overhead to the app and shuttered the user experience. See [this video](http://youtu.be/hLnb4uxJmqk?t=30s) for a better explanation.
 
-Subscription Manager is a solution for that and improves the user experience and reduce the server overhead. [See for yourself](http://youtu.be/19nYAYTt2Wo?t=1m8s).
+Subscription Manager is a solution for that and improves the user experience and reduce the server overhead. [See for yourself](http://youtu.be/hLnb4uxJmqk?t=1m30s).
 
 ## Concepts
 
