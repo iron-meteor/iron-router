@@ -73,7 +73,7 @@ Replace `"iron-router": {}` from your `smart.json` into following:
 }
 ~~~
 
-You can expect API and semantic changes until this will be merged into `dev` branch. So, just join into this mailing list; I'll notify you, if there is any significant change.
+You can expect API and semantic changes until this will be merged into `dev` branch. So, just [join into this mailing list](http://mad.ly/signups/102205/join); I'll notify you, if there is any significant change.
 
 ## License
 
