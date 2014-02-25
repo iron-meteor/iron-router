@@ -20,6 +20,8 @@ Package.on_use(function (api) {
   api.add_files('lib/client/location.js', 'client');
   api.add_files('lib/client/spark_ui_manager.js', 'client');
   api.add_files('lib/client/router.js', 'client');
+  api.add_files('lib/client/wait_list.js', 'client');
+  api.add_files('lib/client/hooks.js', 'client');
   api.add_files('lib/client/route_controller.js', 'client');
   api.add_files('lib/client/helpers.js', 'client');
 
