@@ -1,3 +1,7 @@
+Router.configure({
+  debug: true
+});
+
 Router.map(function() {
   this.route('one', {path: '/', before: function() {
     console.log('one')
