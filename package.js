@@ -11,6 +11,7 @@ Package.on_use(function (api) {
   api.use('templating', 'client');
   api.use('handlebars', 'client');
   api.use('jquery', 'client');
+  api.use('spark', 'client', {weak: true});
 
   api.add_files('lib/utils.js', ['client', 'server']);
   api.add_files('lib/route.js', ['client', 'server']);
@@ -55,6 +56,10 @@ Package.on_test(function (api) {
   api.use('tinytest', ['client', 'server']);
   api.use('test-helpers', ['client', 'server']);
   api.use('reactive-dict', ['client', 'server']);
+
+  //XXX should we remove dependency?
+  //This is for the old shark_ui_manager in lib/client
+  api.use('spark', 'client');
 
   api.use('templating', 'client');
 

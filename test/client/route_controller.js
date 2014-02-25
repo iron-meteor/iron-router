@@ -36,7 +36,7 @@ MockRouter.prototype.getData = function() {
   return this.data;
 };
 
-MockRouter.prototype.clearUnusedYields = function (used) {
+MockRouter.prototype.clearUnusedRegions = function (used) {
   this.usedYields = used;
 };
 

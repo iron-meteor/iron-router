@@ -1,5 +1,5 @@
-Tinytest.add('ClientRouter - run computations', function (test) {
-  var router = new ClientRouter({
+Tinytest.add('IronRouter - run computations', function (test) {
+  var router = new IronRouter({
     autoRender: false,
     autoStart: false
   });
@@ -48,8 +48,8 @@ Tinytest.add('ClientRouter - run computations', function (test) {
   test.isFalse(newComp.stopped, 'new run comp is stopped');
 });
 
-Tinytest.add('ClientRouter - rendering', function (test) {
-  var router = new ClientRouter({
+Tinytest.add('IronRouter - rendering', function (test) {
+  var router = new IronRouter({
     autoRender: false,
     autoStart: false,
     layoutTemplate: 'layout'
@@ -127,8 +127,8 @@ Tinytest.add('ClientRouter - rendering', function (test) {
   }
 });
 
-Tinytest.add('ClientRouter - before hooks', function (test) {
-  var router = new ClientRouter({
+Tinytest.add('IronRouter - before hooks', function (test) {
+  var router = new IronRouter({
     autoStart: false,
     autoRender: false
   });
@@ -176,8 +176,8 @@ Tinytest.add('ClientRouter - before hooks', function (test) {
 });
 
 
-Tinytest.add('ClientRouter - load hooks', function (test) {
-  var router = new ClientRouter({
+Tinytest.add('IronRouter - load hooks', function (test) {
+  var router = new IronRouter({
     autoStart: false,
     autoRender: false
   });

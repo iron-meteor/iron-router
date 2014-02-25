@@ -1,5 +1,5 @@
-Tinytest.add('IronRouteController - inheritance', function (test) {
-  var App = IronRouteController.extend({
+Tinytest.add('RouteController - inheritance', function (test) {
+  var App = RouteController.extend({
     action: function () {
       return 'app';
     }
@@ -16,7 +16,7 @@ Tinytest.add('IronRouteController - inheritance', function (test) {
   test.equal(inst.action(), ['app', 'child']);
 });
 
-Tinytest.add('IronRouteController - runHooks', function (test) {
+Tinytest.add('RouteController - runHooks', function (test) {
   var calls = [];
   var call = function (idx) {
     return function () {
@@ -28,7 +28,7 @@ Tinytest.add('IronRouteController - runHooks', function (test) {
     before: [call(0)]
   };
 
-  var A = IronRouteController.extend({
+  var A = RouteController.extend({
     before: [call(1), call(2)]
   });
 
