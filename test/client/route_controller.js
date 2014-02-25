@@ -100,7 +100,7 @@ Tinytest.add('RouteController - run', function (test) {
   var inst = new C;
   
   Deps.autorun(function () {
-    inst.run();
+    inst._run();
   });
 
   test.equal(calls['upstreamBefore'], 1);
@@ -140,7 +140,7 @@ Tinytest.add('RouteController - autoRenderLoadingHook', function (test) {
   });
   
   Deps.autorun(function() {
-    controller.run();
+    controller._run();
   });
   
   test.equal(router.rendered.__main__, 'loading');
@@ -168,7 +168,7 @@ Tinytest.add('RouteController - autoRenderNotFoundHook', function (test) {
   });
   
   Deps.autorun(function() {
-    controller.run();
+    controller._run();
   });
   
   test.equal(router.rendered.__main__, 'notFound');
