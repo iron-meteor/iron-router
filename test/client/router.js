@@ -1,3 +1,14 @@
+var LocationMock = {
+  _path: '/one',
+  start: function() {},
+  set: function(path, options) {
+    this._path = path;
+  },
+  path: function() {
+    return this._path;
+  }
+};
+
 Tinytest.add('ClientRouter - run computations', function (test) {
   var router = new ClientRouter({
     autoRender: false,
@@ -201,10 +212,13 @@ Tinytest.add('ClientRouter - load hooks', function (test) {
     });
   });
   
+  router.configure({ location: LocationMock });
+  router.start();
+  
   router.setLayout = _.identity;
   router.setTemplate = _.identity;
   
-  router.dispatch('one');
+  router.start();
   test.equal(oneLoadHookCalled, 1);
   test.equal(oneBeforeHookCalled, 1);
   
@@ -215,4 +229,29 @@ Tinytest.add('ClientRouter - load hooks', function (test) {
   // show have redirected before this happens
   test.equal(twoBeforeHookCalled, 0);
   
+});
+
+Tinytest.add('ClientRouter - unload hooks', function (test) {
+  var router = new ClientRouter({
+    autoStart: false,
+    autoRender: false
+  });
+  
+  var unloadCalledAt = null;
+  router.map(function() {
+    this.route('one', {
+      unload: function() {
+        console.log('unload called')
+        unloadCalledAt = router._location.path();
+      }
+    });
+    this.route('two');
+  });
+  
+  router.configure({ location: LocationMock });
+  router.start();
+  test.isNull(unloadCalledAt);
+  
+  router.dispatch('two');
+  test.equal(unloadCalledAt, '/one');
 });
