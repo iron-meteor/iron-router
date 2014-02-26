@@ -1,5 +1,8 @@
-var LocationMock = {
-  _path: '/one',
+var LocationMock = function() {
+  this._path = '/one';
+}
+
+_.extend(LocationMock.prototype, {
   start: function() {},
   set: function(path, options) {
     this._path = path;
@@ -7,7 +10,7 @@ var LocationMock = {
   path: function() {
     return this._path;
   }
-};
+});
 
 Tinytest.add('ClientRouter - run computations', function (test) {
   var router = new ClientRouter({
@@ -212,7 +215,7 @@ Tinytest.add('ClientRouter - load hooks', function (test) {
     });
   });
   
-  router.configure({ location: LocationMock });
+  router.configure({ location: new LocationMock });
   router.start();
   
   router.setLayout = _.identity;
@@ -241,14 +244,13 @@ Tinytest.add('ClientRouter - unload hooks', function (test) {
   router.map(function() {
     this.route('one', {
       unload: function() {
-        console.log('unload called')
         unloadCalledAt = router._location.path();
       }
     });
     this.route('two');
   });
   
-  router.configure({ location: LocationMock });
+  router.configure({ location: new LocationMock });
   router.start();
   test.isNull(unloadCalledAt);
   
