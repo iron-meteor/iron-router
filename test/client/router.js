@@ -1,10 +1,11 @@
 var LocationMock = function() {
-  this._path = '/one';
+  this._path = Meteor.absoluteUrl('one');
 }
 
 _.extend(LocationMock.prototype, {
   start: function() {},
   set: function(path, options) {
+    console.log('set')
     this._path = path;
   },
   path: function() {
@@ -255,5 +256,39 @@ Tinytest.add('ClientRouter - unload hooks', function (test) {
   test.isNull(unloadCalledAt);
   
   router.dispatch('two');
-  test.equal(unloadCalledAt, '/one');
+  test.equal(unloadCalledAt, Meteor.absoluteUrl('one'));
+});
+
+Tinytest.add('ClientRouter - calling same route twice does not write to history', function (test) {
+  var router = new ClientRouter({
+    autoStart: false,
+    autoRender: false
+  });
+  
+  router.map(function() {
+    this.route('one');
+    this.route('two');
+  });
+  
+  var location = new LocationMock;
+  var setCalled = 0, oldSet = location.set
+  location.set = function() {
+    setCalled += 1;
+    oldSet.apply(this, arguments);
+  }
+  
+  router.configure({ location: location });
+  
+  // starting the router doesn't set the url
+  router.start();
+  test.equal(setCalled, 0);
+  
+  router.go(router.url('one'));
+  test.equal(setCalled, 0);
+  router.go(router.url('two'));
+  test.equal(setCalled, 1);
+  router.go(router.url('one'));
+  test.equal(setCalled, 2);
+  router.go(router.url('one'));
+  test.equal(setCalled, 2);
 });
