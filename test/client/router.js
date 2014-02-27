@@ -107,7 +107,7 @@ Tinytest.add('IronRouter - load hooks', function (test) {
 });
 
 Tinytest.add('ClientRouter - unload hooks', function (test) {
-  var router = new ClientRouter({
+  var router = new IronRouter({
     autoStart: false,
     autoRender: false
   });
@@ -131,7 +131,7 @@ Tinytest.add('ClientRouter - unload hooks', function (test) {
 });
 
 Tinytest.add('ClientRouter - calling same route twice does not write to history', function (test) {
-  var router = new ClientRouter({
+  var router = new IronRouter({
     autoStart: false,
     autoRender: false
   });
