@@ -96,10 +96,10 @@ Tinytest.add('Utils - capitalize', function (test) {
   test.equal(RouterUtils.capitalize(str), 'Lower');
 });
 
-Tinytest.add('Utils - classify', function (test) {
-  test.equal(RouterUtils.classify('postsShow'), 'PostsShow');
-  test.equal(RouterUtils.classify('posts-show'), 'PostsShow');
-  test.equal(RouterUtils.classify('posts_show'), 'PostsShow');
+Tinytest.add('Utils - upperCamelCase', function (test) {
+  test.equal(RouterUtils.upperCamelCase('postsShow'), 'PostsShow');
+  test.equal(RouterUtils.upperCamelCase('posts-show'), 'PostsShow');
+  test.equal(RouterUtils.upperCamelCase('posts_show'), 'PostsShow');
 });
 
 Tinytest.add('Utils - global', function (test) {
