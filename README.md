@@ -435,6 +435,9 @@ Router.go('/posts/7');
 Router.go('postShow', {_id: 7});
 ```
 
+The current route is returned by `Router.current()`. Most often, you'll want
+`Router.current().path`.
+
 ### Rendering Templates
 The default action for a route is to render a template. You can specify a
 template as an option to the route. If you don't provide a template, the route
