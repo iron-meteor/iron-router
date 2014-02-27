@@ -3,12 +3,9 @@
 </head>
 
 <template name="one">
-  {{#link route='two'}}Two{{/link}}
-  {{#link route='one'}}One{{/link}}
+  <a href="/two">Two</a>
 </template>
 
 <template name="two">
-  {{#link route='one'}}One{{/link}}
-  {{#link route='three'}}Three{{/link}}
-  <a href="http://google.com">Google</a>
+  <a href="/">One</a>
 </template>
