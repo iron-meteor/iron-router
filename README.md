@@ -426,7 +426,7 @@ And you can pass a hash value using the Handlbars helper like this:
 
 Sometimes you'll need to change the route without the user clicking a link. For this you can use `Router.go`:
 
-```js
+```javascript
 // you can pass a fully formed URL path in
 Router.go('/posts/7');
 
@@ -434,6 +434,14 @@ Router.go('/posts/7');
 // as you would in `pathFor`
 Router.go('postShow', {_id: 7});
 ```
+
+The current route is returned by `Router.current()`. It can be `null` (just like `Meteor.user()` can be null) so it's best to guard when working with reactive return values. For example, to find the current path:
+
+```javascript
+var current = Router.current();
+return current && current.path;
+```
+
 
 ### Rendering Templates
 The default action for a route is to render a template. You can specify a
