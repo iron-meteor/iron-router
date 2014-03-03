@@ -482,13 +482,13 @@ Router.map(function () {
 ```
 
 The layout template must declare where it wants various child templates to
-render. You can do this by using the `{{>yield}}` helper. A basic layout would
+render. You can do this by using the `{{> yield}}` helper. A basic layout would
 look like this:
 
 ```html
 <template name="layout">
   <div>
-    {{>yield}}
+    {{> yield}}
   </div>
 </template>
 ```
@@ -499,15 +499,15 @@ into any number of regions in the layout. For example:
 ```html
 <template name="layout">
   <aside>
-    {{>yield region='aside'}}
+    {{> yield region='aside'}}
   </aside>
 
   <div>
-    {{>yield}}
+    {{> yield}}
   </div>
 
   <footer>
-    {{>yield region='footer'}}
+    {{> yield region='footer'}}
   </footer>
 </template>
 ```
@@ -533,7 +533,7 @@ The above example will render the template named `myAsideTemplate` to the region
 named `aside` and the template named `myFooter` to the region named `footer`. The
 main template `myHomeTemplate` specified by the `template` option will be
 rendered into the **main** region. This is the region without a name
-in the center that looks like this: `{{>yield}}`.
+in the center that looks like this: `{{> yield}}`.
 
 ### Data
 You can provide a data context for the current route by providing a `data`
