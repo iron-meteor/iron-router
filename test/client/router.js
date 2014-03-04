@@ -106,17 +106,18 @@ Tinytest.add('IronRouter - load hooks', function (test) {
   
 });
 
-Tinytest.add('ClientRouter - unload hooks', function (test) {
+Tinytest.add('ClientRouter - onStop hooks', function (test) {
   var router = new IronRouter({
     autoStart: false,
     autoRender: false
   });
   
-  var unloadCalledAt = null;
+  var onStopCalledAt = null;
   router.map(function() {
     this.route('one', {
-      unload: function() {
-        unloadCalledAt = router._location.path();
+      onStop: function() {
+        console.log('on stop', router._location.path())
+        onStopCalledAt = router._location.path();
       }
     });
     this.route('two');
@@ -124,10 +125,11 @@ Tinytest.add('ClientRouter - unload hooks', function (test) {
   
   router.configure({ location: new LocationMock });
   router.start();
-  test.isNull(unloadCalledAt);
+  test.isNull(onStopCalledAt);
   
+  console.log('dispatching')
   router.dispatch('two');
-  test.equal(unloadCalledAt, Meteor.absoluteUrl('one'));
+  test.equal(onStopCalledAt, Meteor.absoluteUrl('one'));
 });
 
 Tinytest.add('ClientRouter - calling same route twice does not write to history', function (test) {
