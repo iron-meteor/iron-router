@@ -1,3 +1,6 @@
+## v0.6.2
+* Bug fix: couldn't go back after page reload. Thanks @apendua!
+
 ## v0.6.1
 * Bug fix: notFound template rendered with layout
 * Bug fix: loading and notFound render yeilds again

@@ -42,6 +42,10 @@ A client and server side router designed specifically for Meteor.
 See the History.md file for changes (including breaking changes) across
 versions.
 
+## Concepts
+
+Iron-router takes over generating the `<body>` of the page. You won't need to define the `<body>` element as you would for HTML pages; rather, you define a "layout" (usually a `<template name="layout">...</template>`, which contains static elements that don't change across pages of the app, and also one or more `{{yield}}` tags (technically template helpers), which will bring in content from other templates. In a layout file, the `{{yield}}` tag without any parameters is called the "main yield", and it will pull in the route template specified by the `template` option of the `route()` method call. All these will become clearer as you'll go through the examples below.
+
 ## Quick Start
 
 ```sh
@@ -174,7 +178,7 @@ Router.map(function () {
 });
 ```
 
-This creates a route with the name "home." The route is named so that you can
+This creates a route with the name "home". The route is named so that you can
 quickly get the route by name like this: `Router.routes['home']`. 
 
 By default, routes are created as client routes. This means, the route will only
@@ -316,7 +320,7 @@ Router.map(function () {
 ### Rendering the Router
 By default, the Router is rendered (appended) automatically to the document body
 when the DOM is ready. You can override this behavior and render the Router
-whever you'd like by setting a configuration option and using a Handlebars
+whenever you'd like by setting a configuration option and using a Handlebars
 helper like this:
 
 ```javascript
@@ -341,7 +345,7 @@ Router.configure({
 Once your application becomes large enough, it becomes a pain to hard code urls
 everywhere. If you end up changing your route path a little, you need to find
 all of the href tags in your application and change those as well. It's much
-better if we can call a function to return a url given a parameters object.
+better if we can call a function to return a URL given a parameters object.
 There are a few Handlebars helpers you can use directly in your HTML. You can
 also call the `path` and `url` methods on a route itself. 
 
@@ -602,7 +606,7 @@ Router.map(function () {
   this.route('post', {
     path: '/posts/:slug',
 
-    waitOn: function () {
+    waitOn: function () {  // wait for the subscription to be ready; see below
       return Meteor.subscribe('posts');
     },
 
@@ -647,7 +651,8 @@ Router.map(function () {
 });
 ```
 
-If you provide a global `notFoundTemplate`, it will get rendered automatically if a user visits a un-matched path, assuming it's not already handled on the server-side:
+If you provide a global `notFoundTemplate`, it will get rendered automatically if
+a user visits an un-matched path, assuming it's not already handled on the server-side:
 
 ```javascript
 // given a browser url of: http://localhost:3000/boguspath
@@ -702,14 +707,26 @@ When your route is run, it will wait on any subscriptions you've provided in
 your `waitOn` function. If you've provided a `loadingTemplate`, the default action 
 will be to render that template.
 
-While waiting, you can check if your subscriptions are ready in your before hooks, 
-action method, and after hooks, by checking `this.ready()`. 
+While waiting, you can check if your subscriptions are ready in your `before` hooks, 
+`action` method, and `after` hooks, by checking `this.ready()`. 
 
 Under the hood, the waitOn function calls the `wait(handles, onReady,
 onWaiting)` method of a RouteController (more on RouteControllers below). If you
 need to customize this behavior you can skip providing a `waitOn` property and
 just use the `wait` method directly in a custom action function or a before
 hook.
+
+You can also wait for certain subscriptions on a global level, by passing a `waitOn`
+function in the `Router.configure()` call:
+
+```js
+Router.configure({
+  waitOn: function () {
+    return Meteor.subscribe('recordSetThatYouNeedNoMatterWhat');
+  }
+});
+```
+
 
 ### Waiting on Subscriptions (`wait()`)
 
@@ -728,7 +745,7 @@ Router.map(function () {
 });
 ```
 
-Callin `wait` on a subscription handle doesn't actually block anything. It just
+Calling `wait` on a subscription handle doesn't actually block anything. It just
 adds the subscription handle to a list of handles we are reactively waiting on.
 When all of these handles are ready `this.ready()` on the RouteController will
 be true.
@@ -790,6 +807,9 @@ You can also define global hooks which apply to a set of named routes:
 ```js
 // this hook will run on almost all routes
 Router.before(mustBeSignedIn, {except: ['login', 'signup', 'forgotPassword']});
+
+// this hook will only run on certain routes
+Router.before(mustBeAdmin, {only: ['adminDashboard', 'adminUsers', 'adminUsersEdit']});
 ```
 
 ### Custom Rendering
@@ -798,7 +818,7 @@ to call the render method:
 
   1. `this.render()`: Render all of the templates for the Route or
      RouteController. This renders the main template into the main yield region,
-     and all of the yieldTemplates into their associated {{yield 'name'}}
+     and all of the yieldTemplates into their associated `{{yield 'name'}}`
      regions.
   2. `this.render('templateName')`: Render the template named 'templateName'
      into the main yield `{{yield}}`.
@@ -854,7 +874,7 @@ data source invalidates the computation, these functions will be run again.
 
 ### Unload Hook
 Unload hooks will be called before a RouteController is unloaded and a new
-RouteController is run. This hooks is useful for cleaning up Session data for
+RouteController is run. This hook is useful for cleaning up Session data for
 example.
 
 ```javascript
@@ -914,6 +934,7 @@ like in the client.
 ```javascript
 Router.map(function () {
   this.route('serverFile', {
+    where: 'server',
     path: '/files/:filename',
 
     action: function () {
@@ -936,7 +957,7 @@ inheriting from `RouteController`. This works on both the client and the server,
 but each has slightly different methods as described above.
 
 Although we haven't been working with `RouteController`s directly, under the
-hood they were getting creating automatically for us when our routes were run.
+hood they were getting created automatically for us when our routes were run.
 These are called "anonymous" `RouteController`s. But we can create our own like
 this:
 
@@ -1010,11 +1031,11 @@ In Coffeescript we can use the language's native inheritance.
 
 ```coffeescript
 class @PostShowController extends RouteController
-  @before ->
-    # do some before stuff and note this is a class level method call '@'
+  before: ->
+    # do some stuff before the action is invoked
 
-  @after ->
-    # call the class level after method using '@'
+  after: ->
+    # do some stuff after the action is invoked
 
   layout: 'layout'
 
@@ -1102,7 +1123,7 @@ StripeRedirectController = RouteController.extend({
 });
 ````
 
-Once you have access to the parameters, there are numerous ways to pass those variables throughout your app.  Session.set() is just one method.  You'll need to choose whether you want to use reactive Session variable or not.  
+Once you have access to the parameters, there are numerous ways to pass those variables throughout your app.  `Session.set()` is just one method.  You'll need to choose whether you want to use reactive `Session` variables or not.  
 
 
 ## License
