@@ -4,10 +4,5 @@
   "homepage": "https://github.com/EventedMind/iron-router",
   "author": "Chris Mather (https://github.com/cmather), Tom Coleman (https://github.com/tmeasday)",
   "version": "0.7.0",
-  "git": "https://github.com/EventedMind/iron-router.git",
-  "packages": {
-    "blaze-layout": {
-      "version": "0.2.1"
-    }
-  }
+  "git": "https://github.com/EventedMind/iron-router.git"
 }

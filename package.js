@@ -11,7 +11,9 @@ Package.on_use(function (api) {
 
   // default ui manager
   // use unordered: true becuase of circular dependency
-  api.use('blaze-layout', 'client', {unordered: true});
+
+  // XXX commenting out for now because this is somehow causing problems
+  //api.use('blaze-layout', 'client', {unordered: true});
 
   // for default helpers like pathFor, urlFor
   api.use('handlebars', 'client', {weak: true});
