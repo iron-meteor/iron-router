@@ -1,5 +1,17 @@
-//XXX client side behavior might be the same now?
-//XXX create separate test for SparkUIManager
+var LocationMock = function() {
+  this._path = Meteor.absoluteUrl('one');
+}
+
+_.extend(LocationMock.prototype, {
+  start: function() {},
+  set: function(path, options) {
+    console.log('set')
+    this._path = path;
+  },
+  path: function() {
+    return this._path;
+  }
+});
 
 Tinytest.add('IronRouter - before hooks', function (test) {
   var router = new IronRouter({
@@ -75,10 +87,13 @@ Tinytest.add('IronRouter - load hooks', function (test) {
     });
   });
   
+  router.configure({ location: new LocationMock });
+  router.start();
+  
   router.setLayout = _.identity;
   router.setTemplate = _.identity;
   
-  router.dispatch('one');
+  router.start();
   test.equal(oneLoadHookCalled, 1);
   test.equal(oneBeforeHookCalled, 1);
   
@@ -89,4 +104,64 @@ Tinytest.add('IronRouter - load hooks', function (test) {
   // show have redirected before this happens
   test.equal(twoBeforeHookCalled, 0);
   
+});
+
+Tinytest.add('ClientRouter - onStop hooks', function (test) {
+  var router = new IronRouter({
+    autoStart: false,
+    autoRender: false
+  });
+  
+  var onStopCalledAt = null;
+  router.map(function() {
+    this.route('one', {
+      onStop: function() {
+        console.log('on stop', router._location.path())
+        onStopCalledAt = router._location.path();
+      }
+    });
+    this.route('two');
+  });
+  
+  router.configure({ location: new LocationMock });
+  router.start();
+  test.isNull(onStopCalledAt);
+  
+  console.log('dispatching')
+  router.dispatch('two');
+  test.equal(onStopCalledAt, Meteor.absoluteUrl('one'));
+});
+
+Tinytest.add('ClientRouter - calling same route twice does not write to history', function (test) {
+  var router = new IronRouter({
+    autoStart: false,
+    autoRender: false
+  });
+  
+  router.map(function() {
+    this.route('one');
+    this.route('two');
+  });
+  
+  var location = new LocationMock;
+  var setCalled = 0, oldSet = location.set
+  location.set = function() {
+    setCalled += 1;
+    oldSet.apply(this, arguments);
+  }
+  
+  router.configure({ location: location });
+  
+  // starting the router doesn't set the url
+  router.start();
+  test.equal(setCalled, 0);
+  
+  router.go(router.url('one'));
+  test.equal(setCalled, 0);
+  router.go(router.url('two'));
+  test.equal(setCalled, 1);
+  router.go(router.url('one'));
+  test.equal(setCalled, 2);
+  router.go(router.url('one'));
+  test.equal(setCalled, 2);
 });

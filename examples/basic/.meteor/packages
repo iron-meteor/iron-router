@@ -8,3 +8,4 @@ autopublish
 insecure
 preserve-inputs
 iron-router
+blaze-layout
