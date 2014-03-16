@@ -1,3 +1,4 @@
+/*
 Tinytest.add('ServerRouter - before hooks', function (test) {
   var router = new ServerRouter;
   var where = 'server';
@@ -41,4 +42,4 @@ Tinytest.add('ServerRouter - before hooks', function (test) {
   test.equal(thirdHookCalled, 3);  
   test.equal(fourthHookCalled, 3);
 });
-
+*/

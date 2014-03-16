@@ -13,6 +13,7 @@ _.extend(LocationMock.prototype, {
   }
 });
 
+/*
 Tinytest.add('IronRouter - before hooks', function (test) {
   var router = new IronRouter({
     autoStart: false,
@@ -61,78 +62,7 @@ Tinytest.add('IronRouter - before hooks', function (test) {
   test.equal(fourthHookCalled, 3);
 });
 
-
-Tinytest.add('IronRouter - load hooks', function (test) {
-  var router = new IronRouter({
-    autoStart: false,
-    autoRender: false
-  });
-  
-  var oneLoadHookCalled = 0;
-  var oneBeforeHookCalled = 0;
-  var twoLoadHookCalled = 0;
-  var twoBeforeHookCalled = 0;
-  
-  router.map(function() {
-    this.route('one', {
-      load: function() { oneLoadHookCalled += 1; },
-      before: function() { oneBeforeHookCalled += 1; }
-    });
-    this.route('two', {
-      load: function() { 
-        twoLoadHookCalled += 1;
-        this.redirect('one');
-      },
-      before: function() { twoBeforeHookCalled += 1; },
-    });
-  });
-  
-  router.configure({ location: new LocationMock });
-  router.start();
-  
-  router.setLayout = _.identity;
-  router.setTemplate = _.identity;
-  
-  router.start();
-  test.equal(oneLoadHookCalled, 1);
-  test.equal(oneBeforeHookCalled, 1);
-  
-  router.dispatch('two');
-  test.equal(oneLoadHookCalled, 2);
-  test.equal(oneBeforeHookCalled, 2);
-  test.equal(twoLoadHookCalled, 1);
-  // show have redirected before this happens
-  test.equal(twoBeforeHookCalled, 0);
-  
-});
-
-Tinytest.add('ClientRouter - onStop hooks', function (test) {
-  var router = new IronRouter({
-    autoStart: false,
-    autoRender: false
-  });
-  
-  var onStopCalledAt = null;
-  router.map(function() {
-    this.route('one', {
-      onStop: function() {
-        console.log('on stop', router._location.path())
-        onStopCalledAt = router._location.path();
-      }
-    });
-    this.route('two');
-  });
-  
-  router.configure({ location: new LocationMock });
-  router.start();
-  test.isNull(onStopCalledAt);
-  
-  console.log('dispatching')
-  router.dispatch('two');
-  test.equal(onStopCalledAt, Meteor.absoluteUrl('one'));
-});
-
-Tinytest.add('ClientRouter - calling same route twice does not write to history', function (test) {
+Tinytest.add('Router - calling same route twice does not write to history', function (test) {
   var router = new IronRouter({
     autoStart: false,
     autoRender: false
@@ -165,3 +95,4 @@ Tinytest.add('ClientRouter - calling same route twice does not write to history'
   router.go(router.url('one'));
   test.equal(setCalled, 2);
 });
+*/
