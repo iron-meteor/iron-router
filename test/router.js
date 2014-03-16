@@ -36,7 +36,7 @@ routes.server = routes[1];
 /* Client and Server */
 /*****************************************************************************/
 Tinytest.add('Router - path', function (test) {
-  var router = new IronRouter;
+  var router = Router;
   router.routes = routes;
 
   var params = [];
@@ -48,7 +48,7 @@ Tinytest.add('Router - path', function (test) {
 });
 
 Tinytest.add('Router - url', function (test) {
-  var router = new IronRouter;
+  var router = Router;
   router.routes = routes;
 
   var params = [];
@@ -65,7 +65,7 @@ Tinytest.add('Router - url', function (test) {
 /*****************************************************************************/
 if (Meteor.isClient) {
   Tinytest.add('Router - client dispatch', function (test) {
-    var router = new IronRouter;
+    var router = Router;
 
     router.routes = routes;
 
@@ -107,7 +107,7 @@ if (Meteor.isClient) {
 /*****************************************************************************/
 if (Meteor.isServer) {
   Tinytest.add('Router - server dispatch', function (test) {
-    var router = new IronRouter;
+    var router = Router;
 
     router.routes = routes;
 

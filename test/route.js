@@ -393,18 +393,20 @@ Tinytest.add('Route - getController', function (test) {
   var route;
   var root = Utils.global();
 
-  root.TestController = function (options)  {
-    if (arguments.length < 1)
+  root.TestController = function (router, route, options)  {
+    if (arguments.length < 2)
       throw new Error('Argument length check');
 
     this.options = options;
+    this.router = router;
+    this.route = route; 
   };
 
   var testGetController = function (route) {
     var controller = route.getController('/test', {option: true});
     test.isTrue(controller instanceof TestController);
-    test.equal(controller.options.route, route);
-    test.equal(controller.options.template, 'template');
+    test.equal(controller.route, route);
+    test.equal(controller.router, Router);
     test.isTrue(controller.options.option);
   };
 
@@ -444,7 +446,6 @@ Tinytest.add('Route - getController', function (test) {
   });
   var controller = route.getController('/anon', {option: true});
   test.isTrue(controller instanceof RouteController);
-  test.equal(controller.options.route, route);
-  test.equal(controller.options.template, 'template');
+  test.equal(controller.route, route);
   test.isTrue(controller.options.option);
 });
