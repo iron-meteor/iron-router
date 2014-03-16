@@ -1,3 +1,6 @@
+// uiManager api tests
+// hot code reload
+// run (deps changed and current changed)
 var LocationMock = function() {
   this._path = Meteor.absoluteUrl('one');
 }
