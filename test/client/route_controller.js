@@ -1,3 +1,7 @@
+//XXX onRun hook is not called at all
+//XXX onData, onBeforeAction, onAfterAction called twice. But action only called
+//once.
+
 // mock out:
 //  Router.go
 //  uiManager for router
@@ -80,5 +84,67 @@ Tinytest.add('Client RouteController - data', function (test) {
   test.isNull(value, "controller with no data should give null value");
 });
 
-Tinytest.add('Client RouteController - _run', function (test) {
+Tinytest.add('Client RouteController - _run order', function (test) {
+  var calls = [];
+
+  var c = createController({
+    onRun: function () {
+      calls.push('onRun');
+    },
+
+    onStop: function () {
+      calls.push('onStop');
+    },
+
+    waitOn: function () {
+      calls.push('waitOn');
+    },
+
+    data: function () {
+      calls.push('data');
+    },
+
+    onData: function () {
+      calls.push('onData');
+    },
+
+    onBeforeAction: function () {
+      calls.push('onBeforeAction');
+    },
+
+    action: function () {
+      calls.push('action');
+    },
+
+    onAfterAction: function () {
+      calls.push('onAfterAction');
+    }
+  });
+
+  c.router.layout = function () {
+    calls.push('layout');
+  };
+
+  c.router.setRegion = function () {
+  };
+
+  c.router.setData = function () {
+  };
+
+  c.router.clearUnusedRegions = function () {
+  };
+
+  c._run();
+
+  test.equal(calls, [
+    'layout',
+    'onRun',
+    'waitOn',
+    'data',
+    'onData',
+    'onBeforeAction',
+    'action',
+    'onAfterAction'
+  ], 'run order seems wrong');
+
 });

@@ -152,6 +152,38 @@ Tinytest.add('RouteController - _runHook stop', function (test) {
   test.equal(calls, ['1'], 'looks like a downstream hook ran even though we were stopped');
 });
 
+Tinytest.add('RouteController - runHooks', function (test) {
+  var Router = createRouter();
+  var route = new Route(Router, 'test', {});
+  var inst = new RouteController(Router, route, {});
+  var calls = [];
+
+  inst.onRun = function () {
+    calls.push('onRun');
+  };
+
+  inst.load = function () {
+    calls.push('load');
+  };
+
+  var cb = function () {
+    calls.push('cb');
+  };
+
+  var more = function () {
+    calls.push('more');
+  };
+
+  inst.runHooks(['onRun', 'load'], more, cb);
+  test.equal(calls, [
+    'onRun',
+    'more',
+    'load',
+    'more', //XXX this is a mistake
+    'cb'
+  ]);
+});
+
 Tinytest.add('RouteController - stop', function (test) {
   var Router = createRouter();
   var route = new Route(Router, 'test', {});
