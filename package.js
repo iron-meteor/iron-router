@@ -53,13 +53,17 @@ Package.on_test(function (api) {
   api.use('reactive-dict', ['client', 'server']);
 
   api.add_files('test/test_helpers.js', ['client', 'server']);
-  api.add_files('test/route.js', ['client', 'server']);
-  api.add_files('test/route_controller.js', ['client', 'server']);
-  api.add_files('test/router.js', ['client', 'server']);
-  api.add_files('test/router_utils.js', ['client', 'server']);
 
+  // client and server
+  api.add_files('test/both/route.js', ['client', 'server']);
+  api.add_files('test/both/route_controller.js', ['client', 'server']);
+  api.add_files('test/both/router.js', ['client', 'server']);
+  api.add_files('test/both/utils.js', ['client', 'server']);
+
+  // server only
   api.add_files('test/server/router.js', 'server');
 
+  // client only
   api.add_files('test/client/router.js', 'client');
   api.add_files('test/client/route_controller.js', 'client');
   api.add_files('test/client/wait_list.js', 'client');
