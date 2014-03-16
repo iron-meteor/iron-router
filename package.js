@@ -38,6 +38,7 @@ Package.on_use(function (api) {
 
   api.export('Utils', ['client', 'server'], {testOnly: true});
   api.export('IronRouter', ['client', 'server'], {testOnly: true});
+  api.export('WaitList', 'client', {testOnly: true});
 });
 
 Package.on_test(function (api) {
@@ -56,4 +57,5 @@ Package.on_test(function (api) {
 
   api.add_files('test/client/router.js', 'client');
   api.add_files('test/client/route_controller.js', 'client');
+  api.add_files('test/client/wait_list.js', 'client');
 });
