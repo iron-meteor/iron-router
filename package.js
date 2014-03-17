@@ -16,7 +16,7 @@ Package.on_use(function (api) {
   //api.use('blaze-layout', 'client', {unordered: true});
 
   // for default helpers like pathFor, urlFor
-  api.use('handlebars', 'client', {weak: true});
+  api.use('ui', 'client', {weak: true});
 
   api.add_files('lib/utils.js', ['client', 'server']);
   api.add_files('lib/route.js', ['client', 'server']);
