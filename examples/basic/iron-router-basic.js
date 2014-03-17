@@ -1,5 +1,8 @@
 Router.configure({
-  debug: true
+  debug: true,
+  before: function() {
+    console.log('before all')
+  }
 });
 
 Router.map(function() {
