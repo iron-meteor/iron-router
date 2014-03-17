@@ -391,7 +391,7 @@ Tinytest.add('Route - normalizePath', function (test) {
 
 Tinytest.add('Route - getController', function (test) {
   var route;
-  var root = Utils.global();
+  var root = Utils.global;
 
   root.TestController = function (router, route, options)  {
     if (arguments.length < 2)

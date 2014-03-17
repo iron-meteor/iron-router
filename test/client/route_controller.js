@@ -138,8 +138,6 @@ Tinytest.add('Client RouteController - _run order', function (test) {
   c.router._hasJustReloaded = false;
   c._run();
 
-  console.log(calls);
-
   test.equal(calls, [
     'layout',
     'onRun',
@@ -150,5 +148,7 @@ Tinytest.add('Client RouteController - _run order', function (test) {
     'action',
     'onAfterAction'
   ], 'run order seems wrong');
+});
 
+Tinytest.add('Client RouteController - _run computations', function (test) {
 });
