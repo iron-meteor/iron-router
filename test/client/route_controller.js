@@ -134,7 +134,11 @@ Tinytest.add('Client RouteController - _run order', function (test) {
   c.router.clearUnusedRegions = function () {
   };
 
+  // make sure onRun hook gets called again
+  c.router._hasJustReloaded = false;
   c._run();
+
+  console.log(calls);
 
   test.equal(calls, [
     'layout',

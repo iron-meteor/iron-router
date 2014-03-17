@@ -54,7 +54,7 @@ Tinytest.add('RouteController - lookupProperty', function (test) {
   test.equal(value, 'myOptionsValue', 'property should be on instance options');
 });
 
-Tinytest.add('RouteController - _runHook run order', function (test) {
+Tinytest.add('RouteController - runHooks run order', function (test) {
   var Router = createRouter();
   var route = new Route(Router, 'test', {});
 
@@ -97,16 +97,16 @@ Tinytest.add('RouteController - _runHook run order', function (test) {
     calls.push('instance');
   };
 
-  var more = function () {
+  var more = [function () {
     calls.push('more');
-  };
+  }];
 
-  inst._runHook('onRun', more);
+  inst.runHooks('onRun', more);
 
-  test.equal(calls, ["router", "route options", "options", "parent", "child", "instance", "more"], '_runHook run order is wrong');
+  test.equal(calls, ["router", "route options", "options", "parent", "child", "instance", "more"], 'runHooks run order is wrong');
 });
 
-Tinytest.add('RouteController - _runHook pause', function (test) {
+Tinytest.add('RouteController - runHooks pause', function (test) {
   var Router = createRouter();
   var route = new Route(Router, 'test', {});
   var inst = new RouteController(Router, route, {});
@@ -124,13 +124,12 @@ Tinytest.add('RouteController - _runHook pause', function (test) {
     }
   ];
 
-  var isPaused = inst._runHook('onRun');
-
+  var isPaused = inst.runHooks('onRun');
   test.equal(calls, ['1'], 'looks like a downstream hook ran even though we were paused');
-  test.isTrue(isPaused, "looks like _runHook didn't return the paused value");
+  test.isTrue(isPaused, "looks like runHooks didn't return the paused value");
 });
 
-Tinytest.add('RouteController - _runHook stop', function (test) {
+Tinytest.add('RouteController - runHooks stop', function (test) {
   var Router = createRouter();
   var route = new Route(Router, 'test', {});
   var inst = new RouteController(Router, route, {});
@@ -148,7 +147,7 @@ Tinytest.add('RouteController - _runHook stop', function (test) {
     }
   ];
 
-  inst._runHook('onRun');
+  inst.runHooks('onRun');
   test.equal(calls, ['1'], 'looks like a downstream hook ran even though we were stopped');
 });
 
@@ -162,24 +161,18 @@ Tinytest.add('RouteController - runHooks', function (test) {
     calls.push('onRun');
   };
 
-  inst.load = function () {
-    calls.push('load');
-  };
+  var more = [function () {
+    calls.push('more');
+  }];
 
   var cb = function () {
     calls.push('cb');
   };
 
-  var more = function () {
-    calls.push('more');
-  };
-
-  inst.runHooks(['onRun', 'load'], more, cb);
+  inst.runHooks('onRun', more, cb);
   test.equal(calls, [
     'onRun',
     'more',
-    'load',
-    'more', //XXX this is a mistake
     'cb'
   ]);
 });
@@ -194,13 +187,9 @@ Tinytest.add('RouteController - stop', function (test) {
     calls.push('onStop');
   };
 
-  inst.unload = function () {
-    calls.push('unload');
-  };
-
   inst.stop();
 
   test.isFalse(inst.isRunning, 'isRunning should be false');
   test.isTrue(inst.isStopped, 'isStopped should be true');
-  test.equal(calls, ['onStop', 'unload'], 'stop hooks not called');
+  test.equal(calls, ['onStop'], 'stop hooks not called');
 });
