@@ -12,11 +12,15 @@ Package.on_use(function (api) {
   // default ui manager
   // use unordered: true becuase of circular dependency
 
-  // XXX commenting out for now because this is somehow causing problems
-  //api.use('blaze-layout', 'client', {unordered: true});
-
   // for helpers
   api.use('ui', 'client', {weak: true});
+ 
+  // default ui manager
+  // unordered: true because blaze-layout package weakly
+  // depends on iron-router so it can register itself with
+  // the router. But we still want to pull in the blaze-layout
+  // package automatically when users add iron-router.
+  api.use('blaze-layout', 'client', {unordered: true});
 
   api.add_files('lib/utils.js', ['client', 'server']);
   api.add_files('lib/route.js', ['client', 'server']);
