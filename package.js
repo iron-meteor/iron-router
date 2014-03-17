@@ -34,7 +34,7 @@ Package.on_use(function (api) {
   api.add_files('lib/server/router.js', 'server');
 
   api.use('webapp', 'server');
-  Npm.depends({connect: '2.7.10'});
+  Npm.depends({connect: '2.9.0'});
 
   api.export('RouteController', ['client', 'server']);
   api.export('Route', ['client', 'server']);
