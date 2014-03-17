@@ -1,6 +1,6 @@
 {
   "meteor": {
-    "git": "https://github.com/meteor/meteor",
+    "git": "https://github.com/meteor/meteor.git",
     "branch": "shark"
   },
   "packages": {
@@ -8,7 +8,7 @@
       "path": "../../"
     },
     "blaze-layout": {
-      "git": "https://github.com/EventedMind/blaze-layout",
+      "git": "https://github.com/EventedMind/blaze-layout.git",
       "branch": "devel"
     }
   }

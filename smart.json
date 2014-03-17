@@ -3,6 +3,12 @@
   "description": "Routing specifically designed for Meteor",
   "homepage": "https://github.com/EventedMind/iron-router",
   "author": "Chris Mather (https://github.com/cmather), Tom Coleman (https://github.com/tmeasday)",
-  "version": "0.6.4",
-  "git": "https://github.com/EventedMind/iron-router.git"
+  "version": "0.7.0",
+  "git": "https://github.com/EventedMind/iron-router.git",
+  "packages": {
+    "blaze-layout": {
+      "git": "https://github.com/EventedMind/blaze-layout.git",
+      "branch": "master"
+    }
+  }
 }
