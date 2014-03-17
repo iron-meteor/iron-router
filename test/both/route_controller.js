@@ -5,6 +5,19 @@ var createRouter = function () {
   });
 };
 
+var createController = function (proto, opts) {
+  var createRouter = function () {
+    return new IronRouter({
+      autoRender: false,
+      autoStart: false
+    });
+  };
+  var route = new Route(Router, 'test', {});
+
+  var R = RouteController.extend(proto || {});
+  return new R(Router, route, opts);
+};
+
 Tinytest.add('RouteController - inheritance', function (test) {
   var Router = createRouter();
   var route = new Route(Router, 'test', {});
@@ -192,4 +205,37 @@ Tinytest.add('RouteController - stop', function (test) {
   test.isFalse(inst.isRunning, 'isRunning should be false');
   test.isTrue(inst.isStopped, 'isStopped should be true');
   test.equal(calls, ['onStop'], 'stop hooks not called');
+});
+
+Tinytest.add('RouteController - support legacy hooks', function (test) {
+  var calls = [];
+  var c = createController({
+    load: function () {
+      calls.push('load');
+    },
+
+    before: function () {
+      calls.push('before');
+    },
+
+    after: function () {
+      calls.push('after');
+    },
+
+    unload: function () {
+      calls.push('unload');
+    }
+  });
+
+  c.runHooks('onRun')
+  test.equal(calls, ['load']);
+
+  c.runHooks('onBeforeAction')
+  test.equal(calls, ['load', 'before']);
+
+  c.runHooks('onAfterAction')
+  test.equal(calls, ['load', 'before', 'after']);
+
+  c.runHooks('onStop')
+  test.equal(calls, ['load', 'before', 'after', 'unload']);
 });
