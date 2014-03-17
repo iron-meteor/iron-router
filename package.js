@@ -20,7 +20,7 @@ Package.on_use(function (api) {
   // depends on iron-router so it can register itself with
   // the router. But we still want to pull in the blaze-layout
   // package automatically when users add iron-router.
-  api.use('blaze-layout', 'client', {unordered: true});
+  api.imply('blaze-layout', 'client', {unordered: true});
 
   api.add_files('lib/utils.js', ['client', 'server']);
   api.add_files('lib/route.js', ['client', 'server']);
