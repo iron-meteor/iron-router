@@ -3,9 +3,15 @@ Router.configure({
 });
 
 Router.map(function() {
-  this.route('one', {path: '/', before: function() {
-    console.log('one')
-  }});
+  this.route('one', {
+    path: '/', 
+    load: function() {
+      console.log('load one')
+    },
+    before: function() {
+      console.log('before one')
+    }
+  });
   this.route('two');
   this.route('three', {
     where: 'server',

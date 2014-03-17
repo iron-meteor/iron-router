@@ -2,7 +2,7 @@
   "meteor": {
     "git": "https://github.com/meteor/meteor",
     "branch": "shark",
-    "commit": "208bbea9aa1f1c3d7a9863e958edf8b74eaa3595"
+    "commit": "1d3a840372a1d1db6e212d38621288b6cc42a1c7"
   },
   "dependencies": {
     "basePackages": {
@@ -21,7 +21,7 @@
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout",
         "branch": "devel",
-        "commit": "93b6df3ecaacbb758496547829ae4087474c96c1"
+        "commit": "f52f416d6277f27b11832355298553e46b8cc6fd"
       }
     }
   }
