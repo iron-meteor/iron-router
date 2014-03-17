@@ -15,7 +15,7 @@ Package.on_use(function (api) {
   // XXX commenting out for now because this is somehow causing problems
   //api.use('blaze-layout', 'client', {unordered: true});
 
-  // for default helpers like pathFor, urlFor
+  // for helpers
   api.use('ui', 'client', {weak: true});
 
   api.add_files('lib/utils.js', ['client', 'server']);
@@ -28,7 +28,7 @@ Package.on_use(function (api) {
   api.add_files('lib/client/wait_list.js', 'client');
   api.add_files('lib/client/hooks.js', 'client');
   api.add_files('lib/client/route_controller.js', 'client');
-  api.add_files('lib/client/helpers.js', 'client');
+  api.add_files('lib/client/ui/helpers.js', 'client');
 
   api.add_files('lib/server/route_controller.js', 'server');
   api.add_files('lib/server/router.js', 'server');
