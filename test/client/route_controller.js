@@ -1,11 +1,3 @@
-//XXX onRun hook is not called at all
-//XXX onData, onBeforeAction, onAfterAction called twice. But action only called
-//once.
-
-// mock out:
-//  Router.go
-//  uiManager for router
-
 // lookupTemplate
 // lookupLayoutTemplate
 // lookupRegionTemplates
@@ -13,11 +5,6 @@
 // render
 // renderRegions
 // wait
-// stop (stops computation)
-// _run
-//  - no stops allowed
-//  - proper deps isolation
-//  - proper hooks called
 
 var createController = function (proto, opts) {
   var createRouter = function () {
