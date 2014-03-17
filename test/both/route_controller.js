@@ -116,7 +116,7 @@ Tinytest.add('RouteController - runHooks run order', function (test) {
 
   inst.runHooks('onRun', more);
 
-  test.equal(calls, ["router", "route options", "options", "parent", "child", "instance", "more"], 'runHooks run order is wrong');
+  test.equal(calls, ['options', 'parent', 'child', 'instance', 'route options', 'router', 'more'], 'runHooks order is wrong');
 });
 
 Tinytest.add('RouteController - runHooks pause', function (test) {
