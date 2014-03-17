@@ -284,7 +284,7 @@ Tinytest.add('Route - resolve', function (test) {
     },
     hash: 'anchorTag'
   };
-  test.equal(route.resolve(params, options), '/posts/1/?q=s#anchorTag');
+  test.equal(route.resolve(params, options), '/posts/1?q=s#anchorTag');
 
   test.equal(route.resolve(), null);
 
