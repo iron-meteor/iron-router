@@ -5,6 +5,12 @@ var createRouter = function () {
   });
 };
 
+var initController = function (C, options) {
+  var router = createRouter();
+  var route = new Route(router, 'test', {});
+  return new C(router, route, options);
+};
+
 var createController = function (proto, opts) {
   var createRouter = function () {
     return new IronRouter({
@@ -238,4 +244,23 @@ Tinytest.add('RouteController - support legacy hooks', function (test) {
 
   c.runHooks('onStop')
   test.equal(calls, ['load', 'before', 'after', 'unload']);
+});
+
+Tinytest.add('RouteController - support legacy hook inheritance', function (test) {
+  var calls = [];
+  var Parent = RouteController.extend({
+    before: function () {
+      calls.push('parent');
+    }
+  });
+
+  var Child = Parent.extend({
+    before: function () {
+      calls.push('child');
+    }
+  });
+
+  var c = initController(Child);
+  c.runHooks('onBeforeAction')
+  test.equal(calls, ['parent', 'child']);
 });
