@@ -449,3 +449,19 @@ Tinytest.add('Route - getController', function (test) {
   test.equal(controller.route, route);
   test.isTrue(controller.options.option);
 });
+
+Tinytest.add('Route - rewriteLegacyHooks', function (test) {
+  var options = {
+    load: function () {},
+    before: function () {},
+    after: function () {},
+    unload: function () {}
+  };
+
+  var route = new Route(Router, 'explicit', options);
+
+  test.equal(route.options.onRun, options.load);
+  test.equal(route.options.onBeforeAction, options.before);
+  test.equal(route.options.onAfterAction, options.after);
+  test.equal(route.options.onStop, options.unload);
+});
