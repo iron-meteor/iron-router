@@ -286,6 +286,18 @@ Tinytest.add('Route - resolve', function (test) {
   };
   test.equal(route.resolve(params, options), '/posts/1?q=s#anchorTag');
 
+  params = {
+    param: 1
+  };
+  options = {
+    query: {
+      q: 2
+    },
+    hash: 3
+  };
+  test.equal(route.resolve(params, options), '/posts/1/?q=2#3', 
+    'Must be able to resolve integer-formatted (non-string) params');
+
   test.equal(route.resolve(), null);
 
   route = new Route(Router, 'optional', {
