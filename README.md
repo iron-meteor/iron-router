@@ -47,11 +47,10 @@ You should define your routes in a file common to the client and server so both 
 
 #### Using routes
 
-XXX: how to get the helpers?
 To use a route in your app, you can use the `{{pathFor}}` handlebars helper:
 
 ```
-  <a href="{{pathFor 'home'}}">Go home!</a>
+<a href="{{pathFor 'home'}}">Go home!</a>
 ```
 
 Or, call `Router.path('home)` to get it as a string.
@@ -60,30 +59,148 @@ The router will pick up internal clicks on links to routes.
 Alternatively, you can directly call `Router.go()` in a event handler:
 
 ```
-  Template.foo.events({
-    'click .homeLink': function() {
-      Router.go('home');
-    }
-  });
+Template.foo.events({
+ 'click .homeLink': function() {
+    Router.go('home');
+  }
+});
 ```
 
-#### Path segments
+#### Parameterized routes and data
+
+As your application starts dealing with data, you'll probably want to write more than a few static routes.
+
+A standard pattern is a route per object in a collection. You can achieve this with a parameterized route:
+
+```
+this.route('postsShow', { 
+  path: '/posts/:_id',
+  data: function() { return Posts.findOne(this.params._id); }
+});
+```
+
+This route will match *any* URL of the form `'/posts/X'`, making the value of `X` available on the `_id` field of the matching *controller*.
+
+The controller is available as `this` in the various routing callbacks. In this simplest case, we can use it to set the *data context* of the template we are going to render.
+
+So our template might look like (if posts have a `title` field):
+
+```
+<template name="postsShow">
+  <h1>{{title}}</h1>
+</template>
+```
 
 
 #### Controlling subscriptions
 
+The example above assumes that you've already loaded the relevant post into your application, but usually you want to load data on demand as you hit a route. To do this, we can expand the example to use `waitOn`:
+
+```
+this.route('postsShow', { 
+  path: '/posts/:_id',
+  waitOn: function() { return Meteor.subscribe('post', this.params._id)},
+  data: function() { return Posts.findOne(this.params._id); }
+});
+```
+
+The router will not call the `data` function until the route controller is ready (all subscriptions are loaded). You can also call `this.ready()` (or `Router.current().ready()` from outside routing callbacks). This is a reactive data source, so in most cases things will re-run when it becomes ready.
+
+If you want to wait on the subscriptions before rendering the relevant template (`postsShow` in this case), you can add a `loadingTemplate` to your route, and turn on the built-in `loading` hook:
+
+```
+Router.onBeforeAction('loading');
+```
 
 ### Advanced
 
+#### Layouts + rendering
+
+By default, the router renders the current template directly into the body. If you'd like to share common HTML between routes, you can create your own layout:
+
+```
+<template name="layout">
+  <nav>...</nav>
+  <div id="content">
+    {{> yield}}
+  </div>
+</template>
+```
+
+You can set the layout via the `layoutTemplate` option to a route or in `Router.configure()`.
+
+Layouts are very flexible. You can read more about them [in the docs](DOCS.md#using-a-layout-with-yields).
+
 #### Route options
 
-#### Queries and Hashes
+There are some extra routing options of interest:
+
+ - `template` - the template to render. We've seen that by default this is just the name of the route.
+ - `loadingTemplate` - the template used by the `loading` hook.
+ - `notFoundTemplate` - the template used by the `dataNotFound` hook -- renders if the `data()` function returns something falsey.
+ - `where` - whether this route runs on the client or the server
+
+Where it makes sense, options can be set globally via `Router.configure()`.
 
 #### Custom actions and hooks
 
+You can hook into the route run cycle via the following hooks:
+
+ - `onRun` - this happens *once only* when the route is loaded. NOTE: if the page hot code reloads, the hook *will not re-run*. This makes it appropriate for things like analytics, or setting sesison variables and not for on-page setup.
+ - `onData` - runs reactively whenever the data changes.
+ - `onBeforeAction` - runs reactively before the action.
+ - `onAfterAction` - likewise, after the action.
+ - `onStop` - Runs once just before a user routes away.
+
+You can also change the action of a route via the `action` option. By default, the controller calls `this.render()`, which renders the relevant templates to the layout. You can call it yourself in an action function -- but if you are doing that you are probably better served using a `onBeforeAction` or `onAfterAction` hook.
+
+All hooks can be set globally to the router via (for example):
+
+```
+Router.onRun(function() {
+  console.log('Reached non-home page!');
+}, {except: 'home'});
+```
+
+The second argument can be `except` -- a list of routes to not apply to, or `only` -- a limited set of routes to match.
+
 #### Server routing
 
+Most of the above only applies to client routes (we can't render templates on the server right now). 
+
+When you define a server route (via `where: 'server'`), you need to define the `action` function, and use in a fairly simplistic way, much like [express](http://expressjs.com):
+
+```
+this.route('serverRoute', {
+  where: 'server',
+  action: function() {
+    this.response.end("THIS IS A SERVER ROUTE..");
+  }
+})
+```
+
+[Read more about server routes](DOCS.md#server-side-routing).
+
 #### Route Controllers
+
+We've mentioned that `this` inside a route is a *Route Controller*. Explicitly defining controllers allows you to use inheritance:
+
+```
+AdminController = RouteController.extend({
+  before: // a user filter to control access?
+});
+
+PostsEditController = AdminController.extend({
+  waitOn: function() { return Meteor.subscribe('adminPost', ...); }
+});
+
+Router.map(function() {
+  // this will automatically match the `PostsEditController` thanks to the name.
+  this.route(postsEdit, {path: '/posts/:_id/edit'});
+});
+```
+
+[Read more about route controllers](DOCS.md#route-controllers).
 
 
 ### More
@@ -96,14 +213,7 @@ Contributors are very welcome. There are many things you can help with,
 including finding and fixing bugs, creating examples for the examples folder,
 contributing to improved design or adding features. Some guidelines below:
 
-* **Questions**: For now, it's okay to ask a question on Github Issues if you're
-  having trouble since the volume is manageable. This might change if it starts
-  to overshadow development! Just prefix your Github Issue with 'Question: ' so
-  we can differentiate easily. Also, please make sure you've read through this
-  document and tried a few things before asking. This way you can be very
-  specific in your question. Also, please provide a cloneable Github repository
-  if the issue is complex. For more complex questions sometimes it's hard to get all of the context
-  required to solve a problem by just looking at text.
+* **Questions**: Please post to Stack Overflow and tag with `iron-router` http://stackoverflow.com/questions/tagged/iron-router.
 
 * **New Features**: If you'd like to work on a feature for the iron-router,
   start by creating a 'Feature Design: Title' issue. This will let people bat it
