@@ -28,6 +28,15 @@
     * No hooks are included in your controllers by default. If you want to add them you can do it like this:
       * `Router.onBeforeAction('loading')`
       * `Router.onBeforeAction('dataNotFound')`
+    * Package authors can include their own hooks in the lookup chain by adding them to the `Router.hooks` namespace. Then users can add them by name like this: `Router.onBeforeAction('customhook');`
+    * See lib/client/hooks.js for example.
+    * Hooks are now called in a different order by popular demand:
+      1. controller options
+      2. controller prototype
+      3. controller object
+      4. route option hooks
+      5. router global
+      
 * Helpers cleanup
   * `{{link}}` helper is no longer included by default. These types of helpers can be implemented in separate packages.
   * `{{renderRouter}}` is gone for now.
