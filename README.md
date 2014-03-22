@@ -36,8 +36,8 @@ You place your route declarations in a `Router.map` block:
 
 ```
 Router.map(function() {
-  this.add('home', {path: '/'})
-  this.add('about');
+  this.route('home', {path: '/'})
+  this.route('about');
 });
 ```
 
@@ -79,9 +79,9 @@ this.route('postsShow', {
 });
 ```
 
-This route will match *any* URL of the form `'/posts/X'`, making the value of `X` available on the `_id` field of the matching *controller*.
+This route will match *any* URL of the form `'/posts/X'`, making the value of `X` available on the `this.params._id` property of the matching *controller*.
 
-The controller is available as `this` in the various routing callbacks. In this simplest case, we can use it to set the *data context* of the template we are going to render.
+`this` is an instance of a `RouteController` in the data function above. The value returned from the data function can be used in our templates.
 
 So our template might look like (if posts have a `title` field):
 
@@ -96,7 +96,7 @@ So our template might look like (if posts have a `title` field):
 
 The example above assumes that you've already loaded the relevant post into your application, but usually you want to load data on demand as you hit a route. To do this, we can expand the example to use `waitOn`:
 
-```
+```javascript
 this.route('postsShow', { 
   path: '/posts/:_id',
   waitOn: function() { return Meteor.subscribe('post', this.params._id)},
@@ -104,9 +104,23 @@ this.route('postsShow', {
 });
 ```
 
-The router will not call the `data` function until the route controller is ready (all subscriptions are loaded). You can also call `this.ready()` (or `Router.current().ready()` from outside routing callbacks). This is a reactive data source, so in most cases things will re-run when it becomes ready.
+Returning a subscription handle, or anything with a `ready` method from the `waitOn` function will add the handle to a wait list. When you call `this.ready()` in any of your other route functions, the result is true if all items in the wait list are ready. This lets us do things like show a loading indicator while waiting for data. You can implement a loading indicator in your route like this:
 
-If you want to wait on the subscriptions before rendering the relevant template (`postsShow` in this case), you can add a `loadingTemplate` to your route, and turn on the built-in `loading` hook:
+```javascript
+this.route('postsShow', {
+  waitOn: function () {
+    return Meteor.subscribe('post', this.params._id);
+  },
+
+  action: function () {
+    if (this.ready())
+      this.render();
+    else
+      this.render('loading');
+  }
+});
+```
+But instead of writing this code yourself, you can use the 'loading' hook that comes with Iron Router like this:
 
 ```
 Router.onBeforeAction('loading');
