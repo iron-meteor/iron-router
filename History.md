@@ -12,6 +12,7 @@
     * after -> onAfterAction
     * load -> onRun
     * unload -> onStop
+  * No more getData and setData methods on RouteController instances. Just use `this.data()` to call the controller's wrapped data function.
   * run method changes
     * Changed run to _run to indicate privacy
     * A RouteController is in a running state or a stopped state. You cannot run a controller that is already running.
