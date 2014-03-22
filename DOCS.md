@@ -694,12 +694,12 @@ to call the render method:
 
   1. `this.render()`: Render all of the templates for the Route or
      RouteController. This renders the main template into the main yield region,
-     and all of the yieldTemplates into their associated `{{yield 'name'}}`
+     and all of the yieldTemplates into their associated `{{> yield region='name'}}`
      regions.
   2. `this.render('templateName')`: Render the template named 'templateName'
-     into the main yield `{{yield}}`.
+     into the main yield `{{> yield}}`.
   3. `this.render('templateName', {to: 'region'})`: Render the template named
-     'templateName' into the region named 'region' `{{yield 'region'}}`. 
+     'templateName' into the region named 'region' `{{> yield region='region'}}`. 
 
 *Note: layouts are at the route level, not the template level and you have one
 layout per route or a globally defined layout.*
