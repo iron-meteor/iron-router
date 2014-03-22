@@ -96,7 +96,7 @@ So our template might look like (if posts have a `title` field):
 
 The example above assumes that you've already loaded the relevant post into your application, but usually you want to load data on demand as you hit a route. To do this, we can expand the example to use `waitOn`:
 
-```javascript
+```
 this.route('postsShow', { 
   path: '/posts/:_id',
   waitOn: function() { return Meteor.subscribe('post', this.params._id)},
@@ -106,7 +106,7 @@ this.route('postsShow', {
 
 Returning a subscription handle, or anything with a `ready` method from the `waitOn` function will add the handle to a wait list. When you call `this.ready()` in any of your other route functions, the result is true if all items in the wait list are ready. This lets us do things like show a loading indicator while waiting for data. You can implement a loading indicator in your route like this:
 
-```javascript
+```
 this.route('postsShow', {
   waitOn: function () {
     return Meteor.subscribe('post', this.params._id);
@@ -120,6 +120,7 @@ this.route('postsShow', {
   }
 });
 ```
+
 But instead of writing this code yourself, you can use the 'loading' hook that comes with Iron Router like this:
 
 ```
@@ -133,7 +134,7 @@ Router.onBeforeAction('loading');
 By default, the router renders the current template directly into the body. If you'd like to share common HTML between routes, you can create your own layout:
 
 ```
-<template name="layout">
+<template name="masterLayout">
   <nav>...</nav>
   <div id="content">
     {{> yield}}
@@ -141,7 +142,7 @@ By default, the router renders the current template directly into the body. If y
 </template>
 ```
 
-You can set the layout via the `layoutTemplate` option to a route or in `Router.configure()`.
+You can set the layout via the `layoutTemplate` option to a route or in `Router.configure({...})`.
 
 Layouts are very flexible. You can read more about them [in the docs](DOCS.md#using-a-layout-with-yields).
 
@@ -150,6 +151,7 @@ Layouts are very flexible. You can read more about them [in the docs](DOCS.md#us
 There are some extra routing options of interest:
 
  - `template` - the template to render. We've seen that by default this is just the name of the route.
+- `layoutTemplate` - the layout template to render.
  - `loadingTemplate` - the template used by the `loading` hook.
  - `notFoundTemplate` - the template used by the `dataNotFound` hook -- renders if the `data()` function returns something falsey.
  - `where` - whether this route runs on the client or the server
@@ -162,11 +164,11 @@ You can hook into the route run cycle via the following hooks:
 
  - `onRun` - this happens *once only* when the route is loaded. 
  
-   NOTE: if the page hot code reloads, the hook *will not re-run*. This makes it appropriate for things like analytics, or setting sesison variables and not for on-page setup.
+   NOTE: if the page hot code reloads, the onRun hook *will not re-run*. This makes it appropriate for things like analytics, or setting session variables and not for on-page setup.
  - `onData` - runs reactively whenever the data changes.
  - `onBeforeAction` - runs reactively before the action.
  - `onAfterAction` - likewise, after the action.
- - `onStop` - Runs once just before a user routes away.
+ - `onStop` - runs once when the controller is stopped, like just before a user routes away.
 
 You can also change the action of a route via the `action` option. By default, the controller calls `this.render()`, which renders the relevant templates to the layout. You can call it yourself in an action function -- but if you are doing that you are probably better served using a `onBeforeAction` or `onAfterAction` hook.
 
