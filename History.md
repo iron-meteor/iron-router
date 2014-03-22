@@ -12,7 +12,8 @@
     * after -> onAfterAction
     * load -> onRun
     * unload -> onStop
-  * run changed to _run to indicate privacy and semantic changes
+  * run method changes
+    * Changed run to _run to indicate privacy
     * A RouteController is in a running state or a stopped state. You cannot run a controller that is already running.
     * You cannot call `stop()` inside of a run. Use `pause()` for hooks now instead. see below.
     * Order of operations:
@@ -22,7 +23,17 @@
       4. Run the waitOn function in a computation, populating the waitlist
       5. Set the global data context using the controller's wrapped data function
       6. Run the action in a computation in this order: onBeforeAction, action, onAfterAction
-
+  * Hook api changes
+    * You can no longer call `this.stop()` in a hook. Use `pause()` instead which is the first parameter passed to the hook function. This stops downstream hooks from running. For example the loading hook uses pause() to stop the action function from rendering the main template.
+    * No hooks are included in your controllers by default. If you want to add them you can do it like this:
+      * `Router.onBeforeAction('loading')`
+      * `Router.onBeforeAction('dataNotFound')`
+* Helpers cleanup
+  * `{{link}}` helper is no longer included by default. These types of helpers can be implemented in separate packages.
+  * `{{renderRouter}}` is gone for now.
+  * `{{pathFor}}` and `{{urlFor}}` still work with some api changes:
+    * {{pathFor 'routeName' params=this query="key=value&key2=value2" hash="somehash" anotherparam="anothervalue"}}
+    * same for {{urlFor}}
 
 ## v0.6.2
 * Bug fix: couldn't go back after page reload. Thanks @apendua!
