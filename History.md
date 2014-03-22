@@ -1,3 +1,29 @@
+## v0.7.0
+* Blaze rendering with the [blaze-layout](https://github.com/eventedmind/blaze-layout) package.
+  * Layouts are only taken off the DOM (re-rendered) if the layout changes.
+  * Templates are only taken off the DOM (re-rendered) if the template changes.
+  * Data contexts change independently from rendering.
+  * {{yield}} is now {{> yield}} and {{yield 'footer'}} is now {{> yield region='footer'}}
+  * {{#contentFor region='footer'}}footer content goes here{{/contentFor}} is supported again!
+  * Router supports a uiManager api that can be used to plug in other ui managers (in addition to blaze-layout)
+* RouteController API cleanup
+  * Hook name changes (legacy supported until 1.0)
+    * before -> onBeforeAction
+    * after -> onAfterAction
+    * load -> onRun
+    * unload -> onStop
+  * run changed to _run to indicate privacy and semantic changes
+    * A RouteController is in a running state or a stopped state. You cannot run a controller that is already running.
+    * You cannot call `stop()` inside of a run. Use `pause()` for hooks now instead. see below.
+    * Order of operations:
+      1. Clear the waitlist
+      2. Set the layout
+      3. Run the onRun hooks in a computation
+      4. Run the waitOn function in a computation, populating the waitlist
+      5. Set the global data context using the controller's wrapped data function
+      6. Run the action in a computation in this order: onBeforeAction, action, onAfterAction
+
+
 ## v0.6.2
 * Bug fix: couldn't go back after page reload. Thanks @apendua!
 
