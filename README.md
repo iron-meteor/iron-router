@@ -27,6 +27,7 @@ $ mrt add iron-router
 ```
 
 ## API
+More detailed documentation can be found [here](DOCS.md).
 
 ### Basics
 
