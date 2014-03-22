@@ -295,7 +295,7 @@ Tinytest.add('Route - resolve', function (test) {
     },
     hash: 3
   };
-  test.equal(route.resolve(params, options), '/posts/1/?q=2#3', 
+  test.equal(route.resolve(params, options), '/posts/1?q=2#3', 
     'Must be able to resolve integer-formatted (non-string) params');
 
   test.equal(route.resolve(), null);
