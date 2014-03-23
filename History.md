@@ -45,8 +45,20 @@
     * {{pathFor 'routeName' params=this query="key=value&key2=value2" hash="somehash" anotherparam="anothervalue"}}
     * same for {{urlFor}}
 
+* IronLocation changes
+  * The router now sets up the link handler for much more consistency between `Router.go` and clicks on links.
+  * The location URL changes in between stopping the old route and starting the new one, so `onStop` and `onRun` behave as you'd expect.
+  * `location` is now an option to configure so you can use a custom location manager (apart from IronLocation).
+
 ## v0.6.2
 * Bug fix: couldn't go back after page reload. Thanks @apendua!
+* Added ability to customize IronLocation link selector. Thanks @nathan-muir
+* Fixed a problem with child hooks running multiple times. Thanks @jagi!
+* Fixed a problem with stopping the process when redirecting
+* Fixed issues with optional paths, thanks @mitar
+* Fixed problem on Android 2.3
+
+
 
 ## v0.6.1
 * Bug fix: notFound template rendered with layout
