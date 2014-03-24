@@ -43,25 +43,25 @@ Tinytest.add('ClientRouter - onRun hooks', function (test) {
   var twoBeforeHookCalled = 0;
   var onRunHookCalledAt;
   
-  router.dispatch('one');
+  router.go('one');
   test.equal(oneRunHookCalled, 1);
   test.equal(oneBeforeHookCalled, 1);
   test.equal(onRunHookCalledAt, '/one');
   
-  router.dispatch('two');
+  router.go('two');
   test.equal(oneRunHookCalled, 2);
   test.equal(oneBeforeHookCalled, 2);
   test.equal(twoRunHookCalled, 1);
   // show have redirected before this happens
   test.equal(twoBeforeHookCalled, 0);
   
-  // we are redirected to one, so this come sup
+  // we are redirected to one, so this comes up
   test.equal(onRunHookCalledAt, '/one');
 
-  router.dispatch('three');
+  router.go('three');
   test.equal(onRunHookCalledAt, '/three');
 
-  router.dispatch('one');
+  router.go('one');
   test.equal(onRunHookCalledAt, '/one');
 });
 
@@ -81,7 +81,7 @@ Tinytest.add('ClientRouter - onStop hooks', function (test) {
   router.start();
   test.isNull(stopCalledAt);
   
-  router.dispatch('two');
+  router.go('two');
   test.equal(stopCalledAt, '/one');
 });
 
