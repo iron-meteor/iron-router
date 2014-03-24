@@ -68,6 +68,7 @@ Package.on_test(function (api) {
   api.add_files('test/server/router.js', 'server');
 
   // client only
+  api.add_files('test/client/mocks.js', 'client');
   api.add_files('test/client/router.js', 'client');
   api.add_files('test/client/route_controller.js', 'client');
   api.add_files('test/client/wait_list.js', 'client');
