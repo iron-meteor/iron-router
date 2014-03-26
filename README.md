@@ -23,8 +23,8 @@ A client and server side router designed specifically for Meteor.
   - [Waiting on Subscriptions (waitOn)](#waiting-on-subscriptions-waiton)
   - [Waiting on Subscriptions (wait)](#waiting-on-subscriptions-wait)
   - [Using a Custom Action Function](#using-a-custom-action-function)
-  - [Using hooks](#using-hooks)
   - [Custom Rendering](#custom-rendering)
+  - [Using hooks](#using-hooks)
   - [Before and After Hooks](#before-and-after-hooks)
   - [Unload Hook](#unload-hook)
   - [Global Router Configuration](#global-router-configuration)
@@ -793,6 +793,22 @@ Router.map(function () {
 });
 ```
 
+### Custom Rendering
+You can render manually by calling the `render` function. There are three ways
+to call the render method:
+
+  1. `this.render()`: Render all of the templates for the Route or
+     RouteController. This renders the main template into the main yield region,
+     and all of the yieldTemplates into their associated `{{yield 'name'}}`
+     regions.
+  2. `this.render('templateName')`: Render the template named 'templateName'
+     into the main yield `{{yield}}`.
+  3. `this.render('templateName', {to: 'region'})`: Render the template named
+     'templateName' into the region named 'region' `{{yield 'region'}}`. 
+
+*Note: layouts are at the route level, not the template level and you have one
+layout per route or a globally defined layout.*
+
 ### Using hooks
 
 There are four types of hooks that a route provides. All can be added at the global level, in a route definition, or defined for a controller.
@@ -811,22 +827,6 @@ Router.before(mustBeSignedIn, {except: ['login', 'signup', 'forgotPassword']});
 // this hook will only run on certain routes
 Router.before(mustBeAdmin, {only: ['adminDashboard', 'adminUsers', 'adminUsersEdit']});
 ```
-
-### Custom Rendering
-You can render manually by calling the `render` function. There are three ways
-to call the render method:
-
-  1. `this.render()`: Render all of the templates for the Route or
-     RouteController. This renders the main template into the main yield region,
-     and all of the yieldTemplates into their associated `{{yield 'name'}}`
-     regions.
-  2. `this.render('templateName')`: Render the template named 'templateName'
-     into the main yield `{{yield}}`.
-  3. `this.render('templateName', {to: 'region'})`: Render the template named
-     'templateName' into the region named 'region' `{{yield 'region'}}`. 
-
-*Note: layouts are at the route level, not the template level and you have one
-layout per route or a globally defined layout.*
 
 ### Before and After Hooks
 Sometimes you want to execute some code *before* or *after* your action function
