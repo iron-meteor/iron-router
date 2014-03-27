@@ -1,8 +1,0 @@
-See [https://github.com/EventedMind/iron-router/blob/dev/History.md](https://github.com/EventedMind/iron-router/blob/dev/History.md)
-
-- 2014-01-08 - 0.6.2
-  - Added ability to customize IronLocation link selector. Thanks @nathan-muir
-  - Fixed a problem with child hooks running multiple times. Thanks @jagi!
-  - Fixed a problem with stopping the process when redirecting
-  - Fixed issues with optional paths, thanks @mitar
-  - Fixed problem on Android 2.3
