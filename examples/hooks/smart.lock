@@ -1,8 +1,8 @@
 {
   "meteor": {
-    "git": "https://github.com/meteor/meteor",
+    "git": "https://github.com/meteor/meteor.git",
     "branch": "shark",
-    "commit": "1d3a840372a1d1db6e212d38621288b6cc42a1c7"
+    "commit": "5671eaa2b77eae2c63f6c179b65ade1e85211a63"
   },
   "dependencies": {
     "basePackages": {
@@ -10,7 +10,7 @@
         "path": "../.."
       },
       "blaze-layout": {
-        "git": "https://github.com/EventedMind/blaze-layout",
+        "git": "https://github.com/EventedMind/blaze-layout.git",
         "branch": "devel"
       }
     },
@@ -19,9 +19,9 @@
         "path": "../.."
       },
       "blaze-layout": {
-        "git": "https://github.com/EventedMind/blaze-layout",
+        "git": "https://github.com/EventedMind/blaze-layout.git",
         "branch": "devel",
-        "commit": "f52f416d6277f27b11832355298553e46b8cc6fd"
+        "commit": "91f3948edac11c28328630c6a7ab769d34fb35a0"
       }
     }
   }

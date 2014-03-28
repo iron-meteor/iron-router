@@ -1,5 +1,64 @@
+## v0.7.0
+* Blaze rendering with the [blaze-layout](https://github.com/eventedmind/blaze-layout) package.
+  * Layouts are only taken off the DOM (re-rendered) if the layout changes.
+  * Templates are only taken off the DOM (re-rendered) if the template changes.
+  * Data contexts change independently from rendering.
+  * {{yield}} is now {{> yield}} and {{yield 'footer'}} is now {{> yield region='footer'}}
+  * {{#contentFor region='footer'}}footer content goes here{{/contentFor}} is supported again!
+  * Router supports a uiManager api that can be used to plug in other ui managers (in addition to blaze-layout)
+* RouteController API cleanup
+  * Hook name changes (legacy supported until 1.0)
+    * before -> onBeforeAction
+    * after -> onAfterAction
+    * load -> onRun
+    * unload -> onStop
+  * No more getData and setData methods on RouteController instances. Just use `this.data()` to call the controller's wrapped data function.
+  * run method changes
+    * Changed run to _run to indicate privacy
+    * A RouteController is in a running state or a stopped state. You cannot run a controller that is already running.
+    * You cannot call `stop()` inside of a run. Use `pause()` for hooks now instead. see below.
+    * Order of operations:
+      1. Clear the waitlist
+      2. Set the layout
+      3. Run the onRun hooks in a computation
+      4. Run the waitOn function in a computation, populating the waitlist
+      5. Set the global data context using the controller's wrapped data function
+      6. Run the action in a computation in this order: onBeforeAction, action, onAfterAction
+  * Hook api changes
+    * You can no longer call `this.stop()` in a hook. Use `pause()` instead which is the first parameter passed to the hook function. This stops downstream hooks from running. For example the loading hook uses pause() to stop the action function from rendering the main template.
+    * No hooks are included in your controllers by default. If you want to add them you can do it like this:
+      * `Router.onBeforeAction('loading')`
+      * `Router.onBeforeAction('dataNotFound')`
+    * Package authors can include their own hooks in the lookup chain by adding them to the `Router.hooks` namespace. Then users can add them by name like this: `Router.onBeforeAction('customhook');`
+    * See lib/client/hooks.js for example.
+    * Hooks are now called in a different order by popular demand:
+      1. controller options
+      2. controller prototype
+      3. controller object
+      4. route option hooks
+      5. router global
+      
+* Helpers cleanup
+  * `{{link}}` helper is no longer included by default. These types of helpers can be implemented in separate packages.
+  * `{{renderRouter}}` is gone for now.
+  * `{{pathFor}}` and `{{urlFor}}` still work with some api changes:
+    * {{pathFor 'routeName' params=this query="key=value&key2=value2" hash="somehash" anotherparam="anothervalue"}}
+    * same for {{urlFor}}
+
+* IronLocation changes
+  * The router now sets up the link handler for much more consistency between `Router.go` and clicks on links.
+  * The location URL changes in between stopping the old route and starting the new one, so `onStop` and `onRun` behave as you'd expect.
+  * `location` is now an option to configure so you can use a custom location manager (apart from IronLocation).
+
 ## v0.6.2
 * Bug fix: couldn't go back after page reload. Thanks @apendua!
+* Added ability to customize IronLocation link selector. Thanks @nathan-muir
+* Fixed a problem with child hooks running multiple times. Thanks @jagi!
+* Fixed a problem with stopping the process when redirecting
+* Fixed issues with optional paths, thanks @mitar
+* Fixed problem on Android 2.3
+
+
 
 ## v0.6.1
 * Bug fix: notFound template rendered with layout

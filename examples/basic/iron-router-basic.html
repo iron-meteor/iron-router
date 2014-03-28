@@ -3,9 +3,11 @@
 </head>
 
 <template name="one">
-  {{#link route='two'}}Two{{/link}}
+  <a href="/two">Two</a>
+  <a href="/three">Three</a>
+  <a href="/asset.txt">Asset</a>
 </template>
 
 <template name="two">
-  {{#link route='one'}}One{{/link}}
+  <a href="/">One</a>
 </template>
