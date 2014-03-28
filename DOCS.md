@@ -14,6 +14,7 @@ A client and server side router designed specifically for Meteor.
   - [Rendering the Router](#rendering-the-router)
   - [Path Functions and Helpers](#path-functions-and-helpers)
   - [Changing routes programmatically](#changing-routes-programmatically)
+  - [Looking up route settings](#looking-up-route-settings)
   - [Rendering Templates](#rendering-templates)
   - [Using a Layout with Yields](#using-a-layout-with-yields)
   - [Data](#data)
