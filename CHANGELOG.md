@@ -1,1 +1,0 @@
-See [https://github.com/EventedMind/iron-router/blob/dev/History.md](https://github.com/EventedMind/iron-router/blob/dev/History.md)
