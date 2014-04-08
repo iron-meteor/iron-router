@@ -13,7 +13,7 @@ Package.on_use(function (api) {
   // use unordered: true becuase of circular dependency
 
   // for helpers
-  api.use('ui', 'client', {weak: true});
+  api.use('ui', 'client');
  
   // default ui manager
   // unordered: true because blaze-layout package weakly
