@@ -5,7 +5,7 @@ A client and server side router designed specifically for Meteor.
 
 ## History
 
-**Latest Version:** 0.7.0
+**Latest Version:** 0.7.1
 
 See the [History.md](History.md) file for changes (including breaking changes) across
 versions.
@@ -35,7 +35,7 @@ More detailed documentation can be found [here](DOCS.md).
 
 You place your route declarations in a `Router.map` block: 
 
-```
+```javascript
 Router.map(function() {
   this.route('home', {path: '/'})
   this.route('about');
@@ -50,7 +50,7 @@ You should define your routes in a file common to the client and server so both 
 
 To use a route in your app, you can use the `{{pathFor}}` handlebars helper:
 
-```
+```html
 <a href="{{pathFor 'home'}}">Go home!</a>
 ```
 
@@ -59,7 +59,7 @@ Or, call `Router.path('home')` to get it as a string.
 The router will pick up internal clicks on links to routes. 
 Alternatively, you can directly call `Router.go()` in a event handler:
 
-```
+```javascript
 Template.foo.events({
  'click .homeLink': function() {
     Router.go('home');
@@ -73,7 +73,7 @@ As your application starts dealing with data, you'll probably want to write more
 
 A standard pattern is a route per object in a collection. You can achieve this with a parameterized route:
 
-```
+```javascript
 this.route('postsShow', { 
   path: '/posts/:_id',
   data: function() { return Posts.findOne(this.params._id); }
@@ -86,7 +86,7 @@ This route will match *any* URL of the form `'/posts/X'`, making the value of `X
 
 So our template might look like (if posts have a `title` field):
 
-```
+```html
 <template name="postsShow">
   <h1>{{title}}</h1>
 </template>
@@ -97,7 +97,7 @@ So our template might look like (if posts have a `title` field):
 
 The example above assumes that you've already loaded the relevant post into your application, but usually you want to load data on demand as you hit a route. To do this, we can expand the example to use `waitOn`:
 
-```
+```javascript
 this.route('postsShow', { 
   path: '/posts/:_id',
   waitOn: function() { return Meteor.subscribe('post', this.params._id)},
@@ -107,7 +107,7 @@ this.route('postsShow', {
 
 Returning a subscription handle, or anything with a `ready` method from the `waitOn` function will add the handle to a wait list. When you call `this.ready()` in any of your other route functions, the result is true if all items in the wait list are ready. This lets us do things like show a loading indicator while waiting for data. You can implement a loading indicator in your route like this:
 
-```
+```javascript
 this.route('postsShow', {
   waitOn: function () {
     return Meteor.subscribe('post', this.params._id);
@@ -124,7 +124,7 @@ this.route('postsShow', {
 
 But instead of writing this code yourself, you can use the 'loading' hook that comes with Iron Router like this:
 
-```
+```javascript
 Router.onBeforeAction('loading');
 ```
 
@@ -134,7 +134,7 @@ Router.onBeforeAction('loading');
 
 By default, the router renders the current template directly into the body. If you'd like to share common HTML between routes, you can create your own layout:
 
-```
+```html
 <template name="masterLayout">
   <nav>...</nav>
   <div id="content">
@@ -175,7 +175,7 @@ You can also change the action of a route via the `action` option. By default, t
 
 All hooks (and `waitOn`) can be set globally to the router via (for example):
 
-```
+```javascript
 Router.onRun(function() {
   console.log('Reached non-home page!');
 }, {except: 'home'});
@@ -189,7 +189,7 @@ Most of the above only applies to client routes (we can't render templates on th
 
 When you define a server route (via `where: 'server'`), you need to define the `action` function, and use in a fairly simplistic way, much like [express](http://expressjs.com):
 
-```
+```javascript
 this.route('serverRoute', {
   where: 'server',
   action: function() {
@@ -204,7 +204,7 @@ this.route('serverRoute', {
 
 We've mentioned that `this` in route callbacks is a *Route Controller*. Explicitly defining controllers allows you to use inheritance:
 
-```
+```javascript
 AdminController = RouteController.extend({
   before: // a user filter to control access?
 });
