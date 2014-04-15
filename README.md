@@ -5,7 +5,7 @@ A client and server side router designed specifically for Meteor.
 
 ## History
 
-**Latest Version:** 0.7.0
+**Latest Version:** 0.7.1
 
 See the [History.md](History.md) file for changes (including breaking changes) across
 versions.
