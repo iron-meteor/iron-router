@@ -42,34 +42,34 @@ Tinytest.add('RouteController - inheritance', function (test) {
   test.isTrue(_.isFunction(inst.parentMethod), 'parent method not defined');
 });
 
-Tinytest.add('RouteController - lookupProperty', function (test) {
+Tinytest.add('RouteController - lookup', function (test) {
   var Router = createRouter();
   var route = new Route(Router, 'test', {});
   var inst = new RouteController(Router, route, {});
   var value;
 
   // undefined
-  value = inst.lookupProperty('myProperty');
+  value = inst.lookup('myProperty');
   test.isUndefined(value, 'property should be undefined');
 
   // router options
   Router.options.myProperty = 'myRouterValue';
-  value = inst.lookupProperty('myProperty');
+  value = inst.lookup('myProperty');
   test.equal(value, 'myRouterValue', 'property should be on router options');
 
   // route options
   route.options.myProperty = 'myRouteValue';
-  value = inst.lookupProperty('myProperty');
+  value = inst.lookup('myProperty');
   test.equal(value, 'myRouteValue', 'property should be on route options');
 
   // route controller instance
   inst.myProperty = 'myInstanceValue';
-  value = inst.lookupProperty('myProperty');
+  value = inst.lookup('myProperty');
   test.equal(value, 'myInstanceValue', 'property should be on instance');
 
   // route controller options
   inst.options.myProperty = 'myOptionsValue';
-  value = inst.lookupProperty('myProperty');
+  value = inst.lookup('myProperty');
   test.equal(value, 'myOptionsValue', 'property should be on instance options');
 });
 

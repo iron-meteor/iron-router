@@ -1,10 +1,13 @@
-// lookupTemplate
-// lookupLayoutTemplate
-// lookupRegionTemplates
-// lookupWaitOn
+// lookupFns.waitOn
 // render
 // renderRegions
 // wait
+var createRouter = function () {
+  return new IronRouter({
+    autoRender: false,
+    autoStart: false
+  });
+};
 
 var createController = function (proto, opts) {
   var createRouter = function () {
@@ -221,4 +224,65 @@ Tinytest.add('Client RouteController - _run computation isolation', function (te
   test.equal(calls.action, 2, 'action should rerun');
   test.equal(calls.onBeforeAction, 2, 'onBeforeAction should rerun');
   test.equal(calls.onAfterAction, 2, 'onAfterAction should rerun');
+});
+
+Tinytest.add('Client RouteController - lookup', function (test) {
+  var Router = createRouter();
+  var route = new Route(Router, 'test', {});
+  var inst = new RouteController(Router, route, {});
+  var value;
+
+  // Default lookup should be unchanged
+
+  // undefined
+  value = inst.lookup('myProperty');
+  test.isUndefined(value, 'property should be undefined');
+
+  // router options
+  Router.options.myProperty = 'myRouterValue';
+  value = inst.lookup('myProperty');
+  test.equal(value, 'myRouterValue', 'property should be on router options');
+
+  // route options
+  route.options.myProperty = 'myRouteValue';
+  value = inst.lookup('myProperty');
+  test.equal(value, 'myRouteValue', 'property should be on route options');
+
+  // route controller instance
+  inst.myProperty = 'myInstanceValue';
+  value = inst.lookup('myProperty');
+  test.equal(value, 'myInstanceValue', 'property should be on instance');
+
+  // route controller options
+  inst.options.myProperty = 'myOptionsValue';
+  value = inst.lookup('myProperty');
+  test.equal(value, 'myOptionsValue', 'property should be on instance options');
+
+  // Custom lookup functions
+
+  // template: options.template undefined
+  value = inst.lookup('template');
+  test.equal(value, 'test', 'should default to route name if options.template is undefined')
+
+  // template: options.template set
+  inst.options.template = 'myTemplate';
+  value = inst.lookup('template');
+  test.equal(value, 'myTemplate', 'should return options.template if defined')
+
+  // regionTemplates: options.regionTemplates = options.yieldTemplates = undefined
+  value = inst.lookup('regionTemplates');
+  test.equal(value, {}, 'should return undefined if regionTemplates = yieldTemplates = undefined')
+
+  // regionTemplates: options.yieldTemplates is set, options.regionTemplates = undefined
+  inst.options.yieldTemplates = {'myFooter': {to: 'footer'}};
+  value = inst.lookup('regionTemplates');
+  test.equal(value, {'myFooter': {to: 'footer'}}, 'should return yieldTemplates if regionTemplate = undefined')
+
+  // regionTemplates: options.regionTemplates is set
+  inst.options.regionTemplates = {'myHeader': {to: 'header'}};
+  value = inst.lookup('regionTemplates');
+  test.equal(value, {'myHeader': {to: 'header'}}, 'should return regionTemplate if defined')
+
+
+
 });

@@ -14,6 +14,7 @@ A client and server side router designed specifically for Meteor.
   - [Rendering the Router](#rendering-the-router)
   - [Path Functions and Helpers](#path-functions-and-helpers)
   - [Changing routes programmatically](#changing-routes-programmatically)
+  - [Looking up route settings](#looking-up-route-settings)
   - [Rendering Templates](#rendering-templates)
   - [Using a Layout with Yields](#using-a-layout-with-yields)
   - [Data](#data)
@@ -310,6 +311,16 @@ var current = Router.current();
 return current && current.path;
 ```
 
+### Looking up route settings
+
+You can check the values of route parameters by using `this.lookup(setting)` inside route definitions or with `Router.current().lookup(setting)`  For example, 
+
+```javascript
+var current = Router.current();
+return current && current.lookup('template')
+```
+
+will return the current route's template name. avoid directly querying the `options` object on a route, as it may not return the correct value. Valid lookup items include 'template'.
 
 ### Rendering Templates
 The default action for a route is to render a template. You can specify a
