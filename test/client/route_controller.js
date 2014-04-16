@@ -126,11 +126,11 @@ Tinytest.add('Client RouteController - _run order', function (test) {
   c._run();
 
   test.equal(calls, [
-    'layout',
     'onRun',
     'waitOn',
     'data',
     'onData',
+    'layout',
     'onBeforeAction',
     'action',
     'onAfterAction'
