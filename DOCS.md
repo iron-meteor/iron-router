@@ -303,13 +303,23 @@ Router.go('/posts/7');
 Router.go('postShow', {_id: 7});
 ```
 
-The current route is returned by `Router.current()`. It can be `null` (just like `Meteor.user()` can be null) so it's best to guard when working with reactive return values. For example, to find the current path:
+The current route is returned reactively by `Router.current()`. It can be `null` (just like `Meteor.user()` can be null) so it's best to guard when working with reactive return values. For example, to find the current path:
 
 ```javascript
 var current = Router.current();
 return current && current.path;
 ```
 
+Inside a route controller (such as in a hook), you don't need to call `Router.current()` because `this` already points to the current route. For example, to track pages visited by users using the [analytics](https://atmospherejs.com/package/analyticsjs) package:
+
+```javascript
+Router.configure({
+  ...
+  load: function () {
+    analytics.page(this.path);
+  }
+});
+```
 
 ### Rendering Templates
 The default action for a route is to render a template. You can specify a
