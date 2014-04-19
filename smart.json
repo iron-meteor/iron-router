@@ -6,6 +6,6 @@
   "version": "0.7.1",
   "git": "https://github.com/EventedMind/iron-router.git",
   "packages": {
-    "blaze-layout": "0.2.4"
+    "blaze-layout": "0.2.5"
   }
 }
