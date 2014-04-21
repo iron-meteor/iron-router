@@ -401,7 +401,7 @@ Tinytest.add('Route - normalizePath', function (test) {
   test.equal(route.normalizePath('/posts#anchorTag'), '/posts');
 });
 
-Tinytest.add('Route - getController', function (test) {
+Tinytest.add('Route - newController', function (test) {
   var route;
   var root = Utils.global;
 
@@ -415,7 +415,7 @@ Tinytest.add('Route - getController', function (test) {
   };
 
   var testGetController = function (route) {
-    var controller = route.getController('/test', {option: true});
+    var controller = route.newController('/test', {option: true});
     test.isTrue(controller instanceof TestController);
     test.equal(controller.route, route);
     test.equal(controller.router, Router);
