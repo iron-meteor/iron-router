@@ -267,5 +267,3 @@ contributing to improved design or adding features. Some guidelines below:
 ## License
 
 MIT
-
-> Please close this PR
