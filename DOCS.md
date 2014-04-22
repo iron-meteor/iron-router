@@ -315,7 +315,7 @@ Inside a route controller (such as in a hook), you don't need to call `Router.cu
 ```javascript
 Router.configure({
   ...
-  load: function () {
+  onRun: function () {
     analytics.page(this.path);
   }
 });
@@ -500,7 +500,7 @@ Router.map(function () {
       return Posts.findOne({slug: this.params.slug});
     },
 
-    before: function () {
+    onBeforeAction: function () {
       var post = this.getData();
     }
   });
@@ -620,7 +620,7 @@ Router.configure({
 Router.map(function () {
   this.route('postShow', {
     path: '/posts/:_id',
-    before: function() {
+    onBeforeAction: function() {
       // wait on post
       this.subscribe('post', this.params._id).wait(); // wait
 
@@ -646,7 +646,7 @@ Router.map(function () {
     //   return Meteor.subscribe('posts', this.params.:id); }
     // }
     
-    before: function() {
+    onBeforeAction: function() {
       this.subscribe('posts', this.params._id).wait();
     }
   });
@@ -697,28 +697,29 @@ layout per route or a globally defined layout.*
 
 ### Using hooks
 
-There are four types of hooks that a route provides. All can be added at the global level, in a route definition, or defined for a controller.
+There are five types of hooks that a route provides. All can be added at the global level, in a route definition, or defined for a controller.
 
-- `before` - runs before the action function (possibly many times if reactivity is involved).
-- `after` - runs after the action function (also reactively)
-- `load` - runs _just once_ when the route is first loaded. NOTE that this doesn't run again if your page reloads via hot-code-reload, so make sure any variables you set will persist over HCR (for example Session variables).
-- `unload` - runs _just once_ when you leave the route for a new route.
+- `onBeforeAction` - runs before the action function (possibly many times if reactivity is involved).
+- `onAfterAction` - runs after the action function (also reactively)
+- `onData` - runs reactively whenever the data changes.
+- `onRun` - runs _just once_ when the route is first loaded. NOTE that this doesn't run again if your page reloads via hot-code-reload, so make sure any variables you set will persist over HCR (for example Session variables).
+- `onStop` - runs once when the controller is stopped, like just before a user routes away.
 
 You can also define global hooks which apply to a set of named routes:
 
 ```js
 // this hook will run on almost all routes
-Router.before(mustBeSignedIn, {except: ['login', 'signup', 'forgotPassword']});
+Router.onBeforeAction(mustBeSignedIn, {except: ['login', 'signup', 'forgotPassword']});
 
 // this hook will only run on certain routes
-Router.before(mustBeAdmin, {only: ['adminDashboard', 'adminUsers', 'adminUsersEdit']});
+Router.onBeforeAction(mustBeAdmin, {only: ['adminDashboard', 'adminUsers', 'adminUsersEdit']});
 ```
 
 ### Before and After Hooks
 Sometimes you want to execute some code *before* or *after* your action function
 is called. This is particularly useful for things like showing a login page
 anytime a user is not logged in. You can declare before and after hooks by
-providing `before` and `after` options to the route. The value can be a function
+providing `onBeforeAction` and `onAfterAction` options to the route. The value can be a function
 or an array of functions which will be executed in the order they are defined.
 
 ```javascript
@@ -726,7 +727,7 @@ Router.map(function () {
   this.route('postShow', {
     path: '/posts/:_id',
 
-    before: function () {
+    onBeforeAction: function () {
       if (!Meteor.user()) {
         // render the login template but keep the url in the browser the same
         this.render('login');
@@ -747,7 +748,7 @@ Router.map(function () {
       });
     },
 
-    after: function () {
+    onAfterAction: function () {
       // this is run after our action function
     }
   });
@@ -758,8 +759,8 @@ Hooks and your action function are reactive by default. This means that if you
 use a reactive data source inside of one of these functions, and that reactive
 data source invalidates the computation, these functions will be run again.
 
-### Unload Hook
-Unload hooks will be called before a RouteController is unloaded and a new
+### onStop Hook
+onStop hooks will be called before a RouteController is unloaded and a new
 RouteController is run. This hook is useful for cleaning up Session data for
 example.
 
@@ -768,7 +769,7 @@ Router.map(function () {
   this.route('postShow', {
     path: '/login',
 
-    unload: function () {
+    onStop: function () {
       // This is called when you navigate to a new route
       Session.set('postId', null);
     }
@@ -882,10 +883,10 @@ PostShowController = RouteController.extend({
 
   layoutTemplate: 'postLayout',
 
-  before: function () {
+  onBeforeAction: function () {
   },
 
-  after: function () {
+  onAfterAction: function () {
   },
 
   waitOn: function () {
@@ -902,13 +903,13 @@ PostShowController = RouteController.extend({
 });
 ```
 
-Note that `before` and `after` are class level methods of our new controller. We
+Note that `onBeforeAction` and `onAfterAction` are class level methods of our new controller. We
 can pass them as properties to the `extend` method for convenience. But we can
 also do this:
 
 ```javascript
-PostShowController.before(function () {});
-PostShowController.after(function () {});
+PostShowController.onBeforeAction(function () {});
+PostShowController.onAfterAction(function () {});
 ```
 
 (But note `where` is not available on controllers, only in `Router.map`.)
@@ -917,10 +918,10 @@ In Coffeescript we can use the language's native inheritance.
 
 ```coffeescript
 class @PostShowController extends RouteController
-  before: ->
+  onBeforeAction: ->
     # do some stuff before the action is invoked
 
-  after: ->
+  onAfterAction: ->
     # do some stuff after the action is invoked
 
   layout: 'layout'
@@ -968,7 +969,7 @@ Router.map(function() {
 
 // and extend the controller, so you can access the this.params object
 StripeRedirectController = RouteController.extend({
-    run: function () {
+    onRun: function () {
         // the code parameter has been automatically parsed and is available for use
         console.log('stripe.code: ' + this.params.code);
         Session.set('oauth_code', this.params.code);
