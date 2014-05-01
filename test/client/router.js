@@ -115,3 +115,51 @@ Tinytest.add('ClientRouter - calling same route twice does not write to history'
   router.go(router.path('one'));
   test.equal(setCalled, 2);
 });
+
+// SEE IR#276 for detailed discussion
+Tinytest.add('ClientRouter - router is not sensitive to invalidation timing', function (test) {
+  var ready = new ReactiveVar('ready');
+  var data = new ReactiveVar('data');
+  
+  // this one actually does render
+  var router = new IronRouter({
+    autoStart: false,
+    autoRender: false
+  });
+  router.configure({
+    uiManager: new BlazeUIManager
+  });
+  router.map(function() {
+    this.route('one', {
+      path: '/',
+      data: function() {
+        // depend on ready
+        if (ready.get())
+          return true;
+        else
+          return false;
+      },
+        
+      action: function() {
+        // depend first on data, then ready
+        if (data.get())
+          if (ready.get())
+            this.render();
+      }
+    });
+  });
+  
+  Template.one.created = function() {
+    test.equal(this, true);
+  }
+  
+  router.start();
+  // don't actually do anything with it, but at least use it
+  Router.render()
+  router.go('one');
+
+  // now, simulate data and ready events coming in the same tick
+  data.set(true);
+  ready.set(true);
+  Deps.flush(); // this will trigger the one template to be created
+});

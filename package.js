@@ -55,6 +55,9 @@ Package.on_test(function (api) {
   api.use('tinytest', ['client', 'server']);
   api.use('test-helpers', ['client', 'server']);
   api.use('reactive-dict', ['client', 'server']);
+  api.use('blaze-layout', 'client');
+  
+  api.use('templating', 'client');
 
   api.add_files('test/test_helpers.js', ['client', 'server']);
 
@@ -68,6 +71,7 @@ Package.on_test(function (api) {
   api.add_files('test/server/router.js', 'server');
 
   // client only
+  api.add_files('test/client/templates.html', 'client');
   api.add_files('test/client/mocks.js', 'client');
   api.add_files('test/client/router.js', 'client');
   api.add_files('test/client/route_controller.js', 'client');
