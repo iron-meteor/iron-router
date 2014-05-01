@@ -21,6 +21,7 @@ Package.on_use(function (api) {
   // the router. But we still want to pull in the blaze-layout
   // package automatically when users add iron-router.
   api.use('blaze-layout', 'client', {unordered: true});
+  api.use('deps-ext');
 
   api.add_files('lib/utils.js', ['client', 'server']);
   api.add_files('lib/route.js', ['client', 'server']);
