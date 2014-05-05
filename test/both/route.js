@@ -456,7 +456,7 @@ Tinytest.add('Route - newController', function (test) {
   var route = new Route(Router, 'anon', {
     template: 'template'
   });
-  var controller = route.getController('/anon', {option: true});
+  var controller = route.newController('/anon', {option: true});
   test.isTrue(controller instanceof RouteController, 'Anonymous controller not created');
   test.equal(controller.route, route);
   test.isTrue(controller.options.option);
