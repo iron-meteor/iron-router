@@ -246,6 +246,9 @@ contributing to improved design or adding features. Some guidelines below:
 
 * **Answer Questions!**: If you can help another user please do!
 
+How to create a reproduction:
+https://www.eventedmind.com/feed/github-issues-and-reproductions
+
 #### Local installation
 
   This is useful if you're working off of the dev branch or contributing.
