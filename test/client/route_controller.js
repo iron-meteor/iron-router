@@ -128,9 +128,9 @@ Tinytest.add('Client RouteController - _run order', function (test) {
   test.equal(calls, [
     'onRun',
     'waitOn',
+    'layout',
     'data',
     'onData',
-    'layout',
     'onBeforeAction',
     'action',
     'onAfterAction'
@@ -215,9 +215,10 @@ Tinytest.add('Client RouteController - _run computation isolation', function (te
   // almost! now the action functions!
   deps.action.changed();
   Deps.flush();
-  // 9 to 12 is because action invalidtes
-  // onBeforeAction, action, onAfterAction
-  test.equal(totalCalls, 12, 'only action should have rerun');
+
+  // 9 to 13 is because action invalidtes
+  // data, onBeforeAction, action, onAfterAction
+  test.equal(totalCalls, 13, 'only action should have rerun');
   test.equal(calls.action, 2, 'action should rerun');
   test.equal(calls.onBeforeAction, 2, 'onBeforeAction should rerun');
   test.equal(calls.onAfterAction, 2, 'onAfterAction should rerun');
