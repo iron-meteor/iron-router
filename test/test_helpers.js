@@ -1,6 +1,7 @@
 Router.configure({
   autoRender: false,
-  autoStart: false
+  autoStart: false,
+  supressWarnings: true 
 });
 
 // setup some publications to test behaviour
