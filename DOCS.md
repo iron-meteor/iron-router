@@ -281,13 +281,13 @@ this:
 
 ```html
 <!-- given a context of {_id: 1} this will render '/posts/1?sort_by=created_at' -->
-<a href="{{pathFor 'postShow' sort_by=created_at}}">Post Show</a>
+<a href="{{pathFor 'postShow' query='sort_by=created_at'}}">Post Show</a>
 ```
 And you can pass a hash value using the Handlbars helper like this:
 
 ```html
 <!-- given a context of {_id: 1} this will render '/posts/1?sort_by=created_at#someAnchorTag' -->
-<a href="{{pathFor 'postShow' sort_by=created_at hash=someAnchorTag}}">Post Show</a>
+<a href="{{pathFor 'postShow' query='sort_by=created_at' hash='someAnchorTag'}}">Post Show</a>
 ```
 
 ### Changing routes programmatically
@@ -730,7 +730,7 @@ Router.map(function () {
         // render the login template but keep the url in the browser the same
         this.render('login');
 
-        // pause this rendering of the rest of the before hooks and the action function 
+        // pause the rest of the before hooks and the action function 
         pause();
       }
     },
