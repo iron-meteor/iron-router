@@ -1,5 +1,3 @@
-// TODO -- add basic tests
-
 Tinytest.add('Waitlist - removes subs when computation invalidates', function(test) {
   var waitlist = new WaitList;
   
