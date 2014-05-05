@@ -672,7 +672,6 @@ Router.map(function () {
       //  this.params
       //  this.wait
       //  this.render
-      //  this.stop
       //  this.redirect
     }
   });
@@ -726,13 +725,13 @@ Router.map(function () {
   this.route('postShow', {
     path: '/posts/:_id',
 
-    onBeforeAction: function () {
+    onBeforeAction: function (pause) {
       if (!Meteor.user()) {
         // render the login template but keep the url in the browser the same
         this.render('login');
 
-        // stop the rest of the before hooks and the action function 
-        this.stop();
+        // pause this rendering of the rest of the before hooks and the action function 
+        pause();
       }
     },
 
