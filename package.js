@@ -56,6 +56,7 @@ Package.on_test(function (api) {
   api.use('tinytest', ['client', 'server']);
   api.use('test-helpers', ['client', 'server']);
   api.use('reactive-dict', ['client', 'server']);
+  api.use('deps-ext', 'client');
 
   api.add_files('test/test_helpers.js', ['client', 'server']);
 
