@@ -9,7 +9,7 @@ var controllerMock = {
 var routes = [{
   where: 'client',
   test: function (path) { return path == 'client'; },
-  getController: function (path, options) { return EJSON.clone(controllerMock); },
+  newController: function (path, options) { return EJSON.clone(controllerMock); },
   path: function (params, options) {
     return [params, options];
   },
@@ -19,7 +19,7 @@ var routes = [{
 }, {
   where: 'server',
   test: function (path) { return path == 'server' },
-  getController: function () { return EJSON.clone(controllerMock); },
+  newController: function () { return EJSON.clone(controllerMock); },
   path: function (params, options) {
     return [params, options];
   },

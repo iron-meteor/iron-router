@@ -20,8 +20,8 @@ A client and server side router designed specifically for Meteor.
   - [Waiting on Subscriptions (waitOn)](#waiting-on-subscriptions-waiton)
   - [Waiting on Subscriptions (wait)](#waiting-on-subscriptions-wait)
   - [Using a Custom Action Function](#using-a-custom-action-function)
-  - [Using hooks](#using-hooks)
   - [Custom Rendering](#custom-rendering)
+  - [Using hooks](#using-hooks)
   - [Before and After Hooks](#before-and-after-hooks)
   - [Unload Hook](#unload-hook)
   - [Global Router Configuration](#global-router-configuration)
@@ -303,13 +303,23 @@ Router.go('/posts/7');
 Router.go('postShow', {_id: 7});
 ```
 
-The current route is returned by `Router.current()`. It can be `null` (just like `Meteor.user()` can be null) so it's best to guard when working with reactive return values. For example, to find the current path:
+The current route is returned reactively by `Router.current()`. It can be `null` (just like `Meteor.user()` can be null) so it's best to guard when working with reactive return values. For example, to find the current path:
 
 ```javascript
 var current = Router.current();
 return current && current.path;
 ```
 
+Inside a route controller (such as in a hook), you don't need to call `Router.current()` because `this` already points to the current route. For example, to track pages visited by users using the [analytics](https://atmospherejs.com/package/analyticsjs) package:
+
+```javascript
+Router.configure({
+  ...
+  load: function () {
+    analytics.page(this.path);
+  }
+});
+```
 
 ### Rendering Templates
 The default action for a route is to render a template. You can specify a
@@ -490,7 +500,7 @@ Router.map(function () {
       return Posts.findOne({slug: this.params.slug});
     },
 
-    before: function () {
+    onBeforeAction: function () {
       var post = this.getData();
     }
   });
@@ -542,7 +552,7 @@ Router.configure({
 
 Sometimes it's useful to wait until you have data before rendering a page. For
 example, let's say you want to show a not found template if the user navigates
-to a good url (say, /posts/5) but there is no post with an id of 5. You can't
+to a good url (say, `/posts/5`) but there is no post with an id of 5. You can't
 make this determination until the data from the server has been sent.
 
 To solve this problem, you can **wait** on a subscription, or anything with a
@@ -583,13 +593,13 @@ When your route is run, it will wait on any subscriptions you've provided in
 your `waitOn` function. If you've provided a `loadingTemplate`, the default action 
 will be to render that template.
 
-While waiting, you can check if your subscriptions are ready in your `before` hooks, 
-`action` method, and `after` hooks, by checking `this.ready()`. 
+While waiting, you can check if your subscriptions are ready in your `onBeforeAction`
+hooks, `action` method, and `onAfterAction` hooks, by checking `this.ready()`. 
 
 Under the hood, the waitOn function calls the `wait(handles, onReady,
 onWaiting)` method of a RouteController (more on RouteControllers below). If you
 need to customize this behavior you can skip providing a `waitOn` property and
-just use the `wait` method directly in a custom action function or a before
+just use the `wait` method directly in a custom action function or an `onBeforeAction`
 hook.
 
 You can also wait for certain subscriptions on a global level, by passing a `waitOn`
@@ -610,7 +620,7 @@ Router.configure({
 Router.map(function () {
   this.route('postShow', {
     path: '/posts/:_id',
-    before: function() {
+    onBeforeAction: function() {
       // wait on post
       this.subscribe('post', this.params._id).wait(); // wait
 
@@ -636,7 +646,7 @@ Router.map(function () {
     //   return Meteor.subscribe('posts', this.params.:id); }
     // }
     
-    before: function() {
+    onBeforeAction: function() {
       this.subscribe('posts', this.params._id).wait();
     }
   });
@@ -669,25 +679,6 @@ Router.map(function () {
 });
 ```
 
-### Using hooks
-
-There are four types of hooks that a route provides. All can be added at the global level, in a route definition, or defined for a controller.
-
-- `before` - runs before the action function (possibly many times if reactivity is involved).
-- `after` - runs after the action function (also reactively)
-- `load` - runs _just once_ when the route is first loaded. NOTE that this doesn't run again if your page reloads via hot-code-reload, so make sure any variables you set will persist over HCR (for example Session variables).
-- `unload` - runs _just once_ when you leave the route for a new route.
-
-You can also define global hooks which apply to a set of named routes:
-
-```js
-// this hook will run on almost all routes
-Router.before(mustBeSignedIn, {except: ['login', 'signup', 'forgotPassword']});
-
-// this hook will only run on certain routes
-Router.before(mustBeAdmin, {only: ['adminDashboard', 'adminUsers', 'adminUsersEdit']});
-```
-
 ### Custom Rendering
 You can render manually by calling the `render` function. There are three ways
 to call the render method:
@@ -704,11 +695,30 @@ to call the render method:
 *Note: layouts are at the route level, not the template level and you have one
 layout per route or a globally defined layout.*
 
+### Using hooks
+
+There are four types of hooks that a route provides. All can be added at the global level, in a route definition, or defined for a controller.
+
+- `onBeforeAction` - runs before the action function (possibly many times if reactivity is involved).
+- `onAfterAction` - runs after the action function (also reactively)
+- `load` - runs _just once_ when the route is first loaded. NOTE that this doesn't run again if your page reloads via hot-code-reload, so make sure any variables you set will persist over HCR (for example Session variables).
+- `unload` - runs _just once_ when you leave the route for a new route.
+
+You can also define global hooks which apply to a set of named routes:
+
+```js
+// this hook will run on almost all routes
+Router.onBeforeAction(mustBeSignedIn, {except: ['login', 'signup', 'forgotPassword']});
+
+// this hook will only run on certain routes
+Router.onBeforeAction(mustBeAdmin, {only: ['adminDashboard', 'adminUsers', 'adminUsersEdit']});
+```
+
 ### Before and After Hooks
 Sometimes you want to execute some code *before* or *after* your action function
 is called. This is particularly useful for things like showing a login page
 anytime a user is not logged in. You can declare before and after hooks by
-providing `before` and `after` options to the route. The value can be a function
+providing `onBeforeAction` and `onAfterAction` options to the route. The value can be a function
 or an array of functions which will be executed in the order they are defined.
 
 ```javascript
@@ -716,7 +726,7 @@ Router.map(function () {
   this.route('postShow', {
     path: '/posts/:_id',
 
-    before: function () {
+    onBeforeAction: function () {
       if (!Meteor.user()) {
         // render the login template but keep the url in the browser the same
         this.render('login');
@@ -737,7 +747,7 @@ Router.map(function () {
       });
     },
 
-    after: function () {
+    onAfterAction: function () {
       // this is run after our action function
     }
   });
@@ -844,8 +854,8 @@ PostShowController = RouteController.extend({
 ```
 
 How does a route know about our custom RouteController? Let's say we have a
-route named "postShow." When the route is run, it will look for a global object
-named "PostShowController," after the name of the route. We can change this
+route named "postShow". When the route is run, it will look for a global object
+named "PostShowController", after the name of the route. We can change this
 behavior by providing a `controller` option to the route like so:
 
 ```javascript
@@ -872,10 +882,10 @@ PostShowController = RouteController.extend({
 
   layoutTemplate: 'postLayout',
 
-  before: function () {
+  onBeforeAction: function () {
   },
 
-  after: function () {
+  onAfterAction: function () {
   },
 
   waitOn: function () {
@@ -892,13 +902,13 @@ PostShowController = RouteController.extend({
 });
 ```
 
-Note that `before` and `after` are class level methods of our new controller. We
-can pass them as properties to the `extend` method for convenience. But we can
-also do this:
+Note that `onBeforeAction` and `onAfterAction` are class level methods of our new
+controller. We can pass them as properties to the `extend` method for convenience.
+But we can also do this:
 
 ```javascript
-PostShowController.before(function () {});
-PostShowController.after(function () {});
+PostShowController.onBeforeAction(function () {});
+PostShowController.onAfterAction(function () {});
 ```
 
 (But note `where` is not available on controllers, only in `Router.map`.)
@@ -907,10 +917,10 @@ In Coffeescript we can use the language's native inheritance.
 
 ```coffeescript
 class @PostShowController extends RouteController
-  before: ->
+  onBeforeAction: ->
     # do some stuff before the action is invoked
 
-  after: ->
+  onAfterAction: ->
     # do some stuff after the action is invoked
 
   layout: 'layout'

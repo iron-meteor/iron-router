@@ -1,3 +1,12 @@
+## v0.7.1
+* Fix dataNotFoundHook
+* Bump blaze-layout to 0.2.4
+  * Better error message for {{yield}} vs {{> yield}}
+  * Make parent data context available inside Layout when using Layout manually
+* Remove Handlebars symbol from helpers.js
+* Fix client helpers processArgs bug
+* Don't call the data() function until controller is ready
+
 ## v0.7.0
 * Blaze rendering with the [blaze-layout](https://github.com/eventedmind/blaze-layout) package.
   * Layouts are only taken off the DOM (re-rendered) if the layout changes.
