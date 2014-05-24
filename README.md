@@ -37,7 +37,7 @@ You place your route declarations in a `Router.map` block:
 
 ```javascript
 Router.map(function() {
-  this.route('home', {path: '/'})
+  this.route('home', {path: '/'});
   this.route('about');
 });
 ```
