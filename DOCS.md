@@ -509,10 +509,15 @@ Router.map(function () {
 
 If your data value or function returns null or undefined, the Router can
 automatically render a not found template. This is useful if you want to render
-a not found template for data that doesn't exist. The only thing you need to do
-is provide a `notFoundTemplate` option to your route.
+a not found template for data that doesn't exist. You need to do two things - 
+  1. Provide a `notFoundTemplate` option to your route.
+  2. Turn the `dataNotFound` hook on 
 
 ```javascript
+if (Meteor.isClient) {
+  Router.onBeforeAction('dataNotFound');
+}
+
 Router.map(function () {
   this.route('home', {
     path: '/',
