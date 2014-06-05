@@ -206,7 +206,7 @@ We've mentioned that `this` in route callbacks is a *Route Controller*. Explicit
 
 ```javascript
 AdminController = RouteController.extend({
-  before: // a user filter to control access?
+  onBeforeAction: // a user filter to control access?
 });
 
 PostsEditController = AdminController.extend({
