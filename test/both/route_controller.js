@@ -1,7 +1,16 @@
 var createRouter = function () {
   return new IronRouter({
     autoRender: false,
-    autoStart: false
+    autoStart: false,
+    uiManager: {
+      setData: function() {},
+      layout: function() {},
+      setRegion: function() {},
+      clearRegion: function() {},
+      getRegionKeys: function() {
+        return []
+      }
+    }
   });
 };
 
@@ -142,6 +151,7 @@ Tinytest.add('RouteController - runHooks pause', function (test) {
       calls.push('2');
     }
   ];
+  
 
   var isPaused = inst.runHooks('onRun');
   test.equal(calls, ['1'], 'looks like a downstream hook ran even though we were paused');
@@ -195,6 +205,29 @@ Tinytest.add('RouteController - runHooks', function (test) {
     'cb'
   ]);
 });
+
+Tinytest.add('RouteController - action pause', function (test) {
+  var Router = createRouter();
+  var route = new Route(Router, 'test', {});
+  var inst = new RouteController(Router, route, {});
+
+  var calls = [];
+
+  inst.onBeforeAction = [
+    function (pause) {
+      calls.push('1');
+      pause();
+    }
+  ];
+  
+  inst.action = function() {
+    calls.push('action')
+  }
+
+  inst._run();
+  test.equal(calls, ['1'], "looks like an action ran even though it should have been paused");
+});
+
 
 Tinytest.add('RouteController - stop', function (test) {
   var Router = createRouter();
