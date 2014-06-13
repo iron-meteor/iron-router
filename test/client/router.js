@@ -115,3 +115,29 @@ Tinytest.add('ClientRouter - calling same route twice does not write to history'
   router.go(router.path('one'));
   test.equal(setCalled, 2);
 });
+
+Tinytest.add('ClientRouter - go to server routes', function (test) {
+  var router = mockedRouter(), handledServerRoutes = 0;
+  
+  router.map(function() {
+    this.route('one')
+    this.route('two', {
+      where: 'server',
+      path: 'two'
+    });
+  });
+  
+  router.onUnhandled = function() {
+    handledServerRoutes += 1;
+  }
+  
+  router.start();
+  
+  test.equal(handledServerRoutes, 0);
+
+  router.go('two');
+  test.equal(handledServerRoutes, 1);
+
+  router.go('/two');
+  test.equal(handledServerRoutes, 2);
+});
