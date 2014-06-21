@@ -222,3 +222,60 @@ Tinytest.add('Client RouteController - _run computation isolation', function (te
   test.equal(calls.onBeforeAction, 2, 'onBeforeAction should rerun');
   test.equal(calls.onAfterAction, 2, 'onAfterAction should rerun');
 });
+
+Tinytest.add('Client RouteController - data hook - with data', function (test) {
+  var c = createController({
+    template: 'one',
+    data: true,
+    onBeforeAction: 'dataNotFound',
+    notFoundTemplate: 'notFound'
+  });
+  
+  var router = c.router;
+
+  var region;
+  router.setRegion = function (name, value) {
+    region = name || value;
+  };
+  
+  c._run();
+  test.equal(region, 'one');
+});
+
+Tinytest.add('Client RouteController - data hook - with data returning false', function (test) {
+  var c = createController({
+    template: 'one',
+    data: false,
+    onBeforeAction: 'dataNotFound',
+    notFoundTemplate: 'notFound'
+  });
+  
+  var router = c.router;
+
+  var region;
+  router.setRegion = function (name, value) {
+    region = name || value;
+  };
+  
+  c._run();
+  test.equal(region, 'notFound');
+});
+
+Tinytest.add('Client RouteController - data hook - with no data property', function (test) {
+  var c = createController({
+    template: 'one',
+    onBeforeAction: 'dataNotFound',
+    notFoundTemplate: 'notFound'
+  });
+  
+  var router = c.router;
+
+  var region;
+  router.setRegion = function (name, value) {
+    region = name || value;
+  };
+  
+  c._run();
+  test.equal(region, 'one');
+
+});
