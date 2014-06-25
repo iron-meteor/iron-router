@@ -279,3 +279,29 @@ Tinytest.add('Client RouteController - data hook - with no data property', funct
   test.equal(region, 'one');
 
 });
+
+Tinytest.add('Client RouteController - clearUnusedRegions is called', function (test) {
+  var triggerHook = false;
+  var c = createController({
+    template: 'one',
+    onBeforeAction: function(pause) {
+      if (triggerHook) {
+        this.render('two', {to: 'aside'});
+        pause();
+      }
+    }
+  });
+  
+  var usedRegions;
+  c.router.clearUnusedRegions = function(regions) {
+    usedRegions = regions;
+  };
+  
+  c._run();
+  test.equal(usedRegions, ['main']);
+  
+  c.stop()
+  triggerHook = true;
+  c._run();
+  test.equal(usedRegions, ['aside']);
+});
