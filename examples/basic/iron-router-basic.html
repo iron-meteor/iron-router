@@ -8,6 +8,10 @@
 
 <template name="PageTwo">
   <h3>Page Two</h3>
+
+  {{#contentFor "footer"}}
+    Page Two Footer
+  {{/contentFor}}
 </template>
 
 <template name="ApplicationLayout">
@@ -16,10 +20,13 @@
   <nav>
     <ul>
       <li>
-        <a href="/two">Two</a>
+        <a href="/">Page One</a>
       </li>
       <li>
-        <a href="/three">Three</a>
+        <a href="/two">Page Two</a>
+      </li>
+      <li>
+        <a href="/downloadfile">Server Route</a>
       </li>
       <li>
         <a href="/asset.txt">Asset</a>

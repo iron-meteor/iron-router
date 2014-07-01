@@ -15,12 +15,12 @@ Package.on_use(function (api) {
   // for helpers
   api.use('ui', 'client');
  
-  // default ui manager
-  // unordered: true because blaze-layout package weakly
-  // depends on iron-router so it can register itself with
-  // the router. But we still want to pull in the blaze-layout
-  // package automatically when users add iron-router.
-  api.use('blaze-layout', 'client', {unordered: true});
+  // gives us dynamic layouts
+  api.use('iron-layout');
+
+  // imply dynamic layouts as well so users can use them directly!
+  api.imply('iron-layout');
+
 
   api.add_files('lib/utils.js', ['client', 'server']);
   api.add_files('lib/route.js', ['client', 'server']);

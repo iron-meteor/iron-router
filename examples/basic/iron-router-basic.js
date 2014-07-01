@@ -17,7 +17,7 @@ Router.map(function() {
     path: '/two'
   });
 
-  this.route('three', {
+  this.route('downloadfile', {
     // server route
     where: 'server',
 
