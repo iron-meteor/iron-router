@@ -2,12 +2,36 @@
   <title>iron-router-basic</title>
 </head>
 
-<template name="one">
-  <a href="/two">Two</a>
-  <a href="/three">Three</a>
-  <a href="/asset.txt">Asset</a>
+<template name="PageOne">
+  <h3>Page One</h3>
 </template>
 
-<template name="two">
-  <a href="/">One</a>
+<template name="PageTwo">
+  <h3>Page Two</h3>
+</template>
+
+<template name="ApplicationLayout">
+  <h1>Application Layout</h1>
+
+  <nav>
+    <ul>
+      <li>
+        <a href="/two">Two</a>
+      </li>
+      <li>
+        <a href="/three">Three</a>
+      </li>
+      <li>
+        <a href="/asset.txt">Asset</a>
+      </li>
+    </ul>
+  </nav>
+
+  <article>
+    {{> yield}}
+  </article>
+
+  <footer>
+    {{> yield "footer"}}
+  </footer>
 </template>

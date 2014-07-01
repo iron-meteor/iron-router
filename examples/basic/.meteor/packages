@@ -6,6 +6,5 @@
 standard-app-packages
 autopublish
 insecure
-preserve-inputs
 iron-router
 blaze-layout

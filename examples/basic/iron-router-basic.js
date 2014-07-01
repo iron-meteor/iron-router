@@ -1,28 +1,31 @@
 Router.configure({
-  debug: true,
-  before: function() {
-    console.log('before all')
-  }
+  layoutTemplate: 'ApplicationLayout',
+  templateNameConverter: 'upperCamelCase'
 });
 
 Router.map(function() {
-  this.route('one', {
-    path: '/', 
-    load: function() {
-      console.log('load one')
-    },
-    before: function() {
-      console.log('before one')
-    }
+  this.route('page.one', {
+    path: '/'
   });
-  this.route('two');
+
+  this.route('page.two', {
+    // if the template is different from the name we can specify it directly
+    // like this
+    template: 'PageTwo',
+
+    // if the path can't be inferred from the name we can provide it here
+    path: '/two'
+  });
+
   this.route('three', {
+    // server route
     where: 'server',
+
     action: function() {
       this.response.end('SERVER ROUTE');
     }
   });
-})
+});
 
 if (Meteor.isClient) {
 }
