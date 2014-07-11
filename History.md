@@ -1,3 +1,7 @@
+## v0.7.2
+* Integrate iron-layout
+* Only use one main computation in _run instead of one for each thing
+
 ## v0.7.1
 * Fix dataNotFoundHook
 * Bump blaze-layout to 0.2.4
