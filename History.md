@@ -8,6 +8,12 @@
 * Dont call unnecessary stop() in client router when browsing away
 * Examples corrections
 
+Contributors:
+  Chris Mather
+  Dan Dascalescu
+  David Gomes
+  Tom Coleman
+
 ## v0.7.1
 * Fix dataNotFoundHook
 * Bump blaze-layout to 0.2.4
