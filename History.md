@@ -1,5 +1,7 @@
+## vNEXT
+
 ## v0.7.2
-* Integrate iron-layout
+* Integrate iron-layout for new Blaze.View work
 * Only use one main computation in _run instead of one for each thing
 
 ## v0.7.1

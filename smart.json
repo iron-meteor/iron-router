@@ -6,9 +6,6 @@
   "version": "0.7.2",
   "git": "https://github.com/EventedMind/iron-router.git",
   "packages": {
-    "iron-layout": {
-      "git": "git@github.com:EventedMind/iron-layout.git",
-      "branch": "master"
-    }
+    "iron-layout": {}
   }
 }
