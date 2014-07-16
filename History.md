@@ -3,6 +3,10 @@
 ## v0.7.2
 * Integrate iron-layout for new Blaze.View work
 * Only use one main computation in _run instead of one for each thing
+* Fix clearUnusedRegion bug
+* Fix ie9 omits leading slash in pathname on click handler
+* Dont call unnecessary stop() in client router when browsing away
+* Examples corrections
 
 ## v0.7.1
 * Fix dataNotFoundHook
