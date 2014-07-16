@@ -1,4 +1,4 @@
-# Iron Router [![Build Status](https://travis-ci.org/EventedMind/iron-router.png)](https://travis-ci.org/EventedMind/iron-router)
+# Iron Router 
 
 A client and server side router designed specifically for Meteor.
 
