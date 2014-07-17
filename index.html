@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Iron-router : Routing designed specifically for Meteor." />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Iron-router</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/EventedMind/iron-router">View on GitHub</a>
+
+          <h1 id="project_title">Iron-router</h1>
+          <h2 id="project_tagline">Routing designed specifically for Meteor.</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/EventedMind/iron-router/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/EventedMind/iron-router/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a name="iron-router" class="anchor" href="#iron-router"><span class="octicon octicon-link"></span></a>Iron Router</h1>
+
+<p>A client and server side router designed specifically for Meteor.</p>
+
+<h2>
+<a name="history" class="anchor" href="#history"><span class="octicon octicon-link"></span></a>History</h2>
+
+<p><strong>Latest Version:</strong> 0.7.2</p>
+
+<p>See the <a href="History.md">History.md</a> file for changes (including breaking changes) across
+versions.</p>
+
+<h2>
+<a name="about" class="anchor" href="#about"><span class="octicon octicon-link"></span></a>About</h2>
+
+<p>Iron Router is a <em>routing</em> package for Meteor. It makes single page apps.</p>
+
+<p>IR takes control of your <code>&lt;body&gt;</code> tag, rendering templates based on the user's current URL. It also helps you set up subscriptions per-route and much more.</p>
+
+<p>Iron Router works with Meteor 0.8.0 and above. To use an earlier version, use a version of IR less than 0.7.0.</p>
+
+<h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>Iron Router can be installed with <a href="https://github.com/oortcloud/meteorite/">Meteorite</a>. From inside a Meteorite-managed app:</p>
+
+<div class="highlight highlight-sh"><pre><span class="nv">$ </span>mrt add iron-router
+</pre></div>
+
+<h2>
+<a name="api" class="anchor" href="#api"><span class="octicon octicon-link"></span></a>API</h2>
+
+<p>More detailed documentation can be found <a href="DOCS.md">here</a>.</p>
+
+<h3>
+<a name="basics" class="anchor" href="#basics"><span class="octicon octicon-link"></span></a>Basics</h3>
+
+<h4>
+<a name="declaring-a-route" class="anchor" href="#declaring-a-route"><span class="octicon octicon-link"></span></a>Declaring a route</h4>
+
+<p>You place your route declarations in a <code>Router.map</code> block: </p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'home'</span><span class="p">,</span> <span class="p">{</span><span class="nx">path</span><span class="o">:</span> <span class="s1">'/'</span><span class="p">});</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'about'</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>The first route is named <code>home</code>, and will render a template named <code>home</code> at the path <code>/</code>. The second is named <code>about</code>, and will render a template named <code>about</code> at the path <code>/about</code>.</p>
+
+<p>You should define your routes in a file common to the client and server so both contexts can use them.</p>
+
+<h4>
+<a name="using-routes" class="anchor" href="#using-routes"><span class="octicon octicon-link"></span></a>Using routes</h4>
+
+<p>To use a route in your app, you can use the <code>{{pathFor}}</code> handlebars helper:</p>
+
+<div class="highlight highlight-html"><pre><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"{{pathFor 'home'}}"</span><span class="nt">&gt;</span>Go home!<span class="nt">&lt;/a&gt;</span>
+</pre></div>
+
+<p>Or, call <code>Router.path('home')</code> to get it as a string.</p>
+
+<p>The router will pick up internal clicks on links to routes. 
+Alternatively, you can directly call <code>Router.go()</code> in a event handler:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Template</span><span class="p">.</span><span class="nx">foo</span><span class="p">.</span><span class="nx">events</span><span class="p">({</span>
+ <span class="s1">'click .homeLink'</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">Router</span><span class="p">.</span><span class="nx">go</span><span class="p">(</span><span class="s1">'home'</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+
+<h4>
+<a name="parameterized-routes-and-data" class="anchor" href="#parameterized-routes-and-data"><span class="octicon octicon-link"></span></a>Parameterized routes and data</h4>
+
+<p>As your application starts dealing with data, you'll probably want to write more than a few static routes.</p>
+
+<p>A standard pattern is a route per object in a collection. You can achieve this with a parameterized route:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'postsShow'</span><span class="p">,</span> <span class="p">{</span> 
+  <span class="nx">path</span><span class="o">:</span> <span class="s1">'/posts/:_id'</span><span class="p">,</span>
+  <span class="nx">data</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">Posts</span><span class="p">.</span><span class="nx">findOne</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">_id</span><span class="p">);</span> <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>This route will match <em>any</em> URL of the form <code>'/posts/X'</code>, making the value of <code>X</code> available on the <code>this.params._id</code> property of the matching <em>controller</em>.</p>
+
+<p><code>this</code> is an instance of a <code>RouteController</code> in the data function above. The value returned from the data function can be used in our templates.</p>
+
+<p>So our template might look like (if posts have a <code>title</code> field):</p>
+
+<div class="highlight highlight-html"><pre><span class="nt">&lt;template</span> <span class="na">name=</span><span class="s">"postsShow"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h1&gt;</span>{{title}}<span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;/template&gt;</span>
+</pre></div>
+
+<h4>
+<a name="controlling-subscriptions" class="anchor" href="#controlling-subscriptions"><span class="octicon octicon-link"></span></a>Controlling subscriptions</h4>
+
+<p>The example above assumes that you've already loaded the relevant post into your application, but usually you want to load data on demand as you hit a route. To do this, we can expand the example to use <code>waitOn</code>:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'postsShow'</span><span class="p">,</span> <span class="p">{</span> 
+  <span class="nx">path</span><span class="o">:</span> <span class="s1">'/posts/:_id'</span><span class="p">,</span>
+  <span class="nx">waitOn</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">Meteor</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">'post'</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">_id</span><span class="p">)},</span>
+  <span class="nx">data</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">Posts</span><span class="p">.</span><span class="nx">findOne</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">_id</span><span class="p">);</span> <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>Returning a subscription handle, or anything with a <code>ready</code> method from the <code>waitOn</code> function will add the handle to a wait list. When you call <code>this.ready()</code> in any of your other route functions, the result is true if all items in the wait list are ready. This lets us do things like show a loading indicator while waiting for data. You can implement a loading indicator in your route like this:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'postsShow'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">waitOn</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">Meteor</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">'post'</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">_id</span><span class="p">);</span>
+  <span class="p">},</span>
+
+  <span class="nx">action</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">ready</span><span class="p">())</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">render</span><span class="p">();</span>
+    <span class="k">else</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">'loading'</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>But instead of writing this code yourself, you can use the 'loading' hook that comes with Iron Router like this:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">onBeforeAction</span><span class="p">(</span><span class="s1">'loading'</span><span class="p">);</span>
+</pre></div>
+
+<h3>
+<a name="advanced" class="anchor" href="#advanced"><span class="octicon octicon-link"></span></a>Advanced</h3>
+
+<h4>
+<a name="layouts--rendering" class="anchor" href="#layouts--rendering"><span class="octicon octicon-link"></span></a>Layouts + rendering</h4>
+
+<p>By default, the router renders the current template directly into the body. If you'd like to share common HTML between routes, you can create your own layout:</p>
+
+<div class="highlight highlight-html"><pre><span class="nt">&lt;template</span> <span class="na">name=</span><span class="s">"masterLayout"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;nav&gt;</span>...<span class="nt">&lt;/nav&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"content"</span><span class="nt">&gt;</span>
+    {{&gt; yield}}
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/template&gt;</span>
+</pre></div>
+
+<p>You can set the layout via the <code>layoutTemplate</code> option to a route or in <code>Router.configure({...})</code>.</p>
+
+<p>Layouts are very flexible. You can read more about them <a href="DOCS.md#using-a-layout-with-yields">in the docs</a>.</p>
+
+<h4>
+<a name="route-options" class="anchor" href="#route-options"><span class="octicon octicon-link"></span></a>Route options</h4>
+
+<p>There are some extra routing options of interest:</p>
+
+<ul>
+<li>
+<code>template</code> - the template to render. We've seen that by default this is just the name of the route.
+
+<ul>
+<li>
+<code>layoutTemplate</code> - the layout template to render.</li>
+</ul>
+</li>
+<li>
+<code>loadingTemplate</code> - the template used by the <code>loading</code> hook.</li>
+<li>
+<code>notFoundTemplate</code> - the template used by the <code>dataNotFound</code> hook -- renders if the <code>data()</code> function returns something falsey.</li>
+<li>
+<code>where</code> - whether this route runs on the client or the server</li>
+</ul><p>Where it makes sense, options can be set globally via <code>Router.configure()</code>.</p>
+
+<h4>
+<a name="custom-actions-and-hooks" class="anchor" href="#custom-actions-and-hooks"><span class="octicon octicon-link"></span></a>Custom actions and hooks</h4>
+
+<p>You can hook into the route run cycle via the following hooks:</p>
+
+<ul>
+<li>
+<p><code>onRun</code> - this happens <em>once only</em> when the route is loaded. </p>
+
+<p>NOTE: if the page hot code reloads, the onRun hook <em>will not re-run</em>. This makes it appropriate for things like analytics, or setting session variables and not for on-page setup.</p>
+</li>
+<li>
+<code>onData</code> - runs reactively whenever the data changes.</li>
+<li>
+<code>onBeforeAction</code> - runs reactively before the action.</li>
+<li>
+<code>onAfterAction</code> - likewise, after the action.</li>
+<li>
+<code>onStop</code> - runs once when the controller is stopped, like just before a user routes away.</li>
+</ul><p>You can also change the action of a route via the <code>action</code> option. By default, the controller calls <code>this.render()</code>, which renders the relevant templates to the layout. You can call it yourself in an action function -- but if you are doing that you are probably better served using a <code>onBeforeAction</code> or <code>onAfterAction</code> hook.</p>
+
+<p>All hooks (and <code>waitOn</code>) can be set globally to the router via (for example):</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">onRun</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Reached non-home page!'</span><span class="p">);</span>
+<span class="p">},</span> <span class="p">{</span><span class="nx">except</span><span class="o">:</span> <span class="s1">'home'</span><span class="p">});</span>
+</pre></div>
+
+<p>The second argument can be <code>except</code> -- a list of routes to not apply to, or <code>only</code> -- a limited set of routes to match.</p>
+
+<h4>
+<a name="server-routing" class="anchor" href="#server-routing"><span class="octicon octicon-link"></span></a>Server routing</h4>
+
+<p>Most of the above only applies to client routes (we can't render templates on the server right now). </p>
+
+<p>When you define a server route (via <code>where: 'server'</code>), you need to define the <code>action</code> function, and use in a fairly simplistic way, much like <a href="http://expressjs.com">express</a>:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'serverRoute'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">where</span><span class="o">:</span> <span class="s1">'server'</span><span class="p">,</span>
+  <span class="nx">action</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">response</span><span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="s2">"THIS IS A SERVER ROUTE.."</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">})</span>
+</pre></div>
+
+<p><a href="DOCS.md#server-side-routing">Read more about server routes</a>.</p>
+
+<h4>
+<a name="route-controllers" class="anchor" href="#route-controllers"><span class="octicon octicon-link"></span></a>Route Controllers</h4>
+
+<p>We've mentioned that <code>this</code> in route callbacks is a <em>Route Controller</em>. Explicitly defining controllers allows you to use inheritance:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">AdminController</span> <span class="o">=</span> <span class="nx">RouteController</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="nx">onBeforeAction</span><span class="o">:</span> <span class="c1">// a user filter to control access?</span>
+<span class="p">});</span>
+
+<span class="nx">PostsEditController</span> <span class="o">=</span> <span class="nx">AdminController</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="nx">waitOn</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">Meteor</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">'adminPost'</span><span class="p">,</span> <span class="p">...);</span> <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="nx">Router</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// this will automatically match the `PostsEditController` thanks to the name.</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="nx">postsEdit</span><span class="p">,</span> <span class="p">{</span><span class="nx">path</span><span class="o">:</span> <span class="s1">'/posts/:_id/edit'</span><span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+
+<p><a href="DOCS.md#route-controllers">Read more about route controllers</a>.</p>
+
+<h3>
+<a name="more" class="anchor" href="#more"><span class="octicon octicon-link"></span></a>More</h3>
+
+<p>For full details see the <a href="DOCS.md">Docs</a></p>
+
+<h2>
+<a name="contributing" class="anchor" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h2>
+
+<p>Contributors are very welcome. There are many things you can help with,
+including finding and fixing bugs, creating examples for the examples folder,
+contributing to improved design or adding features. Some guidelines below:</p>
+
+<ul>
+<li><p><strong>Questions</strong>: Please post to Stack Overflow and tag with <code>iron-router</code> : <a href="http://stackoverflow.com/questions/tagged/iron-router">http://stackoverflow.com/questions/tagged/iron-router</a>.</p></li>
+<li><p><strong>New Features</strong>: If you'd like to work on a feature for the iron-router,
+start by creating a 'Feature Design: Title' issue. This will let people bat it
+around a bit before you send a full blown pull request. Also, you can create
+an issue to discuss a design even if you won't be working on it. Any
+collaboration is good! But please be patient :-).</p></li>
+<li><p><strong>Bugs</strong>: If you find a bug and it's non-obvious what's causing it (almost
+always) please provide a reproduction Github project and give some context
+around the bug. Pasting in a snippet of JavaScript probably won't be enough.</p></li>
+<li><p><strong>Answer Questions!</strong>: If you can help another user please do!</p></li>
+</ul><p>How to create a reproduction:
+<a href="https://www.eventedmind.com/feed/github-issues-and-reproductions">https://www.eventedmind.com/feed/github-issues-and-reproductions</a></p>
+
+<h4>
+<a name="local-installation" class="anchor" href="#local-installation"><span class="octicon octicon-link"></span></a>Local installation</h4>
+
+<p>This is useful if you're working off of the dev branch or contributing.</p>
+
+<ol>
+<li>Set up a local packages folder</li>
+<li>Add the PACKAGE_DIRS environment variable to your .bashrc file
+
+<ul>
+<li>Example: <code>export PACKAGE_DIRS="/Users/cmather/code/packages"</code>
+</li>
+<li>Screencast: <a href="https://www.eventedmind.com/posts/meteor-versioning-and-packages">https://www.eventedmind.com/posts/meteor-versioning-and-packages</a>
+</li>
+</ul>
+</li>
+<li>Clone the repository into your local packages directory</li>
+<li>
+<p>Add iron-router just like any other meteor core package like this: <code>meteor
+ add iron-router</code></p>
+
+<div class="highlight highlight-sh"><pre><span class="nv">$ </span>git clone https://github.com/EventedMind/iron-router.git /Users/cmather/code/packages
+<span class="nv">$ </span><span class="nb">cd </span>my-project
+<span class="nv">$ </span>meteor add iron-router
+</pre></div>
+</li>
+</ol><h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>MIT</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Iron-router maintained by <a href="https://github.com/EventedMind">EventedMind</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
