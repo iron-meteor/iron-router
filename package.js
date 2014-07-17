@@ -53,6 +53,7 @@ Package.on_use(function (api) {
 
   // symbol exports
   api.export('Router');
+  api.export('RouteController');
 });
 
 Package.on_test(function (api) {
