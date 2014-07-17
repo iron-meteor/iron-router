@@ -35,6 +35,8 @@ Breaking Changes:
 - hooks now don't have any pause method use next() instead.
 - no automatic error throwing when route not found on client. The user can do
   this by putting a use() at the end.
+- lookupProperty is now lookupOption
+- classCase is the default
 
 Feature Tracking:
 - route names are inferred from the path now
@@ -52,9 +54,7 @@ Feature Tracking:
 - ie 8/9 support for hash urls
 
 Proposed Features:
-- hooks that run on client/server or both. For now, just use if block
 - define "where" options for hooks so they can run on client/server or both
 - server OPTIONS requests
 - attach multiple routers, allow mounting a completely new router at a different
   location.
-- allow multiple routers
