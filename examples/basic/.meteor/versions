@@ -19,7 +19,7 @@ insecure@1.0.0
 iron:controller@0.1.0
 iron:core@0.1.0
 iron:dynamic-template@0.1.0
-iron:layout@0.1.0
+iron:layout@0.1.2
 iron:location@0.1.0
 iron:middleware-stack@0.1.0
 iron:router@0.9.0
