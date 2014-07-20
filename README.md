@@ -1,6 +1,6 @@
 Iron.Router
 ==============================================================================
-A router that works on the server and the browser, designed specifically for Meteor.
+A router that works on the server and the browser, designed specifically for [Meteor](https://github.com/meteor/meteor).
 
 ## Quick Start
 
@@ -9,7 +9,7 @@ Install iron-router:
 > meteor add iron:router
 ```
 
-Create some routes:
+Create some routes in a client/server JavaScript file:
 ```javascript
 Router.route('/', function () {
   this.render('MyTemplate');
