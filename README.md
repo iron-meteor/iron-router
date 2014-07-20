@@ -9,6 +9,7 @@ Install iron-router:
 > meteor add iron:router
 ```
 
+Create some routes:
 ```javascript
 Router.route('/', function () {
   this.render('MyTemplate');
@@ -27,6 +28,11 @@ Router.route('/files/:filename', function () {
   this.response.end('hi from the server\n');
 }, {where: 'server'});
 ```
+
+## Learning More
+
+* Examples: Check out the [examples](https://github.com/EventedMind/iron-router/tree/devel/examples) folder.
+* Guide: For more detailed explanations check out the [guides](https://eventedmind.github.io/iron-router).
 
 ## Contributing
 Contributors are very welcome. There are many things you can help with,
