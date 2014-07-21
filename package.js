@@ -29,9 +29,7 @@ Package.on_use(function (api) {
   // for RouteController which inherits from this
   api.use('iron:controller');
 
-  api.addFiles('lib/utils.js');
   api.addFiles('lib/http_methods.js');
-
 
   api.addFiles('lib/route_controller.js');
   api.addFiles('lib/route_controller_server.js', 'server');
