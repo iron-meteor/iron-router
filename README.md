@@ -27,6 +27,16 @@ Router.route('/items/:_id', function () {
 Router.route('/files/:filename', function () {
   this.response.end('hi from the server\n');
 }, {where: 'server'});
+
+
+Router.route('/restful', {where: 'server'})
+  .get(function () {
+    this.response.end('get request\n');
+  })
+  .post(function () {
+    this.response.end('post request\n');
+  });
+
 ```
 
 ## Learning More
