@@ -5,16 +5,9 @@ Router.configure({
 
 Router.plugin('dataNotFound');
 
-Router.route('/', {
-  name: 'home',
-
-  data: function () {
-
-    /**
-     * To render the normal template change to:
-     *
-     * return { title: 'Some title' };
-     */
-    return null;
-  }
-}); 
+Router.route('/', function () {
+  // if data is falsy the dataNotFoundPlugin above will render a not found
+  // template. Change data to a non-falsy value to see the actual home
+  // template.
+  this.render('Home', {data: null});
+});
