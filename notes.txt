@@ -34,9 +34,9 @@ Breaking Changes:
 - onData hook is gone since it doesn't really have meaning anymore
 - hooks now don't have any pause method use next() instead.
 - no automatic error throwing when route not found on client. The user can do
-  this by putting a use() at the end.
+  this by putting a use() at the end. Note: on initial server dispatch if no
+  routes are found a 404 will be sent.
 - lookupProperty is now lookupOption
-- classCase is the default
 
 Feature Tracking:
 - route names are inferred from the path now
