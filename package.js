@@ -30,24 +30,18 @@ Package.on_use(function (api) {
   api.use('iron:controller');
 
   api.addFiles('lib/http_methods.js');
-
   api.addFiles('lib/route_controller.js');
   api.addFiles('lib/route_controller_server.js', 'server');
   api.addFiles('lib/route_controller_client.js', 'client');
-
   api.addFiles('lib/route.js');
-
   api.addFiles('lib/router.js');
   api.addFiles('lib/router_client.js', 'client');
   api.addFiles('lib/router_server.js', 'server');
-
   api.addFiles('lib/hooks_client.js', 'client');
-
   api.addFiles('lib/helpers_client.js', 'client');
-
   api.addFiles('lib/plugins.js');
-
   api.addFiles('lib/global_router.js');
+  api.addFiles('lib/templates.html');
 
   // symbol exports
   api.export('Router');
