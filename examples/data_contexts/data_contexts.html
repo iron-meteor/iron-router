@@ -1,0 +1,53 @@
+<head>
+  <title>data_contexts</title>
+</head>
+
+<body>
+</body>
+
+<template name="ApplicationLayout">
+  <h1>Layout Title: {{title}}</h1>
+
+  <nav>
+    <ul>
+      <li>
+        <a href="/">Page One</a>
+      </li>
+      <li>
+        <a href="/two">Page Two</a>
+      </li>
+    </ul>
+  </nav>
+
+  <article>
+    {{> yield}}
+  </article>
+
+  <footer>
+    {{> yield "footer"}}
+  </footer>
+</template>
+
+<template name="PageOne">
+  <h3>Page One</h3>
+
+  <p>
+    {{title}}
+  </p>
+
+  {{#contentFor "footer"}}
+    Page One Footer
+  {{/contentFor}}
+</template>
+
+<template name="PageTwo">
+  <h3>Page Two</h3>
+
+  <p>
+    {{title}}
+  </p>
+
+  {{#contentFor "footer"}}
+    Page Two Footer
+  {{/contentFor}}
+</template>
