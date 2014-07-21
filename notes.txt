@@ -52,6 +52,10 @@ Feature Tracking:
 - 500 errors on server routes.
 - set data contexts in layout or render directly. no more setData getData
 - ie 8/9 support for hash urls
+- willBeHandledOn[Server|Client], isHandled
+- connect middleware just works
+- mounting paths
+- restful routes on server with http verbs
 
 Proposed Features:
 - define "where" options for hooks so they can run on client/server or both
