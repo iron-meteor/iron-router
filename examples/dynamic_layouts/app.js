@@ -17,6 +17,9 @@ Router.route('/two', function () {
 
   // render the PageTwo template
   this.render('PageTwo');
+
+  // render the PageTwoFooter template to the footer region
+  this.render('PageTwoFooter', {to: 'footer'});
 });
 
 Router.use(function () {
