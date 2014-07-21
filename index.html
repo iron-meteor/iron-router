@@ -1,1 +1,1058 @@
-My Github Page
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Iron-router : Routing designed specifically for Meteor." />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Iron-router</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/EventedMind/iron-router">View on GitHub</a>
+
+          <h1 id="project_title">Iron-router</h1>
+          <h2 id="project_tagline">Routing designed specifically for Meteor.</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/EventedMind/iron-router/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/EventedMind/iron-router/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a name="iron-router" class="anchor" href="#iron-router"><span class="octicon octicon-link"></span></a>Iron Router</h1>
+
+<p>A client and server side router designed specifically for Meteor.</p>
+
+<p><strong>Table of Contents</strong></p>
+
+<ul>
+<li>
+<a href="#key-concepts">Key Concepts</a>
+
+<ul>
+<li><a href="#named-routes">Named Routes</a></li>
+<li><a href="#route-options">Route Options</a></li>
+<li><a href="#route-paths-and-parameters">Route Paths and Parameters</a></li>
+<li><a href="#dynamic-path-segments">Dynamic Path Segments</a></li>
+<li><a href="#query-strings-and-hash-segments">Query Strings and Hash Segments</a></li>
+</ul>
+</li>
+<li>
+<a href="#client-side-routing">Client Side Routing</a>
+
+<ul>
+<li><a href="#rendering-the-router">Rendering the Router</a></li>
+<li><a href="#path-functions-and-helpers">Path Functions and Helpers</a></li>
+<li><a href="#changing-routes-programmatically">Changing routes programmatically</a></li>
+<li><a href="#rendering-templates">Rendering Templates</a></li>
+<li><a href="#using-a-layout-with-yields">Using a Layout with Yields</a></li>
+<li><a href="#data">Data</a></li>
+<li><a href="#waiting-on-subscriptions-waiton">Waiting on Subscriptions (waitOn)</a></li>
+<li><a href="#waiting-on-subscriptions-wait">Waiting on Subscriptions (wait)</a></li>
+<li><a href="#using-a-custom-action-function">Using a Custom Action Function</a></li>
+<li><a href="#custom-rendering">Custom Rendering</a></li>
+<li><a href="#using-hooks">Using hooks</a></li>
+<li><a href="#before-and-after-hooks">Before and After Hooks</a></li>
+<li><a href="#unload-hook">Unload Hook</a></li>
+<li><a href="#global-router-configuration">Global Router Configuration</a></li>
+</ul>
+</li>
+<li><a href="#server-side-routing">Server Side Routing</a></li>
+<li><a href="#route-controllers">Route Controllers</a></li>
+<li>
+<a href="#examples">Examples</a>
+
+<ul>
+<li><a href="#parsing-url-parameters-oauth-example">Parsing Url Parameters (OAuth Example)</a></li>
+</ul>
+</li>
+</ul><h2>
+<a name="key-concepts" class="anchor" href="#key-concepts"><span class="octicon octicon-link"></span></a>Key Concepts</h2>
+
+<p>Once you add the iron-router package the global <code>Router</code> object is available on
+the client and on the server. So you can create your routes and configure the
+router outside of your <code>Meteor.isClient</code> and <code>Meteor.isServer</code> blocks. Or, if
+you are only going to be using client side routes, it's okay to put the routing
+code in your <code>client/</code> folder.</p>
+
+<h3>
+<a name="named-routes" class="anchor" href="#named-routes"><span class="octicon octicon-link"></span></a>Named Routes</h3>
+
+<p>You can declare a named route like this:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'home'</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>This creates a route with the name "home". The route is named so that you can
+quickly get the route by name like this: <code>Router.routes['home']</code>. </p>
+
+<p>By default, routes are created as client routes. This means, the route will only
+be run on the client, and not the server. When you click a link that maps to a
+client side route, the route will be completely run in the browser without
+making a trip to the server. If you click a link that maps to a server route,
+the browser will make a server request and the server side router will handle
+the link. More information on server side routes is provided below.</p>
+
+<h3>
+<a name="route-options" class="anchor" href="#route-options"><span class="octicon octicon-link"></span></a>Route Options</h3>
+
+<p>You'll typically provide options to your route. At the very least, you'll tell
+the route what <code>path</code> it should match. You provide options to the route by
+passing an object as the second parameter to <code>this.route</code> like this:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'home'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="cm">/* options will go here */</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+
+<h3>
+<a name="route-paths-and-parameters" class="anchor" href="#route-paths-and-parameters"><span class="octicon octicon-link"></span></a>Route Paths and Parameters</h3>
+
+<p>The first option you will almost always provide to the route is a <code>path</code>. By
+default, the route will use its own name for the path. For example given the
+following route:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'home'</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>The route will map to the path <code>/home</code>. But you'll likely want to provide a
+custom path. You can provide a custom path like this:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'home'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="s1">'/'</span> <span class="c1">// match the root path</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>When the url changes, the Router looks for the first Route that matches the
+given url path. In this example, when the application first loads, the url will
+be: <code>http://localhost:3000/</code> and the <code>home</code> route will match this path.</p>
+
+<h3>
+<a name="dynamic-path-segments" class="anchor" href="#dynamic-path-segments"><span class="octicon octicon-link"></span></a>Dynamic Path Segments</h3>
+
+<p>Paths get compiled into a regular expression and can support dynamic segments.
+You can even use a regular expression as your path value. The values of these
+params are made available inside of any route functions using
+<code>this.params</code>. You'll see examples of different route functions below. But to
+get us started, here are a few examples of dynamic paths:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// No Parameters</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'posts'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="c1">// matches: '/posts'</span>
+    <span class="c1">// redundant since the name of the route is posts</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="s1">'/posts'</span> 
+  <span class="p">});</span> 
+
+  <span class="c1">// One Required Parameter</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'postShow'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="c1">// matches: '/posts/1'</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="s1">'/posts/:_id'</span> 
+  <span class="p">});</span>
+
+  <span class="c1">// Multiple Parameters</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'twoSegments'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="c1">// matches: '/posts/1/2'</span>
+    <span class="c1">// matches: '/posts/3/4'</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="s1">'/posts/:paramOne/:paramTwo'</span>
+  <span class="p">});</span>
+
+  <span class="c1">// Optional Parameters</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'optional'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="c1">// matches: '/posts/1'</span>
+    <span class="c1">// matches: '/posts/1/2'</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="s1">'/posts/:paramOne/:optionalParam?'</span>
+  <span class="p">});</span>
+
+  <span class="c1">// Anonymous Parameter Globbing </span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'globbing'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="c1">// matches: '/posts/some/arbitrary/path'</span>
+    <span class="c1">// matches: '/posts/5'</span>
+    <span class="c1">// route globs are available</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="s1">'/posts/*'</span>
+  <span class="p">});</span>
+
+  <span class="c1">// Named Parameter Globbing</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'namedGlobbing'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="c1">// matches: '/posts/some/arbitrary/path'</span>
+    <span class="c1">// matches: '/posts/5'</span>
+    <span class="c1">// stores result in this.params.file</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="s1">'/posts/:file(*)'</span>
+  <span class="p">});</span>
+
+  <span class="c1">// Regular Expressions</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'regularExpressions'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="c1">// matches: '/commits/123..456'</span>
+    <span class="c1">// matches: '/commits/789..101112'</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="sr">/^\/commits\/(\d+)\.\.(\d+)/</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+
+<h3>
+<a name="query-strings-and-hash-segments" class="anchor" href="#query-strings-and-hash-segments"><span class="octicon octicon-link"></span></a>Query Strings and Hash Segments</h3>
+
+<p>Query strings and hashes aren't used to match routes. But they are made
+available as properties of <code>this.params</code> inside of your route functions. We
+haven't talked about the various route functions yet, but here is an example:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'postShow'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="s1">'/posts/:_id'</span><span class="p">,</span>
+    <span class="nx">data</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="c1">// the data function is an example where this.params is available</span>
+
+      <span class="c1">// we can access params using this.params</span>
+      <span class="c1">// see the below paths that would match this route</span>
+      <span class="kd">var</span> <span class="nx">params</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">params</span><span class="p">;</span>
+
+      <span class="c1">// query params are added as normal properties to this.params.</span>
+      <span class="c1">// given a browser path of: '/posts/5?sort_by=created_at</span>
+      <span class="c1">// this.params.sort_by =&gt; 'created_at'</span>
+
+      <span class="c1">// the hash fragment is available on the hash property</span>
+      <span class="c1">// given a browser path of: '/posts/5?sort_by=created_at#someAnchorTag</span>
+      <span class="c1">// this.params.hash =&gt; 'someAnchorTag'</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+
+<h2>
+<a name="client-side-routing" class="anchor" href="#client-side-routing"><span class="octicon octicon-link"></span></a>Client Side Routing</h2>
+
+<h3>
+<a name="rendering-the-router" class="anchor" href="#rendering-the-router"><span class="octicon octicon-link"></span></a>Rendering the Router</h3>
+
+<p>By default, the Router is rendered (appended) automatically to the document body
+when the DOM is ready. You can override this behavior and render the Router
+whenever you'd like by setting a configuration option and using a Handlebars
+helper like this:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">configure</span><span class="p">({</span>
+  <span class="nx">autoRender</span><span class="o">:</span> <span class="kc">false</span>
+<span class="p">});</span>
+</pre></div>
+
+<div class="highlight highlight-html"><pre><span class="nt">&lt;body&gt;</span>
+  <span class="nt">&lt;div&gt;</span>
+    Some static content goes here
+  <span class="nt">&lt;/div&gt;</span>
+
+  <span class="nt">&lt;div&gt;</span>
+    {{renderRouter}}
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+</pre></div>
+
+<h3>
+<a name="path-functions-and-helpers" class="anchor" href="#path-functions-and-helpers"><span class="octicon octicon-link"></span></a>Path Functions and Helpers</h3>
+
+<p>Once your application becomes large enough, it becomes a pain to hard code urls
+everywhere. If you end up changing your route path a little, you need to find
+all of the href tags in your application and change those as well. It's much
+better if we can call a function to return a URL given a parameters object.
+There are a few Handlebars helpers you can use directly in your HTML. You can
+also call the <code>path</code> and <code>url</code> methods on a route itself. </p>
+
+<p>Let's say we have a route named "postShow" defined like this:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'postShow'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="s1">'/posts/:_id'</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>You can call the Route's path function to get a path for a given parameter
+object. For example:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">routes</span><span class="p">[</span><span class="s1">'postShow'</span><span class="p">].</span><span class="nx">path</span><span class="p">({</span><span class="nx">_id</span><span class="o">:</span> <span class="mi">1</span><span class="p">})</span> <span class="o">=&gt;</span> <span class="s1">'/posts/1'</span>
+</pre></div>
+
+<p>You can pass query params and a hash value as an option like this:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">routes</span><span class="p">[</span><span class="s1">'postShow'</span><span class="p">].</span><span class="nx">path</span><span class="p">({</span><span class="nx">_id</span><span class="o">:</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span>
+  <span class="nx">query</span><span class="o">:</span> <span class="s1">'sort_by=created_at'</span><span class="p">,</span>
+  <span class="nx">hash</span><span class="o">:</span> <span class="s1">'someAnchorTag'</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>The query option can also be a regular JavaScript object. It will automatically
+be turned into a query string. The above example would also work here:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">routes</span><span class="p">[</span><span class="s1">'postShow'</span><span class="p">].</span><span class="nx">path</span><span class="p">({</span><span class="nx">_id</span><span class="o">:</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span>
+  <span class="nx">query</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">sort_by</span><span class="o">:</span> <span class="s1">'created_at'</span>
+  <span class="p">},</span>
+
+  <span class="nx">hash</span><span class="o">:</span> <span class="s1">'someAnchorTag'</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>You can get paths and urls for named routes directly in your html using a global
+Handlebars helper. The Handlebars helper uses the current data context as the
+first parameter to the <code>path</code> function shown above.</p>
+
+<div class="highlight highlight-html"><pre><span class="c">&lt;!-- given a context of {_id: 1} this will render '/posts/1' --&gt;</span>
+<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"{{pathFor 'postShow'}}"</span><span class="nt">&gt;</span>Post Show<span class="nt">&lt;/a&gt;</span>
+</pre></div>
+
+<p>You can change the data context before using the pathFor helper using the
+Handlebars <code>{{#with ...}}</code> helper like this:</p>
+
+<div class="highlight highlight-html"><pre>{{#with someOtherPost}}
+  <span class="c">&lt;!-- someOtherPost now sets the data context --&gt;</span>
+  <span class="c">&lt;!-- so say someOtherPost = { _id: 5 } then this renders '/posts/5' --&gt;</span>
+  <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"{{pathFor 'postShow'}}"</span><span class="nt">&gt;</span>Post Show<span class="nt">&lt;/a&gt;</span>
+{{/with}}
+</pre></div>
+
+<p>You can pass query params using the Handlebars helper like
+this:</p>
+
+<div class="highlight highlight-html"><pre><span class="c">&lt;!-- given a context of {_id: 1} this will render '/posts/1?sort_by=created_at' --&gt;</span>
+<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"{{pathFor 'postShow' query='sort_by=created_at'}}"</span><span class="nt">&gt;</span>Post Show<span class="nt">&lt;/a&gt;</span>
+</pre></div>
+
+<p>And you can pass a hash value using the Handlbars helper like this:</p>
+
+<div class="highlight highlight-html"><pre><span class="c">&lt;!-- given a context of {_id: 1} this will render '/posts/1?sort_by=created_at#someAnchorTag' --&gt;</span>
+<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"{{pathFor 'postShow' query='sort_by=created_at' hash='someAnchorTag'}}"</span><span class="nt">&gt;</span>Post Show<span class="nt">&lt;/a&gt;</span>
+</pre></div>
+
+<h3>
+<a name="changing-routes-programmatically" class="anchor" href="#changing-routes-programmatically"><span class="octicon octicon-link"></span></a>Changing routes programmatically</h3>
+
+<p>Sometimes you'll need to change the route without the user clicking a link. For this you can use <code>Router.go</code>:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="c1">// you can pass a fully formed URL path in</span>
+<span class="nx">Router</span><span class="p">.</span><span class="nx">go</span><span class="p">(</span><span class="s1">'/posts/7'</span><span class="p">);</span>
+
+<span class="c1">// but more likely, you'll want to use a route name and pass in arguments,</span>
+<span class="c1">// as you would in `pathFor`</span>
+<span class="nx">Router</span><span class="p">.</span><span class="nx">go</span><span class="p">(</span><span class="s1">'postShow'</span><span class="p">,</span> <span class="p">{</span><span class="nx">_id</span><span class="o">:</span> <span class="mi">7</span><span class="p">});</span>
+</pre></div>
+
+<p>The current route is returned reactively by <code>Router.current()</code>. It can be <code>null</code> (just like <code>Meteor.user()</code> can be null) so it's best to guard when working with reactive return values. For example, to find the current path:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">current</span> <span class="o">=</span> <span class="nx">Router</span><span class="p">.</span><span class="nx">current</span><span class="p">();</span>
+<span class="k">return</span> <span class="nx">current</span> <span class="o">&amp;&amp;</span> <span class="nx">current</span><span class="p">.</span><span class="nx">path</span><span class="p">;</span>
+</pre></div>
+
+<p>Inside a route controller (such as in a hook), you don't need to call <code>Router.current()</code> because <code>this</code> already points to the current route. For example, to track pages visited by users using the <a href="https://atmospherejs.com/package/analyticsjs">analytics</a> package:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">configure</span><span class="p">({</span>
+  <span class="p">...</span>
+  <span class="nx">load</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">analytics</span><span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">path</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+
+<h3>
+<a name="rendering-templates" class="anchor" href="#rendering-templates"><span class="octicon octicon-link"></span></a>Rendering Templates</h3>
+
+<p>The default action for a route is to render a template. You can specify a
+template as an option to the route. If you don't provide a template, the route
+will assume the template name is the same as the route name. For example:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'home'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="s1">'/'</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>When you navigate to 'http://localhost:3000/' the above route will automatically
+render the template named <code>home</code>.</p>
+
+<p>You can change the template that is automatically rendered by providing a
+template option.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'home'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="s1">'/'</span><span class="p">,</span>
+    <span class="nx">template</span><span class="o">:</span> <span class="s1">'myHomeTemplate'</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>The above example will map the <code>http://localhost:3000/</code> url (the <code>/</code> path) and
+automatically render the template named <code>myHomeTemplate</code>.</p>
+
+<h3>
+<a name="using-a-layout-with-yields" class="anchor" href="#using-a-layout-with-yields"><span class="octicon octicon-link"></span></a>Using a Layout with Yields</h3>
+
+<p>Often times it's useful to have a layout template for a route. Then your route
+template renders into the layout. You can actually render multiple templates
+into the layout. You can specify a layout template by providing the
+<code>layoutTemplate</code> option to your route.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'home'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="s1">'/'</span><span class="p">,</span>
+    <span class="nx">template</span><span class="o">:</span> <span class="s1">'myHomeTemplate'</span><span class="p">,</span>
+    <span class="nx">layoutTemplate</span><span class="o">:</span> <span class="s1">'layout'</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>The layout template must declare where it wants various child templates to
+render. You can do this by using the <code>{{&gt; yield}}</code> helper. A basic layout would
+look like this:</p>
+
+<div class="highlight highlight-html"><pre><span class="nt">&lt;template</span> <span class="na">name=</span><span class="s">"layout"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div&gt;</span>
+    {{&gt; yield}}
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/template&gt;</span>
+</pre></div>
+
+<p>But you can also specify regions. This allows you to render templates
+into any number of regions in the layout. For example:</p>
+
+<div class="highlight highlight-html"><pre><span class="nt">&lt;template</span> <span class="na">name=</span><span class="s">"layout"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;aside&gt;</span>
+    {{&gt; yield region='aside'}}
+  <span class="nt">&lt;/aside&gt;</span>
+
+  <span class="nt">&lt;div&gt;</span>
+    {{&gt; yield}}
+  <span class="nt">&lt;/div&gt;</span>
+
+  <span class="nt">&lt;footer&gt;</span>
+    {{&gt; yield region='footer'}}
+  <span class="nt">&lt;/footer&gt;</span>
+<span class="nt">&lt;/template&gt;</span>
+</pre></div>
+
+<p>You can specify which templates to render into the region using the
+<code>yieldTemplates</code> option of your route. For example:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'home'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="s1">'/'</span><span class="p">,</span>
+    <span class="nx">template</span><span class="o">:</span> <span class="s1">'myHomeTemplate'</span><span class="p">,</span>
+    <span class="nx">layoutTemplate</span><span class="o">:</span> <span class="s1">'layout'</span><span class="p">,</span>
+    <span class="nx">yieldTemplates</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s1">'myAsideTemplate'</span><span class="o">:</span> <span class="p">{</span><span class="nx">to</span><span class="o">:</span> <span class="s1">'aside'</span><span class="p">},</span>
+      <span class="s1">'myFooter'</span><span class="o">:</span> <span class="p">{</span><span class="nx">to</span><span class="o">:</span> <span class="s1">'footer'</span><span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>The above example will render the template named <code>myAsideTemplate</code> to the region
+named <code>aside</code> and the template named <code>myFooter</code> to the region named <code>footer</code>. The
+main template <code>myHomeTemplate</code> specified by the <code>template</code> option will be
+rendered into the <strong>main</strong> region. This is the region without a name
+in the center that looks like this: <code>{{&gt; yield}}</code>.</p>
+
+<h3>
+<a name="data" class="anchor" href="#data"><span class="octicon octicon-link"></span></a>Data</h3>
+
+<p>You can provide a data context for the current route by providing a <code>data</code>
+option to your route. The <code>data</code> value can either be an object or a function
+that gets evaluated later (when your route is run). For example:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'home'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="s1">'/'</span><span class="p">,</span>
+    <span class="nx">template</span><span class="o">:</span> <span class="s1">'myHomeTemplate'</span><span class="p">,</span>
+    <span class="nx">layoutTemplate</span><span class="o">:</span> <span class="s1">'layout'</span><span class="p">,</span>
+    <span class="nx">yieldTemplates</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s1">'myAsideTemplate'</span><span class="o">:</span> <span class="p">{</span><span class="nx">to</span><span class="o">:</span> <span class="s1">'aside'</span><span class="p">},</span>
+      <span class="s1">'myFooter'</span><span class="o">:</span> <span class="p">{</span><span class="nx">to</span><span class="o">:</span> <span class="s1">'footer'</span><span class="p">}</span>
+    <span class="p">},</span>
+
+    <span class="nx">data</span><span class="o">:</span> <span class="p">{</span>
+      <span class="nx">title</span><span class="o">:</span> <span class="s1">'Some Title'</span><span class="p">,</span>
+      <span class="nx">description</span><span class="o">:</span> <span class="s1">'Some Description'</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>Given the above data context, our templates could use the data context like
+this:</p>
+
+<div class="highlight highlight-html"><pre><span class="nt">&lt;template</span> <span class="na">name=</span><span class="s">"myHomeTemplate"</span><span class="nt">&gt;</span>
+  {{title}} - {{description}}
+<span class="nt">&lt;/template&gt;</span>
+</pre></div>
+
+<p>The data property can also be a function which is evaluated when the route is
+actually run.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'home'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="s1">'/'</span><span class="p">,</span>
+    <span class="nx">template</span><span class="o">:</span> <span class="s1">'myHomeTemplate'</span><span class="p">,</span>
+    <span class="nx">layoutTemplate</span><span class="o">:</span> <span class="s1">'layout'</span><span class="p">,</span>
+    <span class="nx">yieldTemplates</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s1">'myAsideTemplate'</span><span class="o">:</span> <span class="p">{</span><span class="nx">to</span><span class="o">:</span> <span class="s1">'aside'</span><span class="p">},</span>
+      <span class="s1">'myFooter'</span><span class="o">:</span> <span class="p">{</span><span class="nx">to</span><span class="o">:</span> <span class="s1">'footer'</span><span class="p">}</span>
+    <span class="p">},</span>
+
+    <span class="nx">data</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="c1">// this.params is available inside the data function</span>
+      <span class="kd">var</span> <span class="nx">params</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">params</span><span class="p">;</span>
+
+      <span class="k">return</span> <span class="p">{</span>
+        <span class="nx">title</span><span class="o">:</span> <span class="s1">'Some Title'</span><span class="p">,</span>
+        <span class="nx">description</span><span class="o">:</span> <span class="s1">'Some Description'</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>You can set the global data context of the Router by calling the <code>setData</code>
+function of the Router or a RouteController. The data context only invalidates
+computations if the data has actually changed from the last time it was set.</p>
+
+<p>You can access the current data context using the <code>getData</code> function inside of
+any of your route functions (or RouteController functions). For example:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'post'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="s1">'/posts/:slug'</span><span class="p">,</span>
+
+    <span class="nx">waitOn</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>  <span class="c1">// wait for the subscription to be ready; see below</span>
+      <span class="k">return</span> <span class="nx">Meteor</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">'posts'</span><span class="p">);</span>
+    <span class="p">},</span>
+
+    <span class="nx">data</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">Posts</span><span class="p">.</span><span class="nx">findOne</span><span class="p">({</span><span class="nx">slug</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">slug</span><span class="p">});</span>
+    <span class="p">},</span>
+
+    <span class="nx">onBeforeAction</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">post</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getData</span><span class="p">();</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>If your data value or function returns null or undefined, the Router can
+automatically render a not found template. This is useful if you want to render
+a not found template for data that doesn't exist. You need to do two things - </p>
+
+<ol>
+<li>Provide a <code>notFoundTemplate</code> option to your route.</li>
+<li>Turn the <code>dataNotFound</code> hook on </li>
+</ol><div class="highlight highlight-javascript"><pre><span class="k">if</span> <span class="p">(</span><span class="nx">Meteor</span><span class="p">.</span><span class="nx">isClient</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">Router</span><span class="p">.</span><span class="nx">onBeforeAction</span><span class="p">(</span><span class="s1">'dataNotFound'</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">Router</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'home'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="s1">'/'</span><span class="p">,</span>
+    <span class="nx">template</span><span class="o">:</span> <span class="s1">'myHomeTemplate'</span><span class="p">,</span>
+    <span class="nx">layoutTemplate</span><span class="o">:</span> <span class="s1">'layout'</span><span class="p">,</span>
+    <span class="nx">yieldTemplates</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s1">'myAsideTemplate'</span><span class="o">:</span> <span class="p">{</span><span class="nx">to</span><span class="o">:</span> <span class="s1">'aside'</span><span class="p">},</span>
+      <span class="s1">'myFooter'</span><span class="o">:</span> <span class="p">{</span><span class="nx">to</span><span class="o">:</span> <span class="s1">'footer'</span><span class="p">}</span>
+    <span class="p">},</span>
+
+    <span class="c1">// render notFound template when data is null or undefined</span>
+    <span class="nx">notFoundTemplate</span><span class="o">:</span> <span class="s1">'notFound'</span><span class="p">,</span> 
+    <span class="nx">data</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+
+      <span class="c1">// return Posts.findOne({_id: this.params._id});</span>
+      <span class="c1">// if the post isn't found then render the notFound template</span>
+
+      <span class="c1">// if data function returns null then notFound template is rendered.</span>
+      <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>If you provide a global <code>notFoundTemplate</code>, it will get rendered automatically if
+a user visits an un-matched path, assuming it's not already handled on the server-side:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="c1">// given a browser url of: http://localhost:3000/boguspath</span>
+
+<span class="nx">Router</span><span class="p">.</span><span class="nx">configure</span><span class="p">({</span>
+  <span class="nx">notFoundTemplate</span><span class="o">:</span> <span class="s1">'notFound'</span> <span class="c1">// this will render</span>
+<span class="p">});</span>
+</pre></div>
+
+<h3>
+<a name="waiting-on-subscriptions-waiton" class="anchor" href="#waiting-on-subscriptions-waiton"><span class="octicon octicon-link"></span></a>Waiting on Subscriptions (<code>waitOn</code>)</h3>
+
+<p>Sometimes it's useful to wait until you have data before rendering a page. For
+example, let's say you want to show a not found template if the user navigates
+to a good url (say, <code>/posts/5</code>) but there is no post with an id of 5. You can't
+make this determination until the data from the server has been sent.</p>
+
+<p>To solve this problem, you can <strong>wait</strong> on a subscription, or anything with a
+reactive <code>ready()</code> method. To do this, you can provide a <code>waitOn</code> option to your
+route like this:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'postShow'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="s1">'/posts/:_id'</span><span class="p">,</span>
+
+    <span class="nx">waitOn</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">Meteor</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">'posts'</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>The <code>waitOn</code> function can return any object that has a <code>ready</code> method. It can
+also return an array of these objects if you'd like to wait on multiple
+subscriptions.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'postShow'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="s1">'/posts/:slug'</span><span class="p">,</span>
+
+    <span class="nx">waitOn</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="c1">// NOTE: this.params is available inside the waitOn function.</span>
+      <span class="kd">var</span> <span class="nx">slug</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">slug</span><span class="p">;</span>
+      <span class="k">return</span> <span class="p">[</span><span class="nx">Meteor</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">'posts'</span><span class="p">),</span> <span class="nx">Meteor</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">'comments'</span><span class="p">,</span> <span class="nx">slug</span><span class="p">)];</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>When your route is run, it will wait on any subscriptions you've provided in
+your <code>waitOn</code> function. If you've provided a <code>loadingTemplate</code>, the default action 
+will be to render that template.</p>
+
+<p>While waiting, you can check if your subscriptions are ready in your <code>onBeforeAction</code>
+hooks, <code>action</code> method, and <code>onAfterAction</code> hooks, by checking <code>this.ready()</code>. </p>
+
+<p>Under the hood, the waitOn function calls the <code>wait(handles, onReady,
+onWaiting)</code> method of a RouteController (more on RouteControllers below). If you
+need to customize this behavior you can skip providing a <code>waitOn</code> property and
+just use the <code>wait</code> method directly in a custom action function or an <code>onBeforeAction</code>
+hook.</p>
+
+<p>You can also wait for certain subscriptions on a global level, by passing a <code>waitOn</code>
+function in the <code>Router.configure()</code> call:</p>
+
+<div class="highlight highlight-js"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">configure</span><span class="p">({</span>
+  <span class="nx">waitOn</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">Meteor</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">'recordSetThatYouNeedNoMatterWhat'</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+
+<h3>
+<a name="waiting-on-subscriptions-wait" class="anchor" href="#waiting-on-subscriptions-wait"><span class="octicon octicon-link"></span></a>Waiting on Subscriptions (<code>wait()</code>)</h3>
+
+<div class="highlight highlight-js"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'postShow'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="s1">'/posts/:_id'</span><span class="p">,</span>
+    <span class="nx">onBeforeAction</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="c1">// wait on post</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">'post'</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">_id</span><span class="p">).</span><span class="nx">wait</span><span class="p">();</span> <span class="c1">// wait</span>
+
+      <span class="c1">// don't wait on posts</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">'posts'</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>Calling <code>wait</code> on a subscription handle doesn't actually block anything. It just
+adds the subscription handle to a list of handles we are reactively waiting on.
+When all of these handles are ready <code>this.ready()</code> on the RouteController will
+be true.</p>
+
+<div class="highlight highlight-js"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'postShow'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="s1">'/posts/:_id'</span><span class="p">,</span>
+
+    <span class="c1">// this is equivalent to </span>
+    <span class="c1">// waitOn: function() { </span>
+    <span class="c1">//   return Meteor.subscribe('posts', this.params.:id); }</span>
+    <span class="c1">// }</span>
+
+    <span class="nx">onBeforeAction</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">'posts'</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">_id</span><span class="p">).</span><span class="nx">wait</span><span class="p">();</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+
+<h3>
+<a name="using-a-custom-action-function" class="anchor" href="#using-a-custom-action-function"><span class="octicon octicon-link"></span></a>Using a Custom Action Function</h3>
+
+<p>So far, we haven't had to write much code to get our routes to work. We've just
+provided configuration options to the route. Under the hood, when a route is
+run, a RouteController gets created and an <strong>action</strong> method gets called on that
+RouteController. On the client, the default action function just renders the
+main template and then all of the yield templates. We can provide our own
+action function like this:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'postShow'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="s1">'/posts/:_id'</span><span class="p">,</span>
+
+    <span class="nx">action</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="c1">// this =&gt; instance of RouteController</span>
+      <span class="c1">// access to:</span>
+      <span class="c1">//  this.params</span>
+      <span class="c1">//  this.wait</span>
+      <span class="c1">//  this.render</span>
+      <span class="c1">//  this.redirect</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+
+<h3>
+<a name="custom-rendering" class="anchor" href="#custom-rendering"><span class="octicon octicon-link"></span></a>Custom Rendering</h3>
+
+<p>You can render manually by calling the <code>render</code> function. There are three ways
+to call the render method:</p>
+
+<ol>
+<li>
+<code>this.render()</code>: Render all of the templates for the Route or
+ RouteController. This renders the main template into the main yield region,
+ and all of the yieldTemplates into their associated <code>{{&gt; yield region='name'}}</code>
+ regions.</li>
+<li>
+<code>this.render('templateName')</code>: Render the template named 'templateName'
+ into the main yield <code>{{&gt; yield}}</code>.</li>
+<li>
+<code>this.render('templateName', {to: 'region'})</code>: Render the template named
+ 'templateName' into the region named 'region' <code>{{&gt; yield region='region'}}</code>. </li>
+</ol><p><em>Note: layouts are at the route level, not the template level and you have one
+layout per route or a globally defined layout.</em></p>
+
+<h3>
+<a name="using-hooks" class="anchor" href="#using-hooks"><span class="octicon octicon-link"></span></a>Using hooks</h3>
+
+<p>There are four types of hooks that a route provides. All can be added at the global level, in a route definition, or defined for a controller.</p>
+
+<ul>
+<li>
+<code>onBeforeAction</code> - runs before the action function (possibly many times if reactivity is involved).</li>
+<li>
+<code>onAfterAction</code> - runs after the action function (also reactively)</li>
+<li>
+<code>load</code> - runs <em>just once</em> when the route is first loaded. NOTE that this doesn't run again if your page reloads via hot-code-reload, so make sure any variables you set will persist over HCR (for example Session variables).</li>
+<li>
+<code>unload</code> - runs <em>just once</em> when you leave the route for a new route.</li>
+</ul><p>You can also define global hooks which apply to a set of named routes:</p>
+
+<div class="highlight highlight-js"><pre><span class="c1">// this hook will run on almost all routes</span>
+<span class="nx">Router</span><span class="p">.</span><span class="nx">onBeforeAction</span><span class="p">(</span><span class="nx">mustBeSignedIn</span><span class="p">,</span> <span class="p">{</span><span class="nx">except</span><span class="o">:</span> <span class="p">[</span><span class="s1">'login'</span><span class="p">,</span> <span class="s1">'signup'</span><span class="p">,</span> <span class="s1">'forgotPassword'</span><span class="p">]});</span>
+
+<span class="c1">// this hook will only run on certain routes</span>
+<span class="nx">Router</span><span class="p">.</span><span class="nx">onBeforeAction</span><span class="p">(</span><span class="nx">mustBeAdmin</span><span class="p">,</span> <span class="p">{</span><span class="nx">only</span><span class="o">:</span> <span class="p">[</span><span class="s1">'adminDashboard'</span><span class="p">,</span> <span class="s1">'adminUsers'</span><span class="p">,</span> <span class="s1">'adminUsersEdit'</span><span class="p">]});</span>
+</pre></div>
+
+<h3>
+<a name="before-and-after-hooks" class="anchor" href="#before-and-after-hooks"><span class="octicon octicon-link"></span></a>Before and After Hooks</h3>
+
+<p>Sometimes you want to execute some code <em>before</em> or <em>after</em> your action function
+is called. This is particularly useful for things like showing a login page
+anytime a user is not logged in. You can declare before and after hooks by
+providing <code>onBeforeAction</code> and <code>onAfterAction</code> options to the route. The value can be a function
+or an array of functions which will be executed in the order they are defined.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'postShow'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="s1">'/posts/:_id'</span><span class="p">,</span>
+
+    <span class="nx">onBeforeAction</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">pause</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">Meteor</span><span class="p">.</span><span class="nx">user</span><span class="p">())</span> <span class="p">{</span>
+        <span class="c1">// render the login template but keep the url in the browser the same</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">'login'</span><span class="p">);</span>
+
+        <span class="c1">// pause this rendering of the rest of the before hooks and the action function </span>
+        <span class="nx">pause</span><span class="p">();</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+
+    <span class="nx">action</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="c1">// render the main template</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">render</span><span class="p">();</span>
+
+      <span class="c1">// combine render calls</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">render</span><span class="p">({</span>
+        <span class="s1">'myCustomFooter'</span><span class="o">:</span> <span class="p">{</span> <span class="nx">to</span><span class="o">:</span> <span class="s1">'footer'</span> <span class="p">},</span>
+        <span class="s1">'myCustomAside'</span><span class="o">:</span> <span class="p">{</span> <span class="nx">to</span><span class="o">:</span> <span class="s1">'aside'</span> <span class="p">}</span>
+      <span class="p">});</span>
+    <span class="p">},</span>
+
+    <span class="nx">onAfterAction</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="c1">// this is run after our action function</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>Hooks and your action function are reactive by default. This means that if you
+use a reactive data source inside of one of these functions, and that reactive
+data source invalidates the computation, these functions will be run again.</p>
+
+<h3>
+<a name="unload-hook" class="anchor" href="#unload-hook"><span class="octicon octicon-link"></span></a>Unload Hook</h3>
+
+<p>Unload hooks will be called before a RouteController is unloaded and a new
+RouteController is run. This hook is useful for cleaning up Session data for
+example.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'postShow'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="s1">'/login'</span><span class="p">,</span>
+
+    <span class="nx">unload</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="c1">// This is called when you navigate to a new route</span>
+      <span class="nx">Session</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">'postId'</span><span class="p">,</span> <span class="kc">null</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+
+<h3>
+<a name="global-router-configuration" class="anchor" href="#global-router-configuration"><span class="octicon octicon-link"></span></a>Global Router Configuration</h3>
+
+<p>So far we've been defining all of our route options on the routes themselves.
+But sometimes it makes sense to define global options that apply to all routes.
+This is most often used for the <code>layoutTemplate</code>, <code>notFoundTemplate</code>, and
+<code>loadingTemplate</code> options. You can globally configure the Router like this:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">configure</span><span class="p">({</span>
+  <span class="nx">layoutTemplate</span><span class="o">:</span> <span class="s1">'layout'</span><span class="p">,</span>
+  <span class="nx">notFoundTemplate</span><span class="o">:</span> <span class="s1">'notFound'</span><span class="p">,</span>
+  <span class="nx">loadingTemplate</span><span class="o">:</span> <span class="s1">'loading'</span>
+<span class="p">});</span>
+</pre></div>
+
+<h2>
+<a name="server-side-routing" class="anchor" href="#server-side-routing"><span class="octicon octicon-link"></span></a>Server Side Routing</h2>
+
+<p>Defining routes and configuring the Router is almost identical on the server and
+the client. By default, routes are created as client routes. You can specify
+that a route is intended for the server by providing a <code>where</code> property to the
+route like this:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'serverRoute'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">where</span><span class="o">:</span> <span class="s1">'server'</span><span class="p">,</span>
+
+    <span class="nx">action</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="c1">// some special server side properties are available here</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>Note that <code>where</code> must be placed in <code>Router.map</code>, not on the controller.</p>
+
+<p>Server action functions (RouteControllers) have different properties and methods
+available. Namely, there is no rendering on the server yet. So the <code>render</code>
+method is not available. Also, you cannot <code>waitOn</code> subscriptions or call the
+<code>wait</code> method on the server. Server routes get the bare <code>request</code>, <code>response</code>,
+and <code>next</code> properties of the Connect request, as well as the params object just
+like in the client.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'serverFile'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">where</span><span class="o">:</span> <span class="s1">'server'</span><span class="p">,</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="s1">'/files/:filename'</span><span class="p">,</span>
+
+    <span class="nx">action</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">filename</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">filename</span><span class="p">;</span>
+
+      <span class="k">this</span><span class="p">.</span><span class="nx">response</span><span class="p">.</span><span class="nx">writeHead</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="p">{</span><span class="s1">'Content-Type'</span><span class="o">:</span> <span class="s1">'text/html'</span><span class="p">});</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">response</span><span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="s1">'hello from server'</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+
+<h2>
+<a name="route-controllers" class="anchor" href="#route-controllers"><span class="octicon octicon-link"></span></a>Route Controllers</h2>
+
+<p>Most of the time, you can define how you want your routes to behave by simply
+providing configuration options to the route. But as your application gets
+larger, you may want to separate the logic for handling a particular route into
+a separate class. This is useful for putting route handling logic into separate
+files, but also for utilizing features like inheritance. You can do this by
+inheriting from <code>RouteController</code>. This works on both the client and the server,
+but each has slightly different methods as described above.</p>
+
+<p>Although we haven't been working with <code>RouteController</code>s directly, under the
+hood they were getting created automatically for us when our routes were run.
+These are called "anonymous" <code>RouteController</code>s. But we can create our own like
+this:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">PostShowController</span> <span class="o">=</span> <span class="nx">RouteController</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="cm">/* most of the options we've been using in our routes can be used here */</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>How does a route know about our custom RouteController? Let's say we have a
+route named "postShow". When the route is run, it will look for a global object
+named "PostShowController", after the name of the route. We can change this
+behavior by providing a <code>controller</code> option to the route like so:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+
+  <span class="c1">// provide a String to evaluate later</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'postShow'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">controller</span><span class="o">:</span> <span class="s1">'CustomController'</span>
+  <span class="p">});</span>
+
+  <span class="c1">// provide the actual controller symbol if it's already defined</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'postShow'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">controller</span><span class="o">:</span> <span class="nx">CustomController</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>We can define almost all of the same options on our RouteController as we have
+for our routes. For example:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">PostShowController</span> <span class="o">=</span> <span class="nx">RouteController</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="nx">template</span><span class="o">:</span> <span class="s1">'postShow'</span><span class="p">,</span>
+
+  <span class="nx">layoutTemplate</span><span class="o">:</span> <span class="s1">'postLayout'</span><span class="p">,</span>
+
+  <span class="nx">onBeforeAction</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="p">},</span>
+
+  <span class="nx">onAfterAction</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="p">},</span>
+
+  <span class="nx">waitOn</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">Meteor</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">'post'</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">_id</span><span class="p">);</span>
+  <span class="p">},</span>
+
+  <span class="nx">data</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">Posts</span><span class="p">.</span><span class="nx">findOne</span><span class="p">({</span><span class="nx">_id</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">_id</span><span class="p">});</span>
+  <span class="p">},</span>
+
+  <span class="nx">action</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="cm">/* if we want to override default behavior */</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>Note that <code>onBeforeAction</code> and <code>onAfterAction</code> are class level methods of our new
+controller. We can pass them as properties to the <code>extend</code> method for convenience.
+But we can also do this:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">PostShowController</span><span class="p">.</span><span class="nx">onBeforeAction</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{});</span>
+<span class="nx">PostShowController</span><span class="p">.</span><span class="nx">onAfterAction</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{});</span>
+</pre></div>
+
+<p>(But note <code>where</code> is not available on controllers, only in <code>Router.map</code>.)</p>
+
+<p>In Coffeescript we can use the language's native inheritance.</p>
+
+<div class="highlight highlight-coffeescript"><pre><span class="k">class</span> <span class="nx">@PostShowController</span> <span class="k">extends</span> <span class="nx">RouteController</span>
+  <span class="nv">onBeforeAction: </span><span class="nf">-&gt;</span>
+    <span class="c1"># do some stuff before the action is invoked</span>
+
+  <span class="nv">onAfterAction: </span><span class="nf">-&gt;</span>
+    <span class="c1"># do some stuff after the action is invoked</span>
+
+  <span class="nv">layout: </span><span class="s">'layout'</span>
+
+  <span class="nv">template: </span><span class="s">'myTemplate'</span>
+</pre></div>
+
+<h2>
+<a name="examples" class="anchor" href="#examples"><span class="octicon octicon-link"></span></a>Examples</h2>
+
+<h3>
+<a name="parsing-url-parameters-oauth-example" class="anchor" href="#parsing-url-parameters-oauth-example"><span class="octicon octicon-link"></span></a>Parsing Url Parameters (OAuth Example)</h3>
+
+<p>Iron Router will automatically parse a parameterized URL request, and separate out the parameters into an object.  However, accessing those parameters requires extending a RouteController.  Consider the following scenario:</p>
+
+<div class="highlight highlight-ruby"><pre><span class="c1"># OAuth Configuration Scenario</span>
+
+<span class="c1"># OAuth requires a redirect URL as part of it's configuration.</span>
+<span class="ss">http</span><span class="p">:</span><span class="sr">//</span><span class="ss">localhost</span><span class="p">:</span><span class="mi">3600</span><span class="o">/</span><span class="n">stripe</span>
+
+<span class="c1"># the oauth authentication process will redirect users to that URL with parameterized tokens</span>
+<span class="ss">http</span><span class="p">:</span><span class="sr">//</span><span class="ss">localhost</span><span class="p">:</span><span class="mi">3600</span><span class="o">/</span><span class="n">stripe?scope</span><span class="o">=</span><span class="n">read_only</span><span class="o">&amp;</span><span class="n">code</span><span class="o">=</span><span class="n">ac_2QGZP0nOBmb0Lxk9q3pMzaRvOi4fMU8j</span>
+
+<span class="c1"># so the Router needs to parse the following line of code</span>
+<span class="p">?</span><span class="n">scope</span><span class="o">=</span><span class="n">read_only</span><span class="o">&amp;</span><span class="n">code</span><span class="o">=</span><span class="n">ac_2QGZP0nOBmb0Lxk9q3pMzaRvOi4fMU8j</span>
+
+<span class="c1"># in order to obtain the following parameters</span>
+<span class="n">scope</span> <span class="o">=</span> <span class="n">read_only</span>
+<span class="n">code</span> <span class="o">=</span> <span class="n">ac_2QGZP0nOBmb0Lxk9q3pMzaRvOi4fMU8j</span>
+
+</pre></div>
+
+<p>To parse the <code>scope</code> and <code>code</code> parameters correctly, we need to set up something like the following:</p>
+
+<div class="highlight highlight-js"><pre><span class="c1">//---------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">// Iron Router Configuration</span>
+
+<span class="nx">Session</span><span class="p">.</span><span class="nx">setDefault</span><span class="p">(</span><span class="s1">'oauth_scope'</span><span class="p">,</span> <span class="s1">''</span><span class="p">);</span>
+<span class="nx">Session</span><span class="p">.</span><span class="nx">setDefault</span><span class="p">(</span><span class="s1">'oauth_code'</span><span class="p">,</span> <span class="s1">''</span><span class="p">);</span>
+
+<span class="c1">// create the route like normal; the parameters will be automatically parsed</span>
+<span class="nx">Router</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'stripeRedirect'</span><span class="p">,</span> <span class="p">{</span> <span class="nx">path</span><span class="o">:</span> <span class="s1">'/stripe'</span><span class="p">});</span>
+<span class="p">});</span>
+
+<span class="c1">// and extend the controller, so you can access the this.params object</span>
+<span class="nx">StripeRedirectController</span> <span class="o">=</span> <span class="nx">RouteController</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+    <span class="nx">run</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// the code parameter has been automatically parsed and is available for use</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'stripe.code: '</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">code</span><span class="p">);</span>
+        <span class="nx">Session</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">'oauth_code'</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">code</span><span class="p">);</span>
+
+        <span class="c1">// as is the scope parameter</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'stripe.scope: '</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">scope</span><span class="p">);</span>
+        <span class="nx">Session</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">'oauth_scope'</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">scope</span><span class="p">);</span>
+
+        <span class="c1">// when all this is done, be sure to render the template specified in the router map</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">'stripeRedirect'</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>Once you have access to the parameters, there are numerous ways to pass those variables throughout your app.  <code>Session.set()</code> is just one method.  You'll need to choose whether you want to use reactive <code>Session</code> variables or not.  </p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Iron-router maintained by <a href="https://github.com/EventedMind">EventedMind</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
