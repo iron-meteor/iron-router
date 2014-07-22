@@ -110,7 +110,7 @@
     ],
     [
       "mongo-livedata",
-      "1.0.1"
+      "1.0.0"
     ],
     [
       "observe-sequence",
@@ -162,6 +162,6 @@
     ]
   ],
   "pluginDependencies": [],
-  "toolVersion": "meteor-tool@1.0.4",
+  "toolVersion": "meteor-tool@1.0.0",
   "format": "1.0"
 }
