@@ -308,6 +308,9 @@ our `Post` template.
 </template>
 ```
 
+Now we can simply specify our layout and render the `Post` template instead of
+each individual region.
+
 ```javascript
 Router.route('/post/:_id', function () {
   this.layout('ApplicationLayout', {
@@ -320,9 +323,146 @@ Router.route('/post/:_id', function () {
 });
 ```
 
-## Server Routing
+You can even provide a template option to the `contentFor` helper instead of
+providing inline block content.
 
-## Router Parameters
+```html
+<template name="Post">
+  <p>
+    {{post_content}}
+  </p>
+
+  {{> contentFor region="aside" template="PostAside"}}
+
+  {{> contentFor region="footer" template="PostFooter"}}
+</template>
+```
+
+## Client Navigation
+Most of the time users of your application will navigate around the app inside
+the browser instead of making new requests to the server for each page. There
+are a few ways to navigate around the application.
+
+### Using Links
+Users can navigate around the application by clicking links. Let's say we have a
+layout with some navigation links.
+
+```html
+<template name="ApplicationLayout">
+  <nav>
+    <ul>
+      <li>
+        <a href="/">Home</a>
+      </li>
+      
+      <li>
+        <a href="/one">Page One</a>
+      </li>
+
+      <li>
+        <a href="/two">Page Two</a>
+      </li>
+    </ul>
+  </nav>
+
+  <article>
+    {{> yield}}
+  </article>
+</template>
+
+<template name="Home">
+  Home
+</template>
+
+<template name="PageOne">
+  Page One
+</template>
+
+<template name="PageTwo">
+  Page Two
+</template>
+```
+
+Next, we'll define some routes for these pages.
+
+```javascript
+Router.route('/', function () {
+  this.render('Home');
+});
+
+Router.route('/one', function () {
+  this.render('PageOne');
+});
+
+Router.route('/two', function () {
+  this.render('PageTwo');
+});
+```
+
+### Using JavaScript
+You can navigate to a given url, or even a route name, from JavaScript using the
+`Router.go` method. Let's say we've defined a click event handler for a button.
+
+```html
+<template name="MyButton">
+  <button id="clickme">Go to Page One</button>
+</template>
+```
+
+In our click event handler we can tell the router to go to the `/one` url.
+
+```javascript
+Template.MyButton.events({
+  'click #clickme': function () {
+    Router.go('/one');
+  }
+});
+```
+
+This will change the browser's url to `/one` and run the corresponding route.
+
+### Using Redirects
+You can redirect from one route to another from inside a route function by using
+the `redirect` method inside your route function.
+
+```javascript
+Router.route('/one', function () {
+  this.redirect('/two');
+});
+
+Router.route('/two', function () {
+  this.render('PageTwo');
+});
+```
+
+### Using Links to Server Routes
+
+## Path Helpers
+
+When the application first loads at the root url `/` the first route will run
+and the template named "Home" will be rendered to the page.
+
+If the user clicks the `Page One` link, the url in the browser will change to
+'/one' and the second route will run, rendering the 'PageOne' template.
+
+Likewise, if the user clicks the `Page Two` link, the url in the browser will
+change to '/two' and the third route will run, rendering the 'PageTwo' template.
+
+Even though the url is changing in the browser, since these are client-side
+routes, the browser doesn't need to make requests to the server. 
+
+
+## pushState
+
+## IE support
+
+## links
+
+## navigating with Router.go
+
+## Redirecting
+
+## Server Routing
 
 ## Navigation
 
@@ -333,6 +473,8 @@ Router.route('/post/:_id', function () {
 ## Hooks
 
 ## Plugins
+
+## State with get/set and UI.controller();
 
 ## Custom Router Rendering
 
