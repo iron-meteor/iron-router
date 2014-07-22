@@ -102,6 +102,67 @@ we can also create server routes. </p>
 <h2>
 <a name="concepts" class="anchor" href="#concepts"><span class="octicon octicon-link"></span></a>Concepts</h2>
 
+<h3>
+<a name="server-only" class="anchor" href="#server-only"><span class="octicon octicon-link"></span></a>Server only</h3>
+
+<p>In a typical Web app, you make an http request to a server at a particular url,
+like "/items/5", and a router on the server decides which function to invoke for
+that particular route. The function will most likely send some html back to the
+browser and close the connection.</p>
+
+<h3>
+<a name="client-only" class="anchor" href="#client-only"><span class="octicon octicon-link"></span></a>Client only</h3>
+
+<p>In some more modern Web apps you'll use a "client side" router like pagejs or
+Backbone router. These routers run in the browser, and let you navigate around
+an application without making trips to the server by taking advantage of browser
+HTML5 features like pushState or url hash fragments. </p>
+
+<h3>
+<a name="client-and-server" class="anchor" href="#client-and-server"><span class="octicon octicon-link"></span></a>Client and server</h3>
+
+<p>Iron.Router runs on the client <em>and</em> the server. You can define a route that
+only should run on the server, or a route that should only run on the client.
+Most of the time you'll create routes on the client. This makes your app really
+fast once it's loaded, because as you navigate around the application, you don't
+need to load an entirely new html page.</p>
+
+<p>The router is <em>aware</em> of all the routes on the client and the server. This means
+you can click a link that takes you to a server route, or it might take you to a
+client route. It also means that on the server, if there is no client route
+defined, we can send a 404 response to the client instead of loading up the
+Meteor application.</p>
+
+<h2>
+<a name="client-rendering" class="anchor" href="#client-rendering"><span class="octicon octicon-link"></span></a>Client Rendering</h2>
+
+<h2>
+<a name="client-layouts" class="anchor" href="#client-layouts"><span class="octicon octicon-link"></span></a>Client Layouts</h2>
+
+<h2>
+<a name="server-routing" class="anchor" href="#server-routing"><span class="octicon octicon-link"></span></a>Server Routing</h2>
+
+<h2>
+<a name="router-parameters" class="anchor" href="#router-parameters"><span class="octicon octicon-link"></span></a>Router Parameters</h2>
+
+<h2>
+<a name="navigation" class="anchor" href="#navigation"><span class="octicon octicon-link"></span></a>Navigation</h2>
+
+<h2>
+<a name="route-dispatching-and-middleware" class="anchor" href="#route-dispatching-and-middleware"><span class="octicon octicon-link"></span></a>Route Dispatching and Middleware</h2>
+
+<h2>
+<a name="route-controllers" class="anchor" href="#route-controllers"><span class="octicon octicon-link"></span></a>Route Controllers</h2>
+
+<h2>
+<a name="hooks" class="anchor" href="#hooks"><span class="octicon octicon-link"></span></a>Hooks</h2>
+
+<h2>
+<a name="plugins" class="anchor" href="#plugins"><span class="octicon octicon-link"></span></a>Plugins</h2>
+
+<h2>
+<a name="custom-router-rendering" class="anchor" href="#custom-router-rendering"><span class="octicon octicon-link"></span></a>Custom Router Rendering</h2>
+
 <h2>
 <a name="notes" class="anchor" href="#notes"><span class="octicon octicon-link"></span></a>Notes</h2>
 
