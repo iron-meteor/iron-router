@@ -7,9 +7,8 @@ Tinytest.add('Router - dispatch and current', function (test) {
   var call;
   var origDispatch = Iron.RouteController.prototype.dispatch;
 
-  Iron.RouteController.prototype.dispatch = function (url, stack, opts) {
+  Iron.RouteController.prototype.dispatch = function (stack, url, done) {
     calls.push({
-      opts: opts,
       thisArg: this,
       url: url,
       stack: stack
@@ -33,15 +32,12 @@ Tinytest.add('Router - dispatch and current', function (test) {
       test.equal(call.url, '/test', 'dispatch url is set');
       test.instanceOf(call.thisArg, Iron.RouteController, 'thisArg is a RouteController');
       test.instanceOf(call.stack, Iron.MiddlewareStack, 'stack is a MiddlewareStack');
-      
-      var opts = call.opts;
-      test.equal(opts.req, req, 'options request is set');
-      test.equal(opts.res, res, 'options response is set');
-      test.instanceOf(opts.thisArg, Iron.RouteController, 'thisArg set to controller');
 
       test.isNull(current, 'current is null until a flush');
       Deps.flush();
       test.instanceOf(current, Iron.RouteController, 'current is instance of Iron.RouteController');
+      test.equal(current.request, req, 'request is set');
+      test.equal(current.response, res, 'response is set');
 
       var oldCurrent = current;
 
@@ -57,16 +53,16 @@ Tinytest.add('Router - dispatch and current', function (test) {
     if (Meteor.isServer) {
       router(req, res, next);
 
-      test.equal(calls.length, 1, 'RouteController dispatch method called');
-      call = calls[0];
-      test.equal(call.url, '/test', 'dispatch url is set');
-      test.instanceOf(call.thisArg, Iron.RouteController, 'thisArg is a RouteController');
+      test.equal(calls.length, 1, 'dispatch call was made');
+
+      var call = calls[0];
+      var current = calls[0].thisArg;
+      test.instanceOf(current, Iron.RouteController, 'thisArg is a RouteController');
+      test.equal(current.request, req, 'request is set');
+      test.equal(current.response, res, 'response is set');
       test.instanceOf(call.stack, Iron.MiddlewareStack, 'stack is a MiddlewareStack');
-      
-      var opts = call.opts;
-      test.equal(opts.req, req, 'options request is set');
-      test.equal(opts.res, res, 'options response is set');
-      test.instanceOf(opts.thisArg, Iron.RouteController, 'thisArg set to controller');
+     
+
     }
   } finally {
     Iron.RouteController.prototype.dispatch = origDispatch;
