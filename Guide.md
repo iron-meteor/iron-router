@@ -66,6 +66,51 @@ The `where: 'server'` option tells the Router this is a server side route.
 
 ## Concepts
 
+### Server only
+In a typical Web app, you make an http request to a server at a particular url,
+like "/items/5", and a router on the server decides which function to invoke for
+that particular route. The function will most likely send some html back to the
+browser and close the connection.
+
+### Client only
+In some more modern Web apps you'll use a "client side" router like pagejs or
+Backbone router. These routers run in the browser, and let you navigate around
+an application without making trips to the server by taking advantage of browser
+HTML5 features like pushState or url hash fragments. 
+
+### Client and server
+Iron.Router runs on the client *and* the server. You can define a route that
+only should run on the server, or a route that should only run on the client.
+Most of the time you'll create routes on the client. This makes your app really
+fast once it's loaded, because as you navigate around the application, you don't
+need to load an entirely new html page.
+
+The router is *aware* of all the routes on the client and the server. This means
+you can click a link that takes you to a server route, or it might take you to a
+client route. It also means that on the server, if there is no client route
+defined, we can send a 404 response to the client instead of loading up the
+Meteor application.
+
+## Client Rendering
+
+## Client Layouts
+
+## Server Routing
+
+## Router Parameters
+
+## Navigation
+
+## Route Dispatching and Middleware
+
+## Route Controllers
+
+## Hooks
+
+## Plugins
+
+## Custom Router Rendering
+
 ## Notes
 
 - Notes
