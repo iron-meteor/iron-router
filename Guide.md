@@ -125,6 +125,20 @@ Router.route('/post/:_id/comments/:commentId', function () {
 });
 ```
 
+If there is a query string or hash fragment in the url, you can access those
+using the `query` and `param` properties of the `this.params` object.
+
+```javascript
+// given the url: "/post/5?q=s#hashFrag"
+Router.route('/post/:_id', function () {
+  var id = this.params._id;
+  var query = this.params.query;
+  
+  // query.q -> "s"
+  var hash = this.params.hash; // "hashFrag"
+});
+```
+
 ## Rendering Templates
 Usually we want to render a template when the user goes to a particular url. For
 example, we might want to render the template named `Post` when the user
@@ -193,7 +207,7 @@ different pages, only changing the content of the *yield regions*.
 </template>
 ```
 
-We can tell our route function which layout templat to use by calling the
+We can tell our route function which layout template to use by calling the
 `layout` method.
 
 ```javascript
@@ -398,6 +412,17 @@ Router.route('/two', function () {
   this.render('PageTwo');
 });
 ```
+When the application first loads at the root url `/` the first route will run
+and the template named "Home" will be rendered to the page.
+
+If the user clicks the `Page One` link, the url in the browser will change to
+'/one' and the second route will run, rendering the 'PageOne' template.
+
+Likewise, if the user clicks the `Page Two` link, the url in the browser will
+change to '/two' and the third route will run, rendering the 'PageTwo' template.
+
+Even though the url is changing in the browser, since these are client-side
+routes, the browser doesn't need to make requests to the server. 
 
 ### Using JavaScript
 You can navigate to a given url, or even a route name, from JavaScript using the
@@ -436,29 +461,137 @@ Router.route('/two', function () {
 ```
 
 ### Using Links to Server Routes
+Let's say you have a server route that you'd like to link to. For example, a
+file download route which *has* to go to the server.
 
-## Path Helpers
+```javascript
+Router.route('/download/:filename', function () {
+  this.response.end('some file content\n');
+}, {where: 'server'});
+```
 
-When the application first loads at the root url `/` the first route will run
-and the template named "Home" will be rendered to the page.
+Now, in our html we'll have a link to download a particular file.
 
-If the user clicks the `Page One` link, the url in the browser will change to
-'/one' and the second route will run, rendering the 'PageOne' template.
+```html
+<a href="/download/myfilename">Download File</a>
+```
 
-Likewise, if the user clicks the `Page Two` link, the url in the browser will
-change to '/two' and the third route will run, rendering the 'PageTwo' template.
+When a user clicks on the `Download File` link, the router will send you to the
+server and run the server-side route.
 
-Even though the url is changing in the browser, since these are client-side
-routes, the browser doesn't need to make requests to the server. 
+## Named Routes
+Routes can have names that can be used to refer to the route. If you don't give
+it a name, the router will guess its name based on the path. But you can provide
+a name explicitly using the `name` option.
+
+```javascript
+Router.route('/posts/:_id', function () {
+  this.render('Post');
+}, {
+  name: 'post.show'
+});
+```
+
+Now that we've named our route, we can get access to the route object if needed
+like this:
+
+```javascript
+Router.routes['post.show']
+```
+
+But we can also use the route name in the `Router.go` method like this:
+
+```javascript
+Router.go('post.show');
+```
+
+Now that we're using named routes in `Router.go` you can also pass a parameters
+object, query and hash fragment options.
+
+```javascript
+Router.go('post.show', {_id: 1}, {query: 'q=s', frag='hashFrag'});
+```
+
+The above JavaScript will navigate to this url:
+
+```html
+/post/1?q=s#hashFrag
+```
+
+## Path and Link Template Helpers
+
+### pathFor
+There are a few template helpers we can use to create links based on routes.
+First, we can use the `{{pathFor}}` helper to generate a path for a given named
+route. Given the `post.show` route we created above we can create a link like
+this:
+
+```html
+{{#with post}}
+  <a href="{{pathFor 'post.show'}}">Post Show</a>
+{{/with}}
+```
+
+Assuming we have a post with an id of "1", the above snippet is equivalent to:
+
+```html
+<a href="/posts/1">Post Show</a>
+```
+
+We can pass `data`, `query` and `hash` options to the pathFor helper.
+
+```html
+<a href="{{pathFor 'post.show' data=getPost query='q=s' hash='frag'}}">Post Show</a>
+```
+
+The data object will be interpolated onto the route parameters. the query and
+hash arguments will be added to the href as a querystring and hash fragment.
+Let's say our data object looks like this:
+
+```javascript
+data = { _id: 1 };
+```
+
+The above `pathFor` expression will result in a link that looks like this:
+
+```html
+<a href="/post/1?q=s#frag">Post Show</a>
+```
+
+The benefit of using the `pathFor` helper is that we don't need to keep hard
+coded `href` attributes all over the application.
 
 
-## pushState
+### urlFor
+While the `pathFor` helper generates a path for the given route, `urlFor` will
+generate a fully qualified url. For example, `pathFor` might generate a path
+that looks like `/posts/1` but `urlFor` would generate
+`http://mysite.com/posts/1`.
+
+### linkTo
+The `linkTo` helper automatically generates the html for an anchor tag along
+with the route path for the given route, parameters, hash and query. You can
+even provide a block of content to be used inside the link.
+
+```html
+{{#linkTo route="post.show" data=getData query="q=s" frag="hashFrag" class="my-cls"}}
+  <span style="color: orange;">
+    Post Show
+  </span>
+{{/linkTo}}
+```
+
+The expression above will be transformed into html that looks like this:
+
+```html
+<a href="/posts/1?q=s#hashFrag" class="my-cls">
+  <span style="color: orange;">
+    Post Show
+  </span>
+</a>
+```
 
 ## IE support
-
-## links
-
-## navigating with Router.go
 
 ## Redirecting
 
