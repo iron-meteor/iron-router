@@ -91,9 +91,234 @@ client route. It also means that on the server, if there is no client route
 defined, we can send a 404 response to the client instead of loading up the
 Meteor application.
 
-## Client Rendering
+## Route Parameters
 
-## Client Layouts
+Routes can have variable parameters. For example, you can create one route to
+show any post with an id. The `id` is variable depending on the post you want to
+see such as "/posts/1" or "/posts/2". To declare a named parameter in your route
+use the `:` syntax in the url followed by the parameter name. When a user goes
+to that url, the actual value of the parameter will be stored as a property on
+`this.params` in your route function.
+
+In this example we have a route parameter named `_id`. If we navigate to the
+`/post/5` url in our browser, inside of the route function we can get the actual
+value of the `_id` from `this.params._id`. In this case `this.params._id => 5`.
+
+```javascript
+// given a url like "/post/5"
+Router.route('/post/:_id', function () {
+  var params = this.params; // { _id: "5" }
+  var id = params._id; // "5"
+});
+```
+
+You can have multiple route parameters. In this example, we have an `_id`
+parameter and a `commentId` parameter. If you navigate to the url
+`/post/5/comments/100` then inside your route function `this.params._id => 5`
+and `this.params.commentId => 100`.
+
+```javascript
+// given a url like "/post/5/comments/100"
+Router.route('/post/:_id/comments/:commentId', function () {
+  var id = this.params.id; // "5"
+  var commentId = this.params.commentId; // "100"
+});
+```
+
+## Rendering Templates
+Usually we want to render a template when the user goes to a particular url. For
+example, we might want to render the template named `Post` when the user
+navigates to the url `/posts/1`.
+
+```html
+<template name="Post">
+  <h1>Post: {{title}}</h1>
+</template>
+```
+
+```javascript
+Router.route('/post/:_id', function () {
+  this.render('Post');
+});
+```
+
+We can render a template by calling the `render` method inside of our route
+function. The `render` method takes the name of a template as its first
+parameter.
+
+## Rendering Templates with Data
+In the above example the `title` value is not defined. We could create a helper
+on the Post template called `title` or we can set a data context for the
+template directly from our route function. To do that, we provide a `data`
+option as a second parameter to the `render` call.
+
+```javascript
+Router.route('/post/:_id', function () {
+  this.render('Post', {
+    data: function () {
+      return Posts.findOne({_id: this.params._id});
+    }
+  });
+});
+```
+
+## Layouts
+Layouts allow you to reuse a common look and feel in multiple pages in your
+application so you don't have to duplicate the html and logic on every single
+page template.
+
+Layouts are just templates. But, inside of a layout you can use a special helper
+called `yield`. You can think of `yield` as a placeholder for content. The
+placeholder is called a *region.* The content will be "injected" into the
+region when we actually run our route.  This lets us reuse the layout on many
+different pages, only changing the content of the *yield regions*.
+
+```html
+<template name="ApplicationLayout">
+  <header>
+    <h1>{{title}}</h1>
+  </header>
+
+  <aside>
+    {{> yield "aside"}}
+  </aside>
+
+  <article>
+    {{> yield}}
+  </article>
+
+  <footer>
+    {{> yield "footer"}}
+  </footer>
+</template>
+```
+
+We can tell our route function which layout templat to use by calling the
+`layout` method.
+
+```javascript
+Router.route('/post/:_id', function () {
+  this.layout('ApplicationLayout');
+});
+```
+
+If you want to use a default layout template for all routes you can configure a
+global Router option.
+
+```javascript
+Router.configure({
+  layoutTemplate: 'ApplicationLayout'
+});
+```
+
+### Rendering Templates into Regions with JavaScript
+Inside of our route function we can tell the router which templates to render
+into each region. 
+
+```html
+<template name="Post">
+  <p>
+    {{post_content}}
+  </p>
+</template>
+
+<template name="PostFooter">
+  Some post specific footer content.
+</template>
+
+<template name="PostAside">
+  Some post specific aside content.
+</template>
+```
+Let's say we're using the `ApplicationLayout` and we want to put the templates
+defined above into their respective regions for the `/post/:_id` route. We can
+do this directly in our route function using the `to` option of the `render`
+method.
+
+```javascript
+Router.route('/post/:_id', function () {
+  // use the template named ApplicationLayout for our layout
+  this.layout('ApplicationLayout');
+
+  // render the Post template into the "main" region
+  // {{> yield}}
+  this.render('Post');
+
+  // render the PostAside template into the yield region named "aside" 
+  // {{> yield "aside"}}
+  this.render('PostAside', {to: 'aside'});
+
+  // render the PostFooter template into the yield region named "footer" 
+  // {{> yield "footer"}}
+  this.render('PostFooter', {to: 'footer'});
+});
+```
+
+### Setting Region Data Contexts
+You can set the data contexts for regions by providing a `data` option to the
+`render` method. You can also set a data context for the entire layout.
+
+```javascript
+Router.route('/post/:_id', function () {
+  this.layout('ApplicationLayout', {
+    data: function () { return Posts.findOne({_id: this.params._id}) }
+  });
+
+  this.render('Post' {
+    // we don't really need this since we set the data context for the
+    // the entire layout above. But this demonstrates how you can set
+    // a new data context for each specific region.
+    data: function () { return Posts.findOne({_id: this.params._id})
+  });
+
+  this.render('PostAside', {
+    to: 'aside',
+    data: function () { return Posts.findOne({_id: this.params._id})
+  });
+
+  this.render('PostFooter', {
+    to: 'footer',
+    data: function () { return Posts.findOne({_id: this.params._id})
+  });
+});
+```
+
+### Rendering Templates into Regions using contentFor
+Rendering templates into region from our route function can be useful,
+especially if we need to run some custom logic or if the template names are
+dynamic. But often an easier way to provide content for a region is to use the
+`contentFor` helper directly from our main template. Let's say we're using the
+same `ApplicationLayout` from the previous example. But this time, instead of
+defining a new template for each region, we'll provide the content *inline* in
+our `Post` template.
+
+```html
+<template name="Post">
+  <p>
+    {{post_content}}
+  </p>
+
+  {{#contentFor "aside"}}
+    Some post specific aside content.
+  {{/contentFor}}
+
+  {{#contentFor "footer"}}
+    Some post specific footer content.
+  {{/contentFor}}
+</template>
+```
+
+```javascript
+Router.route('/post/:_id', function () {
+  this.layout('ApplicationLayout', {
+    data: function () { return Posts.findOne({_id: this.params._id}) }
+  });
+
+  // this time just render the template named "Post" into the main
+  // region
+  this.render('Post');
+});
+```
 
 ## Server Routing
 
