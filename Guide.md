@@ -126,7 +126,7 @@ Router.route('/post/:_id/comments/:commentId', function () {
 ```
 
 If there is a query string or hash fragment in the url, you can access those
-using the `query` and `param` properties of the `this.params` object.
+using the `query` and `hash` properties of the `this.params` object.
 
 ```javascript
 // given the url: "/post/5?q=s#hashFrag"
@@ -591,15 +591,82 @@ The expression above will be transformed into html that looks like this:
 </a>
 ```
 
-## IE support
-
-## Redirecting
-
 ## Server Routing
 
-## Navigation
+### Creating Routes
+So far you've seen features mostly intended for the browser. But you can also
+create server routes with full access to the NodeJS request and response
+objects. To create a server route you provide the `where: 'server'` option to
+the route.
+
+```javascript
+Router.route('/download/:file', function () {
+  // NodeJS request object
+  var request = this.request;
+
+  // NodeJS  response object
+  var response = this.response;
+
+  this.response.end('file download content\n');
+}, {where: 'server'});
+```
+
+### Restful Routes
+You can even create server-side restful routes which correspond to an http verb.
+This is particularly useful if you're setting up a webhook for another service
+to post data to.
+
+```javascript
+Router.route('/webhooks/stripe', { where: 'server' })
+  .get(function () {
+    // GET /webhooks/stripe
+  })
+  .post(function () {
+    // POST /webhooks/stripe
+  })
+  .put(function () {
+    // PUT /webhooks/stripe
+  })
+```
+
+### 404s and Client vs Server Routes
+When you initially navigate to your Meteor application's url, the server router
+will see if there are any routes defined for that url, either on the server or
+on the client. If no routes are found, the server will send a 404 http status
+code to indicate no resource was found for the given url.
+
+### Server Middleware and Connect
+You can attach middleware to the router on the server using the `use` method of
+the router. And Connect middleware just works out-of-the-box. This is because
+the `req, res, next` arguments are passed to the router handler functions like
+just in the Connect middleware stack. But typically we'll access those
+properties using `this.request`, `this.response`, and `this.next` instead.
+
+```javascript
+if (Meteor.isServer) {
+  // assuming we've loaded a package with access to connect
+  var connect = Npm.require('connect');
+  Router.use(connect.queryParser(), {where: 'server'});
+}
+```
+
+You could also create your own server-side middleware. For example, you might
+want to log all http requests.
+
+```javascript
+Router.use(function logHttpRequests () {
+  var method = this.method;
+  var url = this.url;
+  console.log(method + ' ' + url);
+
+  // go on to the next handler now
+  this.next();
+}, {where: 'server'});
+```
 
 ## Route Dispatching and Middleware
+
+## Legacy Browser Support
 
 ## Route Controllers
 
