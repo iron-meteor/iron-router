@@ -34,104 +34,181 @@
         <h1>
 <a name="ironrouter" class="anchor" href="#ironrouter"><span class="octicon octicon-link"></span></a>Iron.Router</h1>
 
-<p>A router that works on the server and the browser, designed specifically for <a href="https://github.com/meteor/meteor">Meteor</a>.</p>
+<p>A router that works on the server and the browser, designed specifically for
+<a href="https://github.com/meteor/meteor">Meteor</a>.</p>
 
-<p><strong>Table of Contents</strong></p>
+<h2>
+<a name="table-of-contents" class="anchor" href="#table-of-contents"><span class="octicon octicon-link"></span></a>Table of Contents</h2>
 
 <ul>
+<li><a href="#about">About</a></li>
+<li><a href="#install">Install</a></li>
 <li><a href="#quick-start">Quick Start</a></li>
-<li><a href="#key-concepts">Key Concepts</a></li>
-<li>
-<a href="#routes">Routes</a>
-
-<ul>
-<li><a href="#creating-routes">Creating Routes</a></li>
-<li><a href="#route-options">Route Options</a></li>
-<li><a href="#restful-server-routes">Restful Server Routes</a></li>
-<li><a href="#route-parameters">Route Parameters</a></li>
-</ul>
-</li>
-<li><a href="#layouts">Layouts</a></li>
-<li>
-<a href="#route-controllers">Route Controllers</a>
-
-<ul>
-<li><a href="#route-controller-lookup">Route Controller Lookup</a></li>
-<li><a href="#custom-action-functions">Custom Action Functions</a></li>
-<li><a href="#wait-and-waiton">wait and waitOn</a></li>
-<li><a href="#hooks">Hooks</a></li>
-</ul>
-</li>
-<li><a href="#plugins">Plugins</a></li>
-<li>
-<a href="#middleware">Middleware</a>
-
-<ul>
-<li><a href="#client-middleware">Client Middleware</a></li>
-<li><a href="#server-middleware-and-connect">Server Middleware and Connect</a></li>
-</ul>
-</li>
-<li>
-<a href="#navigation">Navigation</a>
-
-<ul>
-<li><a href="#template-helpers">Template Helpers</a></li>
-<li><a href="#router-go">Router.go</a></li>
-</ul>
-</li>
+<li><a href="#concepts">Concepts</a></li>
 </ul><h2>
+<a name="about" class="anchor" href="#about"><span class="octicon octicon-link"></span></a>About</h2>
+
+<p>Iron.Router is the most popular routing package for Meteor. Its job is to let
+you organize your application by urls. This guide wil start off with some simple
+examples and progress into more advanced concepts.</p>
+
+<h2>
+<a name="install" class="anchor" href="#install"><span class="octicon octicon-link"></span></a>Install</h2>
+
+<p>You can install iron:router using Meteor's package management system:</p>
+
+<div class="highlight highlight-bash"><pre>&gt; meteor add iron:router
+</pre></div>
+
+<p>To update iron:router to the latest version you can use the meteor update
+command:</p>
+
+<div class="highlight highlight-bash"><pre>&gt; meteor update iron:router
+</pre></div>
+
+<h2>
 <a name="quick-start" class="anchor" href="#quick-start"><span class="octicon octicon-link"></span></a>Quick Start</h2>
 
-<h2>
-<a name="key-concepts" class="anchor" href="#key-concepts"><span class="octicon octicon-link"></span></a>Key Concepts</h2>
+<p>Start by creating a route in your JavaScript file. By default, routes are
+created for the client and will run in the browser.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'/'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">'Home'</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>When the user navigates to the url "/", the route above will render the template
+named "Home" onto the page.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'/items'</span><span class="p">);</span>
+</pre></div>
+
+<p>This second route will automatically render a template named "Items" or "items"
+to the page. In simple cases like this, you don't even need to provide a route
+function.</p>
+
+<p>So far, we've only created routes that will be run directly in the browser. But
+we can also create server routes. </p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'/item'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">req</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">request</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">res</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">response</span><span class="p">;</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="s1">'hello from the server\n'</span><span class="p">);</span>
+<span class="p">},</span> <span class="p">{</span><span class="nx">where</span><span class="o">:</span> <span class="s1">'server'</span><span class="p">});</span>
+</pre></div>
+
+<p>The <code>where: 'server'</code> option tells the Router this is a server side route.</p>
 
 <h2>
-<a name="routes" class="anchor" href="#routes"><span class="octicon octicon-link"></span></a>Routes</h2>
-
-<h3>
-<a name="creating-routes" class="anchor" href="#creating-routes"><span class="octicon octicon-link"></span></a>Creating Routes</h3>
-
-<h3>
-<a name="route-options" class="anchor" href="#route-options"><span class="octicon octicon-link"></span></a>Route Options</h3>
-
-<h3>
-<a name="restful-server-routes" class="anchor" href="#restful-server-routes"><span class="octicon octicon-link"></span></a>Restful Server Routes</h3>
-
-<h3>
-<a name="route-parameters" class="anchor" href="#route-parameters"><span class="octicon octicon-link"></span></a>Route Parameters</h3>
+<a name="concepts" class="anchor" href="#concepts"><span class="octicon octicon-link"></span></a>Concepts</h2>
 
 <h2>
-<a name="layouts" class="anchor" href="#layouts"><span class="octicon octicon-link"></span></a>Layouts</h2>
+<a name="notes" class="anchor" href="#notes"><span class="octicon octicon-link"></span></a>Notes</h2>
 
-<h2>
-<a name="route-controllers" class="anchor" href="#route-controllers"><span class="octicon octicon-link"></span></a>Route Controllers</h2>
+<ul>
+<li>Notes
 
-<h3>
-<a name="route-controller-lookup" class="anchor" href="#route-controller-lookup"><span class="octicon octicon-link"></span></a>Route Controller Lookup</h3>
+<ul>
+<li>Quickstart
 
-<h3>
-<a name="custom-action-functions" class="anchor" href="#custom-action-functions"><span class="octicon octicon-link"></span></a>Custom Action Functions</h3>
+<ul>
+<li>installing</li>
+<li>creating some routes</li>
+</ul>
+</li>
+<li>Concepts
 
-<h3>
-<a name="wait-and-waiton" class="anchor" href="#wait-and-waiton"><span class="octicon octicon-link"></span></a>wait and waitOn</h3>
+<ul>
+<li>routing on the server</li>
+<li>routing on the client</li>
+<li>making a trip back to the server</li>
+</ul>
+</li>
+<li>Layouts, yield, contentFor, setting layouts dynamically, etc.</li>
+<li>Rendering
 
-<h3>
-<a name="hooks" class="anchor" href="#hooks"><span class="octicon octicon-link"></span></a>Hooks</h3>
+<ul>
+<li>dynamically choosing the layout</li>
+<li>Rendering templates into regions</li>
+<li>Setting data contexts</li>
+<li>Automatic rendering based on the name</li>
+</ul>
+</li>
+<li>Server side routing
 
-<h2>
-<a name="plugins" class="anchor" href="#plugins"><span class="octicon octicon-link"></span></a>Plugins</h2>
+<ul>
+<li>restful routes</li>
+<li>middleware</li>
+<li>404s for no routes found</li>
+</ul>
+</li>
+<li>Client side routing
 
-<h2>
-<a name="middleware" class="anchor" href="#middleware"><span class="octicon octicon-link"></span></a>Middleware</h2>
+<ul>
+<li>client side middleware</li>
+</ul>
+</li>
+<li>Creating routes
 
-<h3>
-<a name="client-middleware" class="anchor" href="#client-middleware"><span class="octicon octicon-link"></span></a>Client Middleware</h3>
+<ul>
+<li>naming routes, or not</li>
+<li>route functions</li>
+<li>automatic template lookup</li>
+</ul>
+</li>
+<li>Route Parameters</li>
+<li>Route dispatching
 
-<h3>
-<a name="server-middleware-and-connect" class="anchor" href="#server-middleware-and-connect"><span class="octicon octicon-link"></span></a>Server Middleware and Connect</h3>
+<ul>
+<li>What does this mean? controller gets created, anonymous or not</li>
+<li>client vs. server routes</li>
+<li>how does the router know when to go to the server or the client?</li>
+</ul>
+</li>
+<li>RouteControllers
 
-<h2>
-<a name="template-helpers" class="anchor" href="#template-helpers"><span class="octicon octicon-link"></span></a>Template Helpers</h2>
+<ul>
+<li>The "this" arg inside of your function</li>
+<li>How do they get created?</li>
+<li>Creating your own</li>
+<li>custom action functions and reusing controllers</li>
+<li>wait and waitOn</li>
+<li>options like layoutTemplate, template, name, etc.</li>
+</ul>
+</li>
+<li>Hooks
+
+<ul>
+<li>what are they?</li>
+<li>how can you use them?</li>
+</ul>
+</li>
+<li>Plugins
+
+<ul>
+<li>Concept</li>
+<li>loading, onDataNotFound</li>
+<li>Creating your own</li>
+</ul>
+</li>
+<li>Rendering the Router
+
+<ul>
+<li>using the {{&gt; Router}} template helper</li>
+<li>autoRendering</li>
+</ul>
+</li>
+<li>Links and navigation
+
+<ul>
+<li>{{pathFor}} and {{urlFor}} helpers</li>
+<li>Router.go</li>
+<li>this.redirect</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
       </section>
     </div>
 
