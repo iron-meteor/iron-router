@@ -1,10 +1,4 @@
-Router.configure({
-  // Optionally configure a template to use.
-  // The default loading text to use is "Loading..."
-  loadingTemplate: 'Loading'
-});
-
-Router.plugin('loading');
+Router.plugin('loading', {loadingTemplate: 'Loading'});
 
 Router.route('/', function () {
   this.render('Home');

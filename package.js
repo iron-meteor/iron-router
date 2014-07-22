@@ -13,6 +13,9 @@ Package.on_use(function (api) {
   api.use('ui');
   api.use('templating');
 
+  // for dynamic scoping with environment variables
+  api.use('meteor')
+
   // main namespace and utils
   api.use('iron:core');
   api.imply('iron:core');
@@ -29,6 +32,7 @@ Package.on_use(function (api) {
   // for RouteController which inherits from this
   api.use('iron:controller');
 
+  api.addFiles('lib/current_options.js');
   api.addFiles('lib/http_methods.js');
   api.addFiles('lib/route_controller.js');
   api.addFiles('lib/route_controller_server.js', 'server');
