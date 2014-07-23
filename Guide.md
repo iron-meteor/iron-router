@@ -12,8 +12,7 @@ A router that works on the server and the browser, designed specifically for
 
 ## About
 Iron.Router is the most popular routing package for Meteor. Its job is to let
-you organize your application by urls. This guide wil start off with some simple
-examples and progress into more advanced concepts.
+you organize your application by urls.
 
 ## Install
 You can install iron:router using Meteor's package management system:
@@ -338,7 +337,7 @@ Router.route('/post/:_id', function () {
 ```
 
 You can even provide a template option to the `contentFor` helper instead of
-providing inline block content.
+providing in-line block content.
 
 ```html
 <template name="Post">
@@ -544,8 +543,8 @@ We can pass `data`, `query` and `hash` options to the pathFor helper.
 <a href="{{pathFor 'post.show' data=getPost query='q=s' hash='frag'}}">Post Show</a>
 ```
 
-The data object will be interpolated onto the route parameters. the query and
-hash arguments will be added to the href as a querystring and hash fragment.
+The data object will be interpolated onto the route parameters. The query and
+hash arguments will be added to the href as a query string and hash fragment.
 Let's say our data object looks like this:
 
 ```javascript
@@ -694,8 +693,8 @@ Sometimes you want to wait on one or more subscriptions to be ready, or maybe on
 the result of some other action before rendering the main template. For example,
 you might want to show a loading template while waiting for subscription data.
 
-To do this you can use something called a `Waitlist`. The waitlist is ready when
-all items in the list are ready. We can add items to the waitlist in any of our
+To do this you can use something called a `Waitlist`. The wait list is ready when
+all items in the list are ready. We can add items to the wait list in any of our
 route functions like this:
 
 ```javascript
@@ -706,7 +705,7 @@ Router.route('/post/:_id', function () {
 });
 ```
 
-We can check whether all the items in the waitlist are ready by calling the
+We can check whether all the items in the wait list are ready by calling the
 `ready` method.
 
 ```javascript
@@ -723,7 +722,7 @@ Router.route('/post/:_id', function () {
 });
 ```
 
-One of the benefits of using the waitlist is that plugins and hooks can make use
+One of the benefits of using the wait list is that plugins and hooks can make use
 of this `ready` state to provide custom behaviors. But we want the `Waitlist` to
 be populated by the time these plugins and hooks run. To do that, we can use a
 special option on our route called `waitOn`. Whatever is returned from this
