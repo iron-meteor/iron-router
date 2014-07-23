@@ -664,17 +664,15 @@ Router.use(function logHttpRequests () {
 }, {where: 'server'});
 ```
 
-## Route Dispatching and Middleware
-
-## Legacy Browser Support
-
-## Route Controllers
-
 ## Hooks
 
 ## Plugins
 
-## State with get/set and UI.controller();
+## Route Controllers
+
+### State with get/set and UI.controller();
+
+## Legacy Browser Support
 
 ## Custom Router Rendering
 
