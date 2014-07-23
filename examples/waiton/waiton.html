@@ -1,0 +1,65 @@
+<head>
+  <title>Using waitOn</title>
+</head>
+
+<body>
+  <div class="container" style="width: 600px; padding: 50px;">
+    <nav>
+      <li>
+        <a href="/">Home</a>
+      </li>
+      <li>
+        <a href="/subscriptions">Wait on Subscriptions</a>
+      </li>
+      <li>
+        <a href="/custom">Wait on Custom Function</a>
+      </li>
+      <li>
+        <a href="/many">Wait on Many Things</a>
+      </li>
+    </nav>
+
+    <article>
+      {{> Router}}
+    </article>
+  </div>
+</body>
+
+<template name="Loading">
+  <h1>
+    Loading...
+  </h1>
+</template>
+
+<template name="Page">
+  <h1>Page Loaded!</h1>
+</template>
+
+<template name="LoadingCustom">
+  <h1>
+    Loading...
+  </h1>
+
+  <p>
+    In the JavaScript console type: 
+    
+    <code>
+      myReadyVar.set(true);
+    </code>
+  </p>
+</template>
+
+<template name="LoadingMany">
+  <h1>
+    Loading...
+  </h1>
+
+  <p>
+    In the JavaScript console type: 
+    
+    <code>
+      one.set(true);
+      two.set(true);
+    </code>
+  </p>
+</template>
