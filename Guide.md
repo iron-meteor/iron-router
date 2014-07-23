@@ -614,6 +614,10 @@ Router.route('/post/:_id', {
   // route function.
   path: '/post/:_id',
 
+  // If we want to provide a specific RouteController instead of an anonymous
+  // one we can do that here. See the Route Controller section for more info.
+  controller: 'CustomController',
+
   // If the template name is different from the route name you can specify it
   // explicitly here.
   template: 'Post',
@@ -964,16 +968,185 @@ Router.route('/admin', function () {
   route is run.
 
 ## Route Controllers
+An `Iron.RouteController` object is created when the Router handles a url
+change. The `RouteController` gives us a place to store state as we run the
+route, and persists until another route is run.
 
-### thisArg
+We've been calling a few methods inside of our route functions like
+`this.render()` and `this.layout()`. The `this` object inside of these functions
+is actually an instance of a `RouteController`. If you're building a simple
+application you probably don't need to worry about `RouteController`. But if
+your application gets larger, using `RouteControllers` directly offers two key
+benefits:
 
-### Inheritance
+* **Inheritance**: You can inherit from other RouteControllers to model your
+  application's behavior.
+* **Organization**: You can begin to separate your route logic into
+  RouteController files instead of putting all of your complex business logic
+  into one big route file.
 
-### Properties
+### Creating
+You can create a custom `RouteController` like this:
 
-### State with get/set
+```javascript
+PostController = RouteController.extend();
+```
 
-### UI.controller();
+When you define a route, you can specify a controller to use, or the router will
+try to find a controller automatically based on the name of the route.
+
+```javascript
+Router.route('/post/:_id', {
+  name: 'post'
+});
+```
+
+The route defined above will automatically use the `PostController` using the
+name of the route. We can tell the route to use a different controller by
+providing a controller option.
+
+```javascript
+Router.route('/post/:_id', {
+  name: 'post.show',
+  controller: 'PostController'
+});
+```
+
+We can use all of the same options from our routes on our `RouteControllers`.
+
+```javascript
+PostController = RouteController.extend({
+  layoutTemplate: 'PostLayout',
+
+  template: 'Post',
+
+  waitOn: function () { return Meteor.subscribe('post', this.params._id); },
+
+  data: function () { return Posts.findOne({_id: this.params._id}) },
+
+  action: function () {
+    this.render();
+  }
+});
+```
+
+We might have some options defined globally with `Router.configure`, some
+options defined on the `Route` and some options defined on the
+`RouteController`. Iron.Router looks up options in this order:
+
+1. RouteController
+2. Route
+3. Router
+
+### Inheriting
+RouteControllers can inherit from other RouteControllers. This enables some
+interesting organization schemes for your application.
+
+Let's say we have an `ApplicationController` which we want to use as the default
+controller for all routes.
+
+```javascript
+ApplicationController = RouteController.extend({
+  layoutTemplate: 'ApplicationLayout',
+
+  onBeforeAction: function () {
+    // do some login checks or other custom logic
+    this.next();
+  }
+});
+
+Router.configure({
+  // this will be the default controller
+  controller: 'ApplicationController'
+});
+
+// now we have a route for posts
+Router.route('/posts/:_id', {
+  name: 'post'
+});
+
+// inherit from `ApplicationController` and override any
+// behavior you'd like.
+PostController = ApplicationController.extend({
+  layoutTemplate: 'PostLayout'
+});
+```
+
+
+
+*NOTE: This is currently a bit tricky with Meteor since you can't precisely
+control file load order. You need to make sure parent RouteControllers are
+evaluated before child RouteControllers.*
+
+### Accessing the Current RouteController
+There are two ways to access the current `RouteController`.
+
+If you're on the client, you can use the `Router.current()` method. This will
+reactively return the current instance of a `RouteController`. Keep in mind this
+value could be `null` if no route has run yet.
+
+You can also access the current `RouteController` from inside your template
+helpers by using the `UI.controller()` method.
+
+```javascript
+Router.route('/posts', function () {
+  this.render('Posts');
+});
+```
+
+This route will render the `Posts` template defined below.
+
+```html
+<template name="Posts">
+  Posts
+</template>
+```
+
+Now let's say we want to access the current controller from a template helper
+defined on the `Posts` template.
+
+```javascript
+Template.Posts.helpers({
+  myHelper: function () {
+    var controller = UI.controller();
+
+    // now we can get properties and call methods on the controller
+  }
+});
+```
+
+### Setting Reactive State Variables
+You can set reactive state variables on controllers using the `set` method.
+Let's say we want to store the post `_id` in a reactive variable.
+
+```javascript
+Router.route('/posts/:_id', {name: 'post'});
+
+PostController = RouteController.extend({
+  action: function () {
+    // set the reactive state variable "postId" with a value
+    // of the id from our url
+    this.set('postId', this.params._id);
+    this.render();
+  }
+});
+```
+
+### Getting Reactive State Variables
+You can get a reactive variable value by calling `this.get("key")` on the
+`RouteController`. Using the example above, let's grab the value of `postId`
+from a template helper.
+
+```javascript
+Template.Post.helpers({
+  postId: function () {
+    var controller = UI.controller();
+
+    // reactively return the value of postId
+    return controller.get('postId');
+  }
+});
+```
 
 ## Legacy Browser Support
 
