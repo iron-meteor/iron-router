@@ -1147,59 +1147,61 @@ Template.Post.helpers({
 });
 ```
 
-## Legacy Browser Support
-
 ## Custom Router Rendering
+So far we've been letting the Router render itself to the page automatically.
+But you can also control precisely where the Router renders itself by using a
+global helper method.
 
-## Notes
+```html
+<body>
+  <h1>Some App Html</h1>
+  <div class="container">
+    {{! Render the router into this div instead of the body}}
+    {{> Router}}
+  </div>
+</body>
+```
 
-- Notes
-  - Quickstart
-    - installing
-    - creating some routes
-  - Concepts
-    - routing on the server
-    - routing on the client
-    - making a trip back to the server
-  - Layouts, yield, contentFor, setting layouts dynamically, etc.
-  - Rendering
-    - dynamically choosing the layout
-    - Rendering templates into regions
-    - Setting data contexts
-    - Automatic rendering based on the name
-  - Server side routing
-    - restful routes
-    - middleware
-    - 404s for no routes found
-  - Client side routing
-    - client side middleware
-  - Creating routes
-    - naming routes, or not
-    - route functions
-    - automatic template lookup
-  - Route Parameters
-  - Route dispatching
-    - What does this mean? controller gets created, anonymous or not
-    - client vs. server routes
-    - how does the router know when to go to the server or the client?
-  - RouteControllers
-    - The "this" arg inside of your function
-    - How do they get created?
-    - Creating your own
-    - custom action functions and reusing controllers
-    - wait and waitOn
-    - options like layoutTemplate, template, name, etc.
-  - Hooks
-    - what are they?
-    - how can you use them?
-  - Plugins
-    - Concept
-    - loading, onDataNotFound
-    - Creating your own
-  - Rendering the Router
-    - using the {{> Router}} template helper
-    - autoRendering
-  - Links and navigation
-    - {{pathFor}} and {{urlFor}} helpers
-    - Router.go
-    - this.redirect
+## Legacy Browser Support
+Legacy browsers do not support the HTML5 `pushState` and `history` features
+required for normal client side browsing with the `Router`. To solve this
+problem, the `Router` can fall back to using hash fragments in the url.
+Actually, under the hood, `iron-router` uses a package called `iron-location`
+which handles all of this. It works similarly to the `History.js` project but
+works seamlessly.
+
+This functionality is automatically enabled for **IE8** and **IE9**. If you want
+to enable it manually to play around you can configure `Iron.Location` like
+this:
+
+```javascript
+Iron.Location.configure({useHashPaths: true});
+```
+
+Even though the url will appear differently in the browser when using this mode,
+the url, query, hash and parameters will look like their regular values inside
+of `RouteController` functions. Here are a few examples of how urls will be
+translated.
+
+```
+http://localhost:3000/items/5?q=s#hashFrag
+```
+
+The url above would be transformed to the url below in your browser.
+
+```
+http://localhost:3000/#/items/5?q=s&__hash__=hashFrag
+```
+
+But in your `RouteController` functions you can access the url, query and hash
+values just like you have before.
+
+```
+Router.route('/items/:_id', function () {
+  var id = this.params._id; // "5"
+  var query = this.params.query; // {q: "s"}
+  var hash = this.params.hash; // "hashFrag"
+});
+```
+
+**NOTE: Please let us know if you can help test support on other browsers!**
