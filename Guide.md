@@ -9,6 +9,50 @@ A router that works on the server and the browser, designed specifically for
 - [Install](#install)
 - [Quick Start](#quick-start)
 - [Concepts](#concepts)
+  - [Server Only](#server-only)
+  - [Client Only](#client-only)
+  - [Client and Server](#client-and-server)
+- [Route Parameters](#route-parameters)
+- [Rendering Templates](#rendering-templates)
+- [Rendering Templates with Data](#rendering-templates-with-data)
+- [Layouts](#layouts)
+  - [Rendering Templates into Regions with JavaScript](#rendering-templates-into-regions-with-javascript)
+  - [Setting Region Data Contexts](#setting-region-data-contexts)
+  - [Rendering Templates into Regions using contentFor](#rendering-templates-into-regions-using-contentfor)
+- [Client Navigation](#client-navigation)
+  - [Using Links](#using-links)
+  - [Using JavaScript](#using-javascript)
+  - [Using Redirects](#using-redirects)
+  - [Using Links to Server Routes](#using-links-to-server-routes)
+- [Named Routes](#named-routes)
+- [Path and Link Template Helpers](#path-and-link-template-helpers)
+  - [pathFor](#pathfor)
+  - [urlFor](#urlFor)
+  - [linkTo](#linkTo)
+- [Route Options](#route-options)
+  - [Route Specific Options](#route-specific-options)
+  - [Global Default Options](#global-default-options)
+- [Waiting and the Waitlist](#waiting-and-the-waitlist)
+- [Server Routing](#server-routing)
+  - [Creating Routes](#creating-routes)
+  - [Restful Routes](#restful-routes)
+  - [404s and Client vs Server Routes](#404s-and-client-vs-server-routes)
+  - [Server Middleware and Connect](#server-middleware-and-connect)
+- [Plugins](#plugins)
+  - [Creating Plugins](#creating-plugins)
+- [Hooks](#hooks)
+  - [Using Hooks](#using-hooks)
+  - [Applying Hooks to Specific Routes](#applying-hooks-to-specific-routes)
+  - [Using the Iron.Router.hooks Namespace](#using-the-iron-router-hooks-namespace)
+  - [Available Hook Methods](#available-hook-methods)
+- [Route Controllers](#route-controllers)
+  - [Creating Route Controllers](#creating-route-controllers) 
+  - [Inheriting from Route Controllers](#inheriting-from-route-controllers) 
+  - [Accessing the Current Route Controller](#accessing-the-current-route-controller)
+  - [Setting Reactive Variables](#setting-reactive-variables)
+  - [Getting Reactive Variables](#getting-reactive-variables)
+- [Custom Router Rendering](#custom-router-rendering)
+- [Legacy Browser Support](#legacy-browser-support)
 
 ## About
 Iron.Router is the most popular routing package for Meteor. Its job is to let
@@ -65,19 +109,19 @@ The `where: 'server'` option tells the Router this is a server side route.
 
 ## Concepts
 
-### Server only
+### Server Only
 In a typical Web app, you make an http request to a server at a particular url,
 like "/items/5", and a router on the server decides which function to invoke for
 that particular route. The function will most likely send some html back to the
 browser and close the connection.
 
-### Client only
+### Client Only
 In some more modern Web apps you'll use a "client side" router like pagejs or
 Backbone router. These routers run in the browser, and let you navigate around
 an application without making trips to the server by taking advantage of browser
 HTML5 features like pushState or url hash fragments. 
 
-### Client and server
+### Client and Server
 Iron.Router runs on the client *and* the server. You can define a route that
 only should run on the server, or a route that should only run on the client.
 Most of the time you'll create routes on the client. This makes your app really
@@ -934,19 +978,6 @@ Iron.Router.hooks.customPackageHook = function () {
 
 Router.onBeforeAction('customPackageHook');
 ```
-
-### Applying a Hook to a Specific Route
-You can apply hooks to a specific route by providing it as an option when
-creating the route.
-
-```javascript
-Router.route('/admin', function () {
-  this.render('AdminPage');
-}, {
-  onBeforeAction: myAdminHookFunction
-});
-```
-
 ### Available Hook Methods
 * **onRun**: Called when the route is first run. It is not called again if the
   route reruns because of a computation invalidation.
@@ -984,7 +1015,7 @@ benefits:
   RouteController files instead of putting all of your complex business logic
   into one big route file.
 
-### Creating
+### Creating Route Controllers
 You can create a custom `RouteController` like this:
 
 ```javascript
@@ -1037,7 +1068,7 @@ options defined on the `Route` and some options defined on the
 2. Route
 3. Router
 
-### Inheriting
+### Inheriting from Route Controllers
 RouteControllers can inherit from other RouteControllers. This enables some
 interesting organization schemes for your application.
 
@@ -1077,7 +1108,7 @@ PostController = ApplicationController.extend({
 control file load order. You need to make sure parent RouteControllers are
 evaluated before child RouteControllers.*
 
-### Accessing the Current RouteController
+### Accessing the Current Route Controller
 There are two ways to access the current `RouteController`.
 
 If you're on the client, you can use the `Router.current()` method. This will
