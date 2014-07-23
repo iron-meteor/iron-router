@@ -596,6 +596,7 @@ So far you've seen a few options you can provide to routes like the `name`
 option. There are a few other options and several ways to provide options to
 routes.
 
+### Route Specific Options
 In this example we'll omit the route function and just provide an options
 object. The options object will explain each of the possible options.
 
@@ -665,7 +666,81 @@ Router.route('/post/:_id', {
 });
 ```
 
-## Waiting on Subscriptions
+### Global Default Options
+You can set any of the above options on the Router itself. These become default
+options for all of our routes. To set default Router options use the `configure`
+method.
+
+```javascript
+Router.configure({
+  layoutTemplate: 'ApplicationLayout',
+
+  template: 'DefaultTemplate'
+
+  // .
+  // .
+  // .
+});
+```
+
+Options declared on the route will override these default Router options.
+
+## Waiting and the Waitlist
+Sometimes you want to wait on one or more subscriptions to be ready, or maybe on
+the result of some other action before rendering the main template. For example,
+you might want to show a loading template while waiting for subscription data.
+
+To do this you can use something called a `Waitlist`. The waitlist is ready when
+all items in the list are ready. We can add items to the waitlist in any of our
+route functions like this:
+
+```javascript
+Router.route('/post/:_id', function () {
+  this.wait(function () { return true; });
+  this.wait(function () { return false; });
+  this.wait(Meteor.subscribe('post', this.params._id));
+});
+```
+
+We can check whether all the items in the waitlist are ready by calling the
+`ready` method.
+
+```javascript
+Router.route('/post/:_id', function () {
+  this.wait(function () { return true; });
+  this.wait(function () { return false; });
+  this.wait(Meteor.subscribe('post', this.params._id));
+
+  if (this.ready()) {
+    // all items in the list are "ready" which means the functions returned true
+    // or when we called the ready() functions, they returned true (i.e. for
+    // subscriptions)
+  }
+});
+```
+
+One of the benefits of using the waitlist is that plugins and hooks can make use
+of this `ready` state to provide custom behaviors. But we want the `Waitlist` to
+be populated by the time these plugins and hooks run. To do that, we can use a
+special option on our route called `waitOn`. Whatever is returned from this
+function automatically gets added to the `Waitlist`. And the `waitOn` function
+gets called before anything else.
+
+```javascript
+Router.route('/post/:_id', {
+  waitOn: function () {
+    // return one handle, a function, or an array
+    return Meteor.subscribe('post', this.params._id);
+  },
+
+  action: function () {
+    if (this.ready())
+      this.render();
+    else
+      this.render('Loading');
+  }
+});
+```
 
 ## Server Routing
 
