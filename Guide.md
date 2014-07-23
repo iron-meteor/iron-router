@@ -665,6 +665,22 @@ Router.use(function logHttpRequests () {
 ```
 
 ## Hooks
+A hook is just a function that runs at a particular time. Hooks provide a way to
+plug into the process of running a route, typically to customize rendering
+behavior or perform some business logic. For example, you may want to only
+render your page if the user is logged in, otherwise you want to show them a
+login template.
+
+There are a few hooks you can use.
+
+### onRun
+
+### onBeforeAction
+
+### onAfterAction
+
+### onStop
+
 
 ## Plugins
 
