@@ -590,6 +590,7 @@ The expression above will be transformed into html that looks like this:
   </span>
 </a>
 ```
+## Waiting on Subscriptions
 
 ## Server Routing
 
@@ -664,29 +665,165 @@ Router.use(function logHttpRequests () {
 }, {where: 'server'});
 ```
 
-## Hooks
-A hook is just a function that runs at a particular time. Hooks provide a way to
-plug into the process of running a route, typically to customize rendering
-behavior or perform some business logic. For example, you may want to only
-render your page if the user is logged in, otherwise you want to show them a
-login template.
-
-There are a few hooks you can use.
-
-### onRun
-
-### onBeforeAction
-
-### onAfterAction
-
-### onStop
-
-
 ## Plugins
+Plugins are a way to reuse functionality in your router, either that you've
+built for your own applications, or from other package authors. There's even two
+built-in plugins called "loading" and "dataNotFound".
+
+To use a plugin just call the `plugin` method of Router and pass the name of the
+plugin and any options for the plugin.
+
+```javascript
+Router.plugin('loading', {loadingTemplate: 'Loading'});
+```
+
+This out-of-box plugin will automatically render the template named "Loading" if
+the route's data is not ready (i.e. `this.ready() == false`).
+
+```javascript
+Router.plugin('dataNotFound', {dataNotFoundTemplate: 'NotFound'});
+
+Router.route('/post/:_id', {
+  data: function () {
+    // if this returns a falsy value like null, the NotFound template will
+    // render instead of our Post template.
+    return Posts.findOne({_id: this.params._id});
+  }
+});
+```
+
+This plugin will render the "NotFound" template if your data function returns a
+falsy value like null or false.
+
+### Creating Plugins
+To create a plugin just put your function on the `Iron.Router.plugins` object
+like this:
+
+```javascript
+Iron.Router.plugins.loading = function (router, options) {
+  // this loading plugin just creates an onBeforeAction hook
+  router.onBeforeAction('loading', options);
+};
+```
+The plugin function will get called with the router instance and any options the
+user passed.
+
+*Package authors are encouraged to create new plugins!*
+
+## Hooks
+
+### Using Hooks
+A hook is just a function. Hooks provide a way to plug into the process of
+running a route, typically to customize rendering behavior or perform some
+business logic.
+
+In this example, our goal is to only render the template and regions for a route
+if the user is logged in. We'll add a hook function using the `onBeforeAction`
+method to tell the router we want this function to run before our route
+function, or the "action" function.
+
+```javascript
+Router.onBeforeAction(function () {
+  // all properties available in the route function
+  // are also available here such as this.params
+
+  if (!Meteor.user()) {
+    // if the user is not logged in, render the Login template
+    this.render('Login');
+  } else {
+    // otherwise don't hold up the rest of hooks or our route/action function
+    from running
+    this.next();
+  }
+});
+```
+
+Now let's say we have a route defined like this:
+
+```javascript
+Router.route('/admin', function () {
+  this.render('AdminPage');
+});
+```
+
+Our onBeforeAction hook function will run before our route function when the
+user navigates to "/admin". If the user is not logged in, the route function
+will never get called and the `AdminPage` will not render to the page.
+
+Hook functions and all functions that get run when dispatching to a route are
+run in a **reactive computation**: they will rerun if any reactive data sources
+invalidate the computation. In the above example, if `Meteor.user()` changes the
+entire set of route functions will be run again.
+
+### Applying Hooks to Specific Routes
+You can apply a hook to a specific route by passing an `except` or `only` option
+to the respective hook function.
+
+```javascript
+Router.onBeforeAction(myAdminHookFunction, {
+  only: ['admin']
+  // or except: ['routeOne', 'routeTwo']
+});
+```
+
+In the above example, the myAdminHookFunction will only get applied to a route
+named 'admin.'
+
+### Using the Iron.Router.hooks Namespace
+Package authors can add hook functions to `Iron.Router.hooks` and users can
+reference those hooks by string name.
+
+```javascript
+Iron.Router.hooks.customPackageHook = function () {
+  console.log('hi');
+  this.next();
+};
+
+Router.onBeforeAction('customPackageHook');
+```
+
+### Applying a Hook to a Specific Route
+You can apply hooks to a specific route by providing it as an option when
+creating the route.
+
+```javascript
+Router.route('/admin', function () {
+  this.render('AdminPage');
+}, {
+  onBeforeAction: myAdminHookFunction
+});
+```
+
+### Available Hook Methods
+* **onRun**: Called when the route is first run. It is not called again if the
+  route reruns because of a computation invalidation.
+
+* **onRerun**: Called if the route reruns because its computation is
+  invalidated.
+
+* **onBeforeAction**: Called before the route or "action" function is run. These
+  hooks behave specially. If you want to continue calling the next function you
+  *must* call `this.next()`. If you don't, now downstream onBeforeAction hook
+  functions will run, and your route function will not run either.
+
+* **onAfterAction**: Called after your route/action function has run or had a
+  chance to run. These hooks behave like normal hooks and you don't need to call
+  `this.next()` to move from one to the next.
+
+* **onStop**: Called when the route is stopped, typically right before a new
+  route is run.
 
 ## Route Controllers
 
-### State with get/set and UI.controller();
+### thisArg
+
+### Inheritance
+
+### Properties
+
+### State with get/set
+
+### UI.controller();
 
 ## Legacy Browser Support
 
