@@ -49,8 +49,8 @@ A router that works on the server and the browser, designed specifically for
   - [Creating Route Controllers](#creating-route-controllers) 
   - [Inheriting from Route Controllers](#inheriting-from-route-controllers) 
   - [Accessing the Current Route Controller](#accessing-the-current-route-controller)
-  - [Setting Reactive Variables](#setting-reactive-variables)
-  - [Getting Reactive Variables](#getting-reactive-variables)
+  - [Setting Reactive State Variables](#setting-reactive-state-variables)
+  - [Getting Reactive State Variables](#getting-reactive-state-variables)
 - [Custom Router Rendering](#custom-router-rendering)
 - [Legacy Browser Support](#legacy-browser-support)
 
