@@ -134,6 +134,12 @@ client route. It also means that on the server, if there is no client route
 defined, we can send a 404 response to the client instead of loading up the
 Meteor application.
 
+### Reactivity
+Your route functions and most hooks are run in a reactive computation. This
+means they will rerun automatically if a reactive data source changes. For
+example, if you call `Meteor.user()` inside of your route function, your route
+function will rerun each time the value of `Meteor.user()` changes.
+
 ## Route Parameters
 
 Routes can have variable parameters. For example, you can create one route to
@@ -552,7 +558,7 @@ Now that we're using named routes in `Router.go` you can also pass a parameters
 object, query and hash fragment options.
 
 ```javascript
-Router.go('post.show', {_id: 1}, {query: 'q=s', frag='hashFrag'});
+Router.go('post.show', {_id: 1}, {query: 'q=s', frag: 'hashFrag'});
 ```
 
 The above JavaScript will navigate to this url:
@@ -571,7 +577,7 @@ this:
 
 ```html
 {{#with post}}
-  <a href="{{pathFor 'post.show'}}">Post Show</a>
+  <a href="{{pathFor route='post.show'}}">Post Show</a>
 {{/with}}
 ```
 
@@ -584,7 +590,7 @@ Assuming we have a post with an id of "1", the above snippet is equivalent to:
 We can pass `data`, `query` and `hash` options to the pathFor helper.
 
 ```html
-<a href="{{pathFor 'post.show' data=getPost query='q=s' hash='frag'}}">Post Show</a>
+<a href="{{pathFor route='post.show' data=getPost query='q=s' hash='frag'}}">Post Show</a>
 ```
 
 The data object will be interpolated onto the route parameters. The query and
