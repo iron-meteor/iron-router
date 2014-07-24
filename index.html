@@ -38,13 +38,52 @@
 <a href="https://github.com/meteor/meteor">Meteor</a>.</p>
 
 <h2>
+<a name="quick-start" class="anchor" href="#quick-start"><span class="octicon octicon-link"></span></a>Quick Start</h2>
+
+<p>You can install iron:router using Meteor's package management system:</p>
+
+<div class="highlight highlight-bash"><pre>&gt; meteor add iron:router
+</pre></div>
+
+<p>To update iron:router to the latest version you can use the meteor update
+command:</p>
+
+<div class="highlight highlight-bash"><pre>&gt; meteor update iron:router
+</pre></div>
+<p>Start by creating a route in your JavaScript file. By default, routes are
+created for the client and will run in the browser.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'/'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">'Home'</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>When the user navigates to the url "/", the route above will render the template
+named "Home" onto the page.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'/items'</span><span class="p">);</span>
+</pre></div>
+
+<p>This second route will automatically render a template named "Items" or "items"
+to the page. In simple cases like this, you don't even need to provide a route
+function.</p>
+
+<p>So far, we've only created routes that will be run directly in the browser. But
+we can also create server routes. </p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'/item'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">req</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">request</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">res</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">response</span><span class="p">;</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="s1">'hello from the server\n'</span><span class="p">);</span>
+<span class="p">},</span> <span class="p">{</span><span class="nx">where</span><span class="o">:</span> <span class="s1">'server'</span><span class="p">});</span>
+</pre></div>
+
+<p>The <code>where: 'server'</code> option tells the Router this is a server side route.</p>
+
+<h2>
 <a name="table-of-contents" class="anchor" href="#table-of-contents"><span class="octicon octicon-link"></span></a>Table of Contents</h2>
 
 <ul>
-<li><a href="#about">About</a></li>
-<li><a href="#install">Install</a></li>
-<li><a href="#quick-start">Quick Start</a></li>
-<li>
 <a href="#concepts">Concepts</a>
 
 <ul>
@@ -136,58 +175,7 @@
 </li>
 <li><a href="#custom-router-rendering">Custom Router Rendering</a></li>
 <li><a href="#legacy-browser-support">Legacy Browser Support</a></li>
-</ul><h2>
-<a name="about" class="anchor" href="#about"><span class="octicon octicon-link"></span></a>About</h2>
-
-<p>Iron.Router is the most popular routing package for Meteor. Its job is to let
-you organize your application by urls.</p>
-
-<h2>
-<a name="install" class="anchor" href="#install"><span class="octicon octicon-link"></span></a>Install</h2>
-
-<p>You can install iron:router using Meteor's package management system:</p>
-
-<div class="highlight highlight-bash"><pre>&gt; meteor add iron:router
-</pre></div>
-
-<p>To update iron:router to the latest version you can use the meteor update
-command:</p>
-
-<div class="highlight highlight-bash"><pre>&gt; meteor update iron:router
-</pre></div>
-
-<h2>
-<a name="quick-start" class="anchor" href="#quick-start"><span class="octicon octicon-link"></span></a>Quick Start</h2>
-
-<p>Start by creating a route in your JavaScript file. By default, routes are
-created for the client and will run in the browser.</p>
-
-<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'/'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="k">this</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">'Home'</span><span class="p">);</span>
-<span class="p">});</span>
-</pre></div>
-
-<p>When the user navigates to the url "/", the route above will render the template
-named "Home" onto the page.</p>
-
-<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'/items'</span><span class="p">);</span>
-</pre></div>
-
-<p>This second route will automatically render a template named "Items" or "items"
-to the page. In simple cases like this, you don't even need to provide a route
-function.</p>
-
-<p>So far, we've only created routes that will be run directly in the browser. But
-we can also create server routes. </p>
-
-<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'/item'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="kd">var</span> <span class="nx">req</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">request</span><span class="p">;</span>
-  <span class="kd">var</span> <span class="nx">res</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">response</span><span class="p">;</span>
-  <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="s1">'hello from the server\n'</span><span class="p">);</span>
-<span class="p">},</span> <span class="p">{</span><span class="nx">where</span><span class="o">:</span> <span class="s1">'server'</span><span class="p">});</span>
-</pre></div>
-
-<p>The <code>where: 'server'</code> option tells the Router this is a server side route.</p>
+</ul>
 
 <h2>
 <a name="concepts" class="anchor" href="#concepts"><span class="octicon octicon-link"></span></a>Concepts</h2>
