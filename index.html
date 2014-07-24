@@ -130,8 +130,8 @@
 <li>
 <a href="#inheriting-from-route-controllers">Inheriting from Route Controllers</a> </li>
 <li><a href="#accessing-the-current-route-controller">Accessing the Current Route Controller</a></li>
-<li><a href="#setting-reactive-variables">Setting Reactive Variables</a></li>
-<li><a href="#getting-reactive-variables">Getting Reactive Variables</a></li>
+<li><a href="#setting-reactive-state-variables">Setting Reactive State Variables</a></li>
+<li><a href="#getting-reactive-state-variables">Getting Reactive State Variables</a></li>
 </ul>
 </li>
 <li><a href="#custom-router-rendering">Custom Router Rendering</a></li>
@@ -222,6 +222,14 @@ you can click a link that takes you to a server route, or it might take you to a
 client route. It also means that on the server, if there is no client route
 defined, we can send a 404 response to the client instead of loading up the
 Meteor application.</p>
+
+<h3>
+<a name="reactivity" class="anchor" href="#reactivity"><span class="octicon octicon-link"></span></a>Reactivity</h3>
+
+<p>Your route functions and most hooks are run in a reactive computation. This
+means they will rerun automatically if a reactive data source changes. For
+example, if you call <code>Meteor.user()</code> inside of your route function, your route
+function will rerun each time the value of <code>Meteor.user()</code> changes.</p>
 
 <h2>
 <a name="route-parameters" class="anchor" href="#route-parameters"><span class="octicon octicon-link"></span></a>Route Parameters</h2>
@@ -642,7 +650,7 @@ like this:</p>
 <p>Now that we're using named routes in <code>Router.go</code> you can also pass a parameters
 object, query and hash fragment options.</p>
 
-<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">go</span><span class="p">(</span><span class="s1">'post.show'</span><span class="p">,</span> <span class="p">{</span><span class="nx">_id</span><span class="o">:</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="nx">query</span><span class="o">:</span> <span class="s1">'q=s'</span><span class="p">,</span> <span class="nx">frag</span><span class="o">=</span><span class="s1">'hashFrag'</span><span class="p">});</span>
+<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">go</span><span class="p">(</span><span class="s1">'post.show'</span><span class="p">,</span> <span class="p">{</span><span class="nx">_id</span><span class="o">:</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="nx">query</span><span class="o">:</span> <span class="s1">'q=s'</span><span class="p">,</span> <span class="nx">frag</span><span class="o">:</span> <span class="s1">'hashFrag'</span><span class="p">});</span>
 </pre></div>
 
 <p>The above JavaScript will navigate to this url:</p>
@@ -662,7 +670,7 @@ route. Given the <code>post.show</code> route we created above we can create a l
 this:</p>
 
 <div class="highlight highlight-html"><pre>{{#with post}}
-  <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"{{pathFor 'post.show'}}"</span><span class="nt">&gt;</span>Post Show<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"{{pathFor route='post.show'}}"</span><span class="nt">&gt;</span>Post Show<span class="nt">&lt;/a&gt;</span>
 {{/with}}
 </pre></div>
 
@@ -673,7 +681,7 @@ this:</p>
 
 <p>We can pass <code>data</code>, <code>query</code> and <code>hash</code> options to the pathFor helper.</p>
 
-<div class="highlight highlight-html"><pre><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"{{pathFor 'post.show' data=getPost query='q=s' hash='frag'}}"</span><span class="nt">&gt;</span>Post Show<span class="nt">&lt;/a&gt;</span>
+<div class="highlight highlight-html"><pre><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"{{pathFor route='post.show' data=getPost query='q=s' hash='frag'}}"</span><span class="nt">&gt;</span>Post Show<span class="nt">&lt;/a&gt;</span>
 </pre></div>
 
 <p>The data object will be interpolated onto the route parameters. The query and
