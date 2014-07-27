@@ -50,6 +50,7 @@ command:</p>
 
 <div class="highlight highlight-bash"><pre>&gt; meteor update iron:router
 </pre></div>
+
 <p>Start by creating a route in your JavaScript file. By default, routes are
 created for the client and will run in the browser.</p>
 
@@ -84,12 +85,14 @@ we can also create server routes. </p>
 <a name="table-of-contents" class="anchor" href="#table-of-contents"><span class="octicon octicon-link"></span></a>Table of Contents</h2>
 
 <ul>
+<li>
 <a href="#concepts">Concepts</a>
 
 <ul>
 <li><a href="#server-only">Server Only</a></li>
 <li><a href="#client-only">Client Only</a></li>
 <li><a href="#client-and-server">Client and Server</a></li>
+<li><a href="#reactivity">Reactivity</a></li>
 </ul>
 </li>
 <li><a href="#route-parameters">Route Parameters</a></li>
@@ -132,7 +135,14 @@ we can also create server routes. </p>
 <li><a href="#global-default-options">Global Default Options</a></li>
 </ul>
 </li>
-<li><a href="#waiting-and-the-waitlist">Waiting and the Waitlist</a></li>
+<li>
+<a href="#waiting-on-subscriptions">Waiting on Subscriptions</a>
+
+<ul>
+<li><a href="#wait-and-ready">Wait and Ready</a></li>
+<li><a href="#using-waiton">Using waitOn</a></li>
+</ul>
+</li>
 <li>
 <a href="#server-routing">Server Routing</a>
 
@@ -175,9 +185,7 @@ we can also create server routes. </p>
 </li>
 <li><a href="#custom-router-rendering">Custom Router Rendering</a></li>
 <li><a href="#legacy-browser-support">Legacy Browser Support</a></li>
-</ul>
-
-<h2>
+</ul><h2>
 <a name="concepts" class="anchor" href="#concepts"><span class="octicon octicon-link"></span></a>Concepts</h2>
 
 <h3>
@@ -821,45 +829,55 @@ method.</p>
 <p>Options declared on the route will override these default Router options.</p>
 
 <h2>
-<a name="waiting-and-the-waitlist" class="anchor" href="#waiting-and-the-waitlist"><span class="octicon octicon-link"></span></a>Waiting and the Waitlist</h2>
+<a name="waiting-on-subscriptions" class="anchor" href="#waiting-on-subscriptions"><span class="octicon octicon-link"></span></a>Waiting on Subscriptions</h2>
 
-<p>Sometimes you want to wait on one or more subscriptions to be ready, or maybe on
-the result of some other action before rendering the main template. For example,
-you might want to show a loading template while waiting for subscription data.</p>
+<p>Sometimes you want to wait on one or more subscriptions to be ready, or maybe
+on the result of some other action. For example, you might want to show a
+loading template while waiting for subscription data.</p>
 
-<p>To do this you can use something called a <code>Waitlist</code>. The wait list is ready when
-all items in the list are ready. We can add items to the wait list in any of our
-route functions like this:</p>
+<h3>
+<a name="wait-and-ready" class="anchor" href="#wait-and-ready"><span class="octicon octicon-link"></span></a>Wait and Ready</h3>
 
-<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'/post/:_id'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="k">this</span><span class="p">.</span><span class="nx">wait</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span> <span class="p">});</span>
-  <span class="k">this</span><span class="p">.</span><span class="nx">wait</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span> <span class="p">});</span>
-  <span class="k">this</span><span class="p">.</span><span class="nx">wait</span><span class="p">(</span><span class="nx">Meteor</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">'post'</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">_id</span><span class="p">));</span>
-<span class="p">});</span>
-</pre></div>
-
-<p>We can check whether all the items in the wait list are ready by calling the
-<code>ready</code> method.</p>
+<p>You can use the <code>wait</code> method to add a subscription to the wait list. When you
+call <code>this.ready()</code> it returns true if all items in the wait list are ready.</p>
 
 <div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'/post/:_id'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="k">this</span><span class="p">.</span><span class="nx">wait</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span> <span class="p">});</span>
-  <span class="k">this</span><span class="p">.</span><span class="nx">wait</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span> <span class="p">});</span>
-  <span class="k">this</span><span class="p">.</span><span class="nx">wait</span><span class="p">(</span><span class="nx">Meteor</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">'post'</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">_id</span><span class="p">));</span>
+  <span class="c1">// add the subscription handle to our waitlist</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">wait</span><span class="p">(</span><span class="nx">Meteor</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">'item'</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">_id</span><span class="p">));</span>
+
+  <span class="c1">// this.ready() is true if all items in the wait list are ready</span>
 
   <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">ready</span><span class="p">())</span> <span class="p">{</span>
-    <span class="c1">// all items in the list are "ready" which means the functions returned true</span>
-    <span class="c1">// or when we called the ready() functions, they returned true (i.e. for</span>
-    <span class="c1">// subscriptions)</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">render</span><span class="p">();</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">'Loading'</span><span class="p">);</span>
   <span class="p">}</span>
 <span class="p">});</span>
 </pre></div>
 
-<p>One of the benefits of using the wait list is that plugins and hooks can make use
-of this <code>ready</code> state to provide custom behaviors. But we want the <code>Waitlist</code> to
-be populated by the time these plugins and hooks run. To do that, we can use a
-special option on our route called <code>waitOn</code>. Whatever is returned from this
-function automatically gets added to the <code>Waitlist</code>. And the <code>waitOn</code> function
-gets called before anything else.</p>
+<p>An alternative way to write the above example is to call the <code>wait</code> method
+on the subscription directly. In this case you'll call <code>this.subscribe</code> instead
+of <code>Meteor.subscribe</code>.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'/post/:_id'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">'item'</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">_id</span><span class="p">).</span><span class="nx">wait</span><span class="p">();</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">ready</span><span class="p">())</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">render</span><span class="p">();</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">'Loading'</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+
+<h3>
+<a name="using-waiton" class="anchor" href="#using-waiton"><span class="octicon octicon-link"></span></a>Using waitOn</h3>
+
+<p>In the last two examples we populated the wait list in our route function. In
+many cases this is okay. But if you're using hooks like "loading" or
+"dataNotFound" you may need the wait list to be populated before those hooks
+run. In order to accomplish this you can use the <code>waitOn</code> option. Using <code>waitOn</code>
+makes sure the wait list is populated before anything else runs.</p>
 
 <div class="highlight highlight-javascript"><pre><span class="nx">Router</span><span class="p">.</span><span class="nx">route</span><span class="p">(</span><span class="s1">'/post/:_id'</span><span class="p">,</span> <span class="p">{</span>
   <span class="nx">waitOn</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
@@ -868,6 +886,7 @@ gets called before anything else.</p>
   <span class="p">},</span>
 
   <span class="nx">action</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// this.ready() is true if all items returned from waitOn are ready</span>
     <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">ready</span><span class="p">())</span>
       <span class="k">this</span><span class="p">.</span><span class="nx">render</span><span class="p">();</span>
     <span class="k">else</span>

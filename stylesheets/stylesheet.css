@@ -72,7 +72,6 @@ h1 {
 }
 
 h2 {
-  padding-top: 16pt;
   padding-bottom: 10px;
   font-size: 32px;
   background: url('../images/bg_hr.png') repeat-x bottom;
@@ -96,8 +95,6 @@ h6 {
 
 p {
   margin: 10px 0 15px 0;
-  padding-bottom: 10px;
-  line-height: 2;
 }
 
 footer p {
@@ -178,8 +175,6 @@ pre {
   padding: 10px;
   box-shadow: 0 0 10px rgba(0,0,0,.1);
   overflow: auto;
-  margin-bottom: 16pt;
-  margin-top: 16pt;
 }
 
 code {
@@ -202,6 +197,7 @@ blockquote {
 
 
 ul, ol, dl {
+  margin-bottom: 15px
 }
 
 ul {
@@ -268,7 +264,7 @@ Full-Width Styles
 
 .inner {
   position: relative;
-  max-width: 800px;
+  max-width: 640px;
   padding: 20px 10px;
   margin: 0 auto;
 }
