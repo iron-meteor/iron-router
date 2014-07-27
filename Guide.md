@@ -3,15 +3,60 @@
 A router that works on the server and the browser, designed specifically for
 [Meteor](https://github.com/meteor/meteor).
 
+## Quick Start
+You can install iron:router using Meteor's package management system:
+
+```bash
+> meteor add iron:router
+```
+
+To update iron:router to the latest version you can use the meteor update
+command:
+
+```bash
+> meteor update iron:router
+```
+
+Start by creating a route in your JavaScript file. By default, routes are
+created for the client and will run in the browser.
+
+```javascript
+Router.route('/', function () {
+  this.render('Home');
+});
+```
+
+When the user navigates to the url "/", the route above will render the template
+named "Home" onto the page.
+
+```javascript
+Router.route('/items');
+```
+
+This second route will automatically render a template named "Items" or "items"
+to the page. In simple cases like this, you don't even need to provide a route
+function.
+
+So far, we've only created routes that will be run directly in the browser. But
+we can also create server routes. 
+
+```javascript
+Router.route('/item', function () {
+  var req = this.request;
+  var res = this.response;
+  res.end('hello from the server\n');
+}, {where: 'server'});
+```
+
+The `where: 'server'` option tells the Router this is a server side route.
+
 ## Table of Contents
 
-- [About](#about)
-- [Install](#install)
-- [Quick Start](#quick-start)
 - [Concepts](#concepts)
   - [Server Only](#server-only)
   - [Client Only](#client-only)
   - [Client and Server](#client-and-server)
+  - [Reactivity](#reactivity)
 - [Route Parameters](#route-parameters)
 - [Rendering Templates](#rendering-templates)
 - [Rendering Templates with Data](#rendering-templates-with-data)
@@ -55,59 +100,6 @@ A router that works on the server and the browser, designed specifically for
   - [Getting Reactive State Variables](#getting-reactive-state-variables)
 - [Custom Router Rendering](#custom-router-rendering)
 - [Legacy Browser Support](#legacy-browser-support)
-
-## About
-Iron.Router is the most popular routing package for Meteor. Its job is to let
-you organize your application by urls.
-
-## Install
-You can install iron:router using Meteor's package management system:
-
-```bash
-> meteor add iron:router
-```
-
-To update iron:router to the latest version you can use the meteor update
-command:
-
-```bash
-> meteor update iron:router
-```
-
-## Quick Start
-
-Start by creating a route in your JavaScript file. By default, routes are
-created for the client and will run in the browser.
-
-```javascript
-Router.route('/', function () {
-  this.render('Home');
-});
-```
-
-When the user navigates to the url "/", the route above will render the template
-named "Home" onto the page.
-
-```javascript
-Router.route('/items');
-```
-
-This second route will automatically render a template named "Items" or "items"
-to the page. In simple cases like this, you don't even need to provide a route
-function.
-
-So far, we've only created routes that will be run directly in the browser. But
-we can also create server routes. 
-
-```javascript
-Router.route('/item', function () {
-  var req = this.request;
-  var res = this.response;
-  res.end('hello from the server\n');
-}, {where: 'server'});
-```
-
-The `where: 'server'` option tells the Router this is a server side route.
 
 ## Concepts
 
