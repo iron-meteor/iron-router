@@ -1,18 +1,75 @@
-## vNEXT
 
-## v0.7.2
-* Integrate iron-layout for new Blaze.View work
-* Only use one main computation in _run instead of one for each thing
-* Fix clearUnusedRegion bug
-* Fix ie9 omits leading slash in pathname on click handler
-* Dont call unnecessary stop() in client router when browsing away
-* Examples corrections
-
-Contributors:
-  Chris Mather
-  Dan Dascalescu
-  David Gomes
-  Tom Coleman
+v0.8.0 / 2014-07-29
+==================
+  * add new waitlist from refactor
+  * remove bad tests
+  * change version to 0.8.0
+  * add specific iron-layout version dependency in smart.json
+  * Merge branch 'bug/layout-rendering' into devel
+  * fix layout rendering bug with issue #724
+  * add version in package.js
+  * track current rendering transaction...
+  * When controller stops call endRendering to stop rendering transaction.
+  * add contributors to history file
+  * remove build status for now will bring back later
+  * update history
+  * Merge branch 'devel' into feature/iron-layout
+  * add history entry and fix package dep on iron-layout
+  * Merge pull request #712 from aramk/patch-1
+  * Used new method name in sample code.
+  * layout.endRendering() returns an array of keys now
+  * fix smart.json file.
+  * fix clearUnusedRegions bug and add waitOn test example
+  * wip - fix integrate iron-layout...
+  * Finish iron-layout integration.
+  * Make basic example a little more realistic.
+  * Make sure we clear unused regions if the before hook pauses.
+  * Added test and fix for #652
+  * fix: ie9 omits leading slash in pathname on click handler
+  * Added test to prove I was wrong in #689
+  * Added test case and fixed #676
+  * Don’t call unnecessary stop() in client router when browsing away.
+  * Update route_controller.js
+  * Add semicolon
+  * Update DOCS.md
+  * Update README.md
+  * Fix test to use newController vs legacy getController.
+  * Supress warnings during testing.
+  * Router.configure({supressWarnings: true}) prevents warnings.
+  * Correcting outdated examples in docs.md
+  * Get rid of `this.stop()` !!
+  * Style cleanup in server router.
+  * Fix findController and tests for Route.
+  * Fix findController method.
+  * Merge branch 'patch-1' of github.com:dandv/iron-router into dandv-patch-1
+  * Fix #562 - s/before/onBeforeAction/, same for after
+  * Update .gitignore to ignore smart.lock
+  * Delete smart.lock; Fixes #608
+  * Sorry I forgot I'm having commit access. oops.
+  * Dummy Commit
+  * Clean up location file whitespace.
+  * Refactor and clean up getController method on Route.
+  * Merge branch 'travis-tests' of github.com:mizzao/iron-router into mizzao-travis-tests
+  * Merge branch 'dev' of github.com:EventedMind/iron-router into dev
+  * Bump blaze-layout version and minor pr/607 adjustments.
+  * Set layout before each recomputed action; closes #600
+  * Fix up route error messages and url func.
+  * Remove erroneous executable permssion on js files.
+  * Bump blaze-layout version and minor pr/607 adjustments.
+  * Set layout before each recomputed action; closes #600
+  * Fix up route error messages and url func.
+  * Merge pull request #590 from dandv/patch-1
+  * Remove erroneous executable permssion on js files.
+  * enable automated testing on travis-ci.org
+  * Update History.md
+  * Update README.md
+  * Mention that Router.current() is reactive
+  * Integrate iron-layout for new Blaze.View work
+  * Only use one main computation in _run instead of one for each thing
+  * Fix clearUnusedRegion bug
+  * Fix ie9 omits leading slash in pathname on click handler
+  * Dont call unnecessary stop() in client router when browsing away
+  * Examples corrections
 
 ## v0.7.1
 * Fix dataNotFoundHook
