@@ -3,7 +3,7 @@
   "description": "Routing specifically designed for Meteor",
   "homepage": "https://github.com/EventedMind/iron-router",
   "author": "Chris Mather (https://github.com/cmather), Tom Coleman (https://github.com/tmeasday)",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "git": "https://github.com/EventedMind/iron-router.git",
   "packages": {
     "iron-layout": "0.2.0"
