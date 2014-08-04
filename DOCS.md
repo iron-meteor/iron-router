@@ -837,6 +837,42 @@ Router.map(function () {
 });
 ```
 
+You can define a client and a server route for the same path. The server route will always
+be evaluated first. If the server route decides this route should be handled by the client
+route, use `this.next()` inside server routes to yield to the client route.
+
+```javascript
+// Important: This RouteController should not be defined on the client
+if (Meteor.isServer) {
+  Router.route('route', {
+    path: '/document/:_id',
+    where: 'server',
+    action: function() {
+      // For example, you could check if this is the Facebook web crawler, and serve
+      // a page rendered on the server without using spiderable.
+      if (/facebookexternalhi/i.test(this.request.headers['user-agent'])) {
+        // Write some custom HTML
+        this.response.end('<html><head><title>Document</title></head><body></body></html>');
+      } else {
+        // Yield to the client code. This asks Meteor to take over and do a conventional
+        // page load.
+        this.next();
+      }
+    }
+  });
+}
+
+// Define a conventional route on the client.
+Router.route('route', {
+  path: '/document/:_id',
+  where: 'client',
+  template: 'documentView',
+  action: function() {
+    this.render();
+  }
+});
+```
+
 ## Route Controllers
 Most of the time, you can define how you want your routes to behave by simply
 providing configuration options to the route. But as your application gets
