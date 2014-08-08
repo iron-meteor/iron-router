@@ -69,6 +69,12 @@ Tinytest.add('WaitList - self referential', function (test) {
     });
   });
   
+  Deps.flush();
   if (times > 2)
-    test.fail({message: "Autorun ran too many times"});
+    return test.fail({message: "Autorun ran too many times"});
+  
+  handle.set(true);
+  Deps.flush();
+  if (times > 2)
+    return test.fail({message: "Autorun ran too many times"});
 });
