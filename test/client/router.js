@@ -141,3 +141,32 @@ Tinytest.add('ClientRouter - go to server routes', function (test) {
   router.go('/two');
   test.equal(handledServerRoutes, 2);
 });
+
+// See https://github.com/EventedMind/iron-router/issues/753
+Tinytest.add('ClientRouter - redirection maintains reactivity', function(test) {
+  var router = mockedRouter();
+  
+  var onBeforeActionRan = 0, dep = new Deps.Dependency;
+  router.map(function() {
+    this.route('one', { onBeforeAction: function() { 
+      // XXX: @cmather -- can't do this because client_router calls out to 
+      //   `Router` -- surely a controller should be using `this.router`?
+      // this.redirect('two');
+      
+      router.go('two');
+    }});
+    this.route('two', { onBeforeAction: function() {
+      onBeforeActionRan += 1;
+      dep.depend();
+    }});
+  });
+  
+  router.start();
+  router.go('one');
+  Deps.flush();
+  test.equal(onBeforeActionRan, 1, "onBeforeAction not run for redirected route");
+  
+  dep.changed();
+  Deps.flush();
+  test.equal(onBeforeActionRan, 2, "onBeforeAction not run again for redirected route");
+});
