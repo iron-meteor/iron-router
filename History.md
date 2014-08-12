@@ -1,3 +1,8 @@
+
+n.n.n / 2014-08-12
+==================
+
+  * remove deprecate method from utils since we have it in core
 v0.8.1 / 2014-07-29
   * fix subscribe(...).wait() bug
 
