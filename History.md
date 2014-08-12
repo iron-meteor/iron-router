@@ -1,4 +1,11 @@
-v0.8.1 / 2014-07-29
+v0.9.0 / 2014-08-12
+==================
+  * update for new package system
+  * throw error for cmather:iron-router and use iron:router instead
+  * remove deprecate method from utils since we have it in core
+
+v0.8.2 / 2014-07-29
+==================
   * fix subscribe(...).wait() bug
 
 v0.8.0 / 2014-07-29
