@@ -1,6 +1,6 @@
 Package.describe({
   summary: 'Routing specifically designed for Meteor',
-  version: '0.9.0'
+  version: '0.9.1'
 });
 
 Package.on_use(function (api) {
