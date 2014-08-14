@@ -54,14 +54,14 @@ Tinytest.add('WaitList - self referential', function (test) {
   var list = new WaitList;
   var handle = new ReadyHandle;
   
-  var times = 0;
+  var times = 0, ready;
   var c = Deps.autorun(function() {
     times += 1;
-    if (times > 2)
+    if (times > 10)
       return;
     
     // set up dep
-    list.ready();
+    ready = list.ready();
     
     // add to dep
     list.wait(function() {
@@ -70,11 +70,46 @@ Tinytest.add('WaitList - self referential', function (test) {
   });
   
   Deps.flush();
+  test.equal(ready, false);
   if (times > 2)
     return test.fail({message: "Autorun ran too many times"});
   
   handle.set(true);
   Deps.flush();
-  if (times > 2)
+  test.equal(ready, true);
+  if (times > 3)
     return test.fail({message: "Autorun ran too many times"});
 });
+
+Tinytest.add('WaitList - remains true with unrelated change', function (test) {
+  var list = new WaitList;
+  var handle = new ReadyHandle;
+  var dep = new Deps.Dependency;
+  Deps.autorun(function() {
+    list.wait(function() { return handle.ready(); });
+    
+    // add other random dep
+    dep.depend();
+  });
+  
+  // this can fail if we aren't careful about keeping ready
+  // correct within a flush cycle
+  var ready;
+  Deps.autorun(function() {
+    ready = list.ready();
+  })
+  
+  Deps.flush();
+  test.equal(ready, false);
+  test.equal(list.ready(), false);
+  
+  // The other random dep means the outer computation invalidates
+  // before the inner computation has a chance to see the new handle val
+  dep.changed();
+  handle.set(true);
+  Deps.flush();
+  test.equal(ready, true);
+  test.equal(list.ready(), true);
+});
+
+
