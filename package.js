@@ -16,20 +16,20 @@ Package.on_use(function (api) {
   api.use('meteor')
 
   // main namespace and utils
-  api.use('iron-core');
-  api.imply('iron-core');
+  api.use('iron:core');
+  api.imply('iron:core');
 
   // connect like middleware stack for client/server
-  api.use('iron-middleware-stack');
+  api.use('iron:middleware-stack');
 
   // client and server side url utilities and compiling
-  api.use('iron-url');
+  api.use('iron:url');
 
   // for reactive urls and pushState in the browser
-  api.use('iron-location');
+  api.use('iron:location');
 
   // for RouteController which inherits from this
-  api.use('iron-controller');
+  api.use('iron:controller');
 
   api.add_files('lib/current_options.js');
   api.add_files('lib/http_methods.js');
