@@ -68,7 +68,7 @@ Tinytest.add('Client RouteController - data', function (test) {
   test.equal(value, 'value', "couldn't get value from data value");
 
   value = cWithNoData.data();
-  test.isNull(value, "controller with no data should give null value");
+  test.isUndefined(value, "controller with no data should be undefined");
 });
 
 Tinytest.add('Client RouteController - onRun only run once', function (test) {
@@ -79,13 +79,11 @@ Tinytest.add('Client RouteController - onRun only run once', function (test) {
     }
   });
 
-  var comp = Deps.autorun(function () {
-    controller._run();
-  });
+  controller._run();
 
   test.equal(count, 1, 'onRun called once');
 
-  comp.invalidate();
+  controller._computation.invalidate();
   Deps.flush();
   test.equal(count, 1, 'onRun only run the first time');
 });
