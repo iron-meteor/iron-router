@@ -50,7 +50,7 @@ Tinytest.add('WaitList - all', function (test) {
 });
 
 
-Tinytest.add('WaitList - self referential', function (test) {
+Tinytest.add('WaitList - infinite invalidation loop', function (test) {
   var list = new WaitList;
   var handle = new ReadyHandle;
   
@@ -60,10 +60,15 @@ Tinytest.add('WaitList - self referential', function (test) {
     if (times > 10)
       return;
     
-    // set up dep
+    // initial ready value is: true
+    // because there's no items in the list
     ready = list.ready();
     
-    // add to dep
+    // now add an item to the list that invalidates
+    // the outer computation because the list ready
+    // state is now: false
+    // goal is to just rerun the outer function once, not
+    // infinitely
     list.wait(function() {
       return handle.ready();
     });
@@ -81,11 +86,12 @@ Tinytest.add('WaitList - self referential', function (test) {
     return test.fail({message: "Autorun ran too many times"});
 });
 
-Tinytest.add('WaitList - remains true with unrelated change', function (test) {
+Tinytest.add('WaitList - ready state must always be accurate', function (test) {
   var list = new WaitList;
   var handle = new ReadyHandle;
   var dep = new Deps.Dependency;
-  Deps.autorun(function() {
+
+  var outerComputation = Deps.autorun(function() {
     list.wait(function() { return handle.ready(); });
     
     // add other random dep
@@ -95,21 +101,34 @@ Tinytest.add('WaitList - remains true with unrelated change', function (test) {
   // this can fail if we aren't careful about keeping ready
   // correct within a flush cycle
   var ready;
-  Deps.autorun(function() {
+  var readyComputation = Deps.autorun(function() {
     ready = list.ready();
   })
   
-  Deps.flush();
-  test.equal(ready, false);
-  test.equal(list.ready(), false);
+  test.equal(ready, false, "initial ready state is false");
+  test.equal(list.ready(), false, "initial ready state is false when calling list.ready()");
   
-  // The other random dep means the outer computation invalidates
-  // before the inner computation has a chance to see the new handle val
+  // invalidate outerComputation and schedule a recompute
+  // on next flush
   dep.changed();
+
+  // set the handle value to true
   handle.set(true);
+
+  // force a recompute now instead of on the next tick
+  // what should happen is that the inner computation is removed
+  // from the list and the overall ready count decremented by one.
+  // then when the item is added again its value is true so the ready
+  // count should remain 0.
   Deps.flush();
-  test.equal(ready, true);
-  test.equal(list.ready(), true);
+
+  // after the flush the ready computation reruns, updating the value.
+
+  Deps.afterFlush(function () {
+    test.equal(ready, true, "ready computation should rerun on next flush");
+  });
+
+  test.equal(list.ready(), true, "list.ready() should be up to date");
 });
 
 

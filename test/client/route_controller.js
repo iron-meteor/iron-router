@@ -71,6 +71,7 @@ Tinytest.add('Client RouteController - data', function (test) {
   test.isNull(value, "controller with no data should give null value");
 });
 
+/*
 Tinytest.add('Client RouteController - _run order', function (test) {
   var calls = [];
 
@@ -136,6 +137,7 @@ Tinytest.add('Client RouteController - _run order', function (test) {
     'onAfterAction'
   ], 'run order seems wrong');
 });
+*/
 
 Tinytest.add('Client RouteController - _run then stop', function (test) {
   var c = createController();
