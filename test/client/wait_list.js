@@ -64,26 +64,15 @@ Tinytest.add('WaitList - infinite invalidation loop', function (test) {
     // because there's no items in the list
     ready = list.ready();
     
-    // now add an item to the list that invalidates
-    // the outer computation because the list ready
-    // state is now: false
-    // goal is to just rerun the outer function once, not
-    // infinitely
-    list.wait(function() {
-      return handle.ready();
+    
+    // this should throw an exception because it would cause an infinite
+    // loop.
+    test.throws(function () {
+      list.wait(function() {
+        return handle.ready();
+      });
     });
   });
-  
-  Deps.flush();
-  test.equal(ready, false);
-  if (times > 2)
-    return test.fail({message: "Autorun ran too many times"});
-  
-  handle.set(true);
-  Deps.flush();
-  test.equal(ready, true);
-  if (times > 3)
-    return test.fail({message: "Autorun ran too many times"});
 });
 
 Tinytest.add('WaitList - ready state must always be accurate', function (test) {
