@@ -71,6 +71,25 @@ Tinytest.add('Client RouteController - data', function (test) {
   test.isNull(value, "controller with no data should give null value");
 });
 
+Tinytest.add('Client RouteController - onRun only run once', function (test) {
+  var count = 0;
+  var controller = createController({
+    onRun: function () {
+      count++;
+    }
+  });
+
+  var comp = Deps.autorun(function () {
+    controller._run();
+  });
+
+  test.equal(count, 1, 'onRun called once');
+
+  comp.invalidate();
+  Deps.flush();
+  test.equal(count, 1, 'onRun only run the first time');
+});
+
 /*
 Tinytest.add('Client RouteController - _run order', function (test) {
   var calls = [];
