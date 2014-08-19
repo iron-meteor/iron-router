@@ -5,7 +5,11 @@ A client and server side router designed specifically for Meteor.
 
 ## History
 
-**Latest Version:** 0.9.0
+**Latest Version:** 0.8.2
+
+**IMPORTANT:**
+*Do not install versions 0.9.0 or 0.9.1 from Atmosphere. These versions are intended for the new Meteor packaging system available in Meteor v0.9.0. iron-router 0.9.x was released by mistake to Atmosphere.*
+
 
 See the [History.md](History.md) file for changes (including breaking changes) across
 versions.
