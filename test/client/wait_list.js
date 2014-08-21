@@ -80,8 +80,10 @@ Tinytest.add('WaitList - ready state must always be accurate', function (test) {
   var handle = new ReadyHandle;
   var dep = new Deps.Dependency;
 
+  var wait = true;
   var outerComputation = Deps.autorun(function() {
-    list.wait(function() { return handle.ready(); });
+    if (wait)
+      list.wait(function() { return handle.ready(); });
     
     // add other random dep
     dep.depend();
@@ -111,13 +113,27 @@ Tinytest.add('WaitList - ready state must always be accurate', function (test) {
   // count should remain 0.
   Deps.flush();
 
-  // after the flush the ready computation reruns, updating the value.
+  test.equal(list.ready(), true, "list.ready() should be up to date");
+  
+  Deps.flush();
+  test.equal(ready, true, "ready computation should rerun on next flush");
 
-  Deps.afterFlush(function () {
-    test.equal(ready, true, "ready computation should rerun on next flush");
-  });
+  // now try it going false, but being removed
+  wait = false
+  dep.changed();
+  handle.set(false);
+
+  // force a recompute now instead of on the next tick
+  // what should happen is that the inner computation is removed
+  // from the list and the overall ready count decremented by one.
+  // then when the item is added again its value is true so the ready
+  // count should remain 0.
+  Deps.flush();
 
   test.equal(list.ready(), true, "list.ready() should be up to date");
+  
+  Deps.flush();
+  test.equal(ready, true, "ready computation should rerun on next flush");
 });
 
 
