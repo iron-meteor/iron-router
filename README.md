@@ -201,6 +201,9 @@ this.route('serverRoute', {
 })
 ```
 
+Note that server routes cannot take a "loading" template so you need to make sure your loading template is specified in a Meteor.isClient block.
+
+
 [Read more about server routes](DOCS.md#server-side-routing).
 
 #### Route Controllers
