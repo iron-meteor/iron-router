@@ -4,7 +4,7 @@ Package.describe({
 });
 
 Package.on_use(function (api) {
-  api.versionsFrom('METEOR-CORE@0.9.1');
+  api.versionsFrom('METEOR@0.9.1');
 
   api.use('reactive-dict', ['client', 'server']);
   api.use('deps', ['client', 'server']);
