@@ -20,7 +20,7 @@ Package.on_use(function (api) {
   api.use('blaze', 'client');
  
   // gives us dynamic layouts
-  api.use('iron:layout@0.3.0');
+  api.use('iron:layout@0.4.0-blaze-preview');
 
   // in case they have the old version that was
   // automigrated from atmosphere.
