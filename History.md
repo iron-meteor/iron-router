@@ -1,10 +1,11 @@
-
 v0.9.2 / 2014-08-27
 ==================
   * Bump iron:dynamic-template and iron:layout dependencies for Meteor 0.9.1 release
   * Fix #742 - https://github.com/EventedMind/iron-router/commit/69222246194fb630996fdb988335fed208e4caf4#commitcomment-7468636
   * Added another failing test case. For #742
   * Update README.md
+  * fix waitlist onInvalidate logic
+  * fix package.js to use METEOR vs METEOR-CORE in versionsFrom
 
 v0.9.1 / 2014-08-18
 =================
