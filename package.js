@@ -1,10 +1,11 @@
 Package.describe({
   summary: 'Routing specifically designed for Meteor',
-  version: '0.9.1.1-blaze-preview'
+  version: '0.9.2-rc0',
+  git: 'https://github.com/eventedmind/iron-router'
 });
 
 Package.on_use(function (api) {
-  api.versionsFrom('METEOR@0.9.0.1-blaze-preview');
+  api.versionsFrom('METEOR@0.9.1-rc1');
 
   api.use('reactive-dict', ['client', 'server']);
   api.use('deps', ['client', 'server']);
@@ -13,14 +14,11 @@ Package.on_use(function (api) {
   api.use('jquery', 'client');
   api.use('webapp', 'server');
 
-  // default ui manager
-  // use unordered: true becuase of circular dependency
-
   // for helpers
   api.use('blaze', 'client');
  
   // gives us dynamic layouts
-  api.use('iron:layout@0.4.0-blaze-preview');
+  api.use('iron:layout@0.4.0-rc0');
 
   // in case they have the old version that was
   // automigrated from atmosphere.
