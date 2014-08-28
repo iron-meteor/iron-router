@@ -1,10 +1,10 @@
 Package.describe({
   summary: 'Routing specifically designed for Meteor',
-  version: '0.9.2'
+  version: '0.9.1.1-blaze-preview'
 });
 
 Package.on_use(function (api) {
-  api.versionsFrom('METEOR@0.9.1');
+  api.versionsFrom('METEOR@0.9.0.1-blaze-preview');
 
   api.use('reactive-dict', ['client', 'server']);
   api.use('deps', ['client', 'server']);
