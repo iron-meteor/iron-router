@@ -10,7 +10,7 @@
     ],
     [
       "blaze",
-      "1.0.2"
+      "1.0.3"
     ],
     [
       "blaze-tools",
@@ -26,7 +26,7 @@
     ],
     [
       "deps",
-      "1.0.0"
+      "1.0.1"
     ],
     [
       "ejson",
@@ -54,7 +54,7 @@
     ],
     [
       "iron:controller",
-      "0.2.0"
+      "0.1.0"
     ],
     [
       "iron:core",
@@ -90,7 +90,7 @@
     ],
     [
       "livedata",
-      "1.0.4"
+      "1.0.7"
     ],
     [
       "logging",
@@ -110,7 +110,7 @@
     ],
     [
       "mongo-livedata",
-      "1.0.2"
+      "1.0.3"
     ],
     [
       "observe-sequence",
@@ -162,6 +162,6 @@
     ]
   ],
   "pluginDependencies": [],
-  "toolVersion": "meteor-tool@1.0.12",
+  "toolVersion": "meteor-tool@1.0.26",
   "format": "1.0"
 }
