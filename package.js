@@ -5,7 +5,7 @@ Package.describe({
 });
 
 Package.on_use(function (api) {
-  api.versionsFrom('METEOR@0.9.1-rc1');
+  api.versionsFrom('METEOR@0.9.1-rc2');
 
   api.use('reactive-dict', ['client', 'server']);
   api.use('deps', ['client', 'server']);
@@ -54,6 +54,8 @@ Package.on_use(function (api) {
 });
 
 Package.on_test(function (api) {
+  api.versionsFrom('METEOR@0.9.1-rc1');
+
   api.use('iron:router', ['client', 'server']);
   api.use('tinytest', ['client', 'server']);
   api.use('test-helpers', ['client', 'server']);
