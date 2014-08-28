@@ -10,7 +10,7 @@
     ],
     [
       "blaze",
-      "1.0.2"
+      "1.0.3"
     ],
     [
       "blaze-tools",
@@ -26,7 +26,7 @@
     ],
     [
       "deps",
-      "1.0.0"
+      "1.0.1"
     ],
     [
       "ejson",
@@ -58,11 +58,11 @@
     ],
     [
       "iron:dynamic-template",
-      "0.3.0"
+      "0.4.0"
     ],
     [
       "iron:layout",
-      "0.3.0"
+      "0.4.0"
     ],
     [
       "jquery",
@@ -74,7 +74,7 @@
     ],
     [
       "livedata",
-      "1.0.4"
+      "1.0.7"
     ],
     [
       "logging",
@@ -94,7 +94,7 @@
     ],
     [
       "mongo-livedata",
-      "1.0.2"
+      "1.0.3"
     ],
     [
       "observe-sequence",
@@ -110,6 +110,10 @@
     ],
     [
       "reactive-dict",
+      "1.0.0"
+    ],
+    [
+      "reactive-var",
       "1.0.0"
     ],
     [
@@ -146,6 +150,6 @@
     ]
   ],
   "pluginDependencies": [],
-  "toolVersion": "meteor-tool@1.0.12",
+  "toolVersion": "meteor-tool@CHECKOUT",
   "format": "1.0"
 }
