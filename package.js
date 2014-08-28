@@ -1,21 +1,23 @@
 Package.describe({
   summary: 'Routing specifically designed for Meteor',
-  version: '0.9.1'
+  version: '0.9.2'
 });
 
 Package.on_use(function (api) {
-  api.use('reactive-dict@1.0.0', ['client', 'server']);
-  api.use('deps@1.0.0', ['client', 'server']);
-  api.use('underscore@1.0.0', ['client', 'server']);
-  api.use('ejson@1.0.0', ['client', 'server']);
-  api.use('jquery@1.0.0', 'client');
-  api.use('webapp@1.0.0', 'server');
+  api.versionsFrom('METEOR-CORE@0.9.1');
+
+  api.use('reactive-dict', ['client', 'server']);
+  api.use('deps', ['client', 'server']);
+  api.use('underscore', ['client', 'server']);
+  api.use('ejson', ['client', 'server']);
+  api.use('jquery', 'client');
+  api.use('webapp', 'server');
 
   // default ui manager
   // use unordered: true becuase of circular dependency
 
   // for helpers
-  api.use('ui@1.0.0', 'client');
+  api.use('blaze', 'client');
  
   // gives us dynamic layouts
   api.use('iron:layout@0.3.0');
