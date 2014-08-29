@@ -10,7 +10,7 @@
     ],
     [
       "blaze",
-      "1.0.2"
+      "2.0.0-rc0"
     ],
     [
       "blaze-tools",
@@ -26,11 +26,11 @@
     ],
     [
       "deps",
-      "1.0.0"
+      "1.0.2-rc1"
     ],
     [
       "ejson",
-      "1.0.0"
+      "1.0.1-rc0"
     ],
     [
       "follower-livedata",
@@ -54,7 +54,7 @@
     ],
     [
       "iron:controller",
-      "0.2.0"
+      "0.4.0-rc0"
     ],
     [
       "iron:core",
@@ -62,23 +62,23 @@
     ],
     [
       "iron:dynamic-template",
-      "0.3.0"
+      "0.4.0-rc0"
     ],
     [
       "iron:layout",
-      "0.3.0"
+      "0.4.0-rc0"
     ],
     [
       "iron:location",
-      "0.1.0"
+      "0.4.0-rc0"
     ],
     [
       "iron:middleware-stack",
-      "0.1.0"
+      "0.4.0-rc0"
     ],
     [
       "iron:url",
-      "0.1.0"
+      "0.4.0-rc0"
     ],
     [
       "jquery",
@@ -90,7 +90,7 @@
     ],
     [
       "livedata",
-      "1.0.4"
+      "1.0.8-rc0"
     ],
     [
       "logging",
@@ -98,7 +98,7 @@
     ],
     [
       "meteor",
-      "1.0.2"
+      "1.0.3-rc0"
     ],
     [
       "minifiers",
@@ -106,15 +106,15 @@
     ],
     [
       "minimongo",
-      "1.0.1"
+      "1.0.2-rc0"
     ],
     [
       "mongo-livedata",
-      "1.0.2"
+      "1.0.4-rc0"
     ],
     [
       "observe-sequence",
-      "1.0.1"
+      "1.0.2-rc0"
     ],
     [
       "ordered-dict",
@@ -126,7 +126,11 @@
     ],
     [
       "reactive-dict",
-      "1.0.0"
+      "1.0.1-rc0"
+    ],
+    [
+      "reactive-var",
+      "1.0.1-rc0"
     ],
     [
       "retry",
@@ -138,19 +142,23 @@
     ],
     [
       "spacebars",
-      "1.0.0"
+      "1.0.1-rc0"
     ],
     [
       "spacebars-compiler",
-      "1.0.1"
+      "1.0.2-rc0"
     ],
     [
       "templating",
-      "1.0.4"
+      "1.0.5-rc0"
+    ],
+    [
+      "tracker",
+      "1.0.2-rc1"
     ],
     [
       "ui",
-      "1.0.0"
+      "1.0.1-rc0"
     ],
     [
       "underscore",
@@ -158,10 +166,10 @@
     ],
     [
       "webapp",
-      "1.0.2"
+      "1.0.3-rc0"
     ]
   ],
   "pluginDependencies": [],
-  "toolVersion": "meteor-tool@1.0.12",
+  "toolVersion": "meteor-tool@CHECKOUT",
   "format": "1.0"
 }
