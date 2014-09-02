@@ -2,7 +2,7 @@
   "dependencies": [
     [
       "application-configuration",
-      "1.0.0"
+      "1.0.1-rc0"
     ],
     [
       "binary-heap",
@@ -10,7 +10,7 @@
     ],
     [
       "blaze",
-      "2.0.0-rc0"
+      "2.0.0-rc1"
     ],
     [
       "blaze-tools",
@@ -25,8 +25,12 @@
       "1.0.0"
     ],
     [
+      "ddp",
+      "1.0.8-rc0"
+    ],
+    [
       "deps",
-      "1.0.2-rc0"
+      "1.0.2-rc1"
     ],
     [
       "ejson",
@@ -46,7 +50,7 @@
     ],
     [
       "htmljs",
-      "1.0.0"
+      "1.0.0-cordova1"
     ],
     [
       "id-map",
@@ -54,15 +58,15 @@
     ],
     [
       "iron:core",
-      "0.3.2"
+      "0.3.3-rc0"
     ],
     [
       "iron:dynamic-template",
-      "0.4.0-rc0"
+      "0.4.0-rc2"
     ],
     [
       "iron:layout",
-      "0.4.0-rc0"
+      "0.4.0-rc2"
     ],
     [
       "jquery",
@@ -78,11 +82,11 @@
     ],
     [
       "logging",
-      "1.0.2"
+      "1.0.2-cordova1"
     ],
     [
       "meteor",
-      "1.0.3-rc0"
+      "1.0.0"
     ],
     [
       "minifiers",
@@ -93,7 +97,7 @@
       "1.0.2-rc0"
     ],
     [
-      "mongo-livedata",
+      "mongo",
       "1.0.4-rc0"
     ],
     [
@@ -110,7 +114,7 @@
     ],
     [
       "reactive-dict",
-      "1.0.1-rc0"
+      "1.0.1-rc1"
     ],
     [
       "reactive-var",
@@ -122,7 +126,7 @@
     ],
     [
       "routepolicy",
-      "1.0.0"
+      "1.0.0-cordova1"
     ],
     [
       "spacebars",
@@ -134,7 +138,7 @@
     ],
     [
       "templating",
-      "1.0.5-rc0"
+      "1.0.5-rc2"
     ],
     [
       "tracker",
@@ -154,6 +158,6 @@
     ]
   ],
   "pluginDependencies": [],
-  "toolVersion": "meteor-tool@CHECKOUT",
+  "toolVersion": "meteor-tool@1.0.26",
   "format": "1.0"
 }
