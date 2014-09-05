@@ -10,7 +10,7 @@
     ],
     [
       "blaze",
-      "2.0.0-rc1"
+      "2.0.0"
     ],
     [
       "blaze-tools",
@@ -30,11 +30,11 @@
     ],
     [
       "deps",
-      "1.0.2-rc1"
+      "1.0.2"
     ],
     [
       "ejson",
-      "1.0.1-rc0"
+      "1.0.1"
     ],
     [
       "follower-livedata",
@@ -58,15 +58,15 @@
     ],
     [
       "iron:core",
-      "0.3.3-rc0"
+      "0.3.4"
     ],
     [
       "iron:dynamic-template",
-      "0.4.0-rc2"
+      "0.4.1"
     ],
     [
       "iron:layout",
-      "0.4.0-rc2"
+      "0.4.1"
     ],
     [
       "jquery",
@@ -78,7 +78,7 @@
     ],
     [
       "livedata",
-      "1.0.8-rc0"
+      "1.0.8"
     ],
     [
       "logging",
@@ -114,7 +114,7 @@
     ],
     [
       "reactive-dict",
-      "1.0.1-rc1"
+      "1.0.1"
     ],
     [
       "reactive-var",
@@ -134,11 +134,11 @@
     ],
     [
       "spacebars-compiler",
-      "1.0.2-rc0"
+      "1.0.2"
     ],
     [
       "templating",
-      "1.0.5-rc2"
+      "1.0.5"
     ],
     [
       "tracker",
@@ -146,7 +146,7 @@
     ],
     [
       "ui",
-      "1.0.1-rc0"
+      "1.0.1"
     ],
     [
       "underscore",
@@ -154,10 +154,10 @@
     ],
     [
       "webapp",
-      "1.0.3-rc0"
+      "1.0.3"
     ]
   ],
   "pluginDependencies": [],
-  "toolVersion": "meteor-tool@1.0.26",
+  "toolVersion": "meteor-tool@1.0.27",
   "format": "1.0"
 }
