@@ -2,7 +2,7 @@
   "dependencies": [
     [
       "application-configuration",
-      "1.0.0"
+      "1.0.1-rc0"
     ],
     [
       "binary-heap",
@@ -10,11 +10,15 @@
     ],
     [
       "blaze",
-      "2.0.0-rc0"
+      "2.0.0-rc1"
     ],
     [
       "blaze-tools",
       "1.0.0"
+    ],
+    [
+      "boilerplate-generator",
+      "1.0.0-cordova1"
     ],
     [
       "callback-hook",
@@ -23,6 +27,10 @@
     [
       "check",
       "1.0.0"
+    ],
+    [
+      "ddp",
+      "1.0.8-rc0"
     ],
     [
       "deps",
@@ -34,7 +42,7 @@
     ],
     [
       "follower-livedata",
-      "1.0.0"
+      "1.0.1-rc0"
     ],
     [
       "geojson-utils",
@@ -46,7 +54,7 @@
     ],
     [
       "htmljs",
-      "1.0.0"
+      "1.0.0-cordova1"
     ],
     [
       "id-map",
@@ -54,31 +62,31 @@
     ],
     [
       "iron:controller",
-      "0.4.0-rc0"
+      "1.0.0-pre0"
     ],
     [
       "iron:core",
-      "0.3.2"
+      "1.0.0-pre0"
     ],
     [
       "iron:dynamic-template",
-      "0.4.0-rc0"
+      "1.0.0-pre0"
     ],
     [
       "iron:layout",
-      "0.4.0-rc0"
+      "1.0.0-pre0"
     ],
     [
       "iron:location",
-      "0.4.0-rc0"
+      "1.0.0-pre0"
     ],
     [
       "iron:middleware-stack",
-      "0.4.0-rc0"
+      "1.0.0-pre0"
     ],
     [
       "iron:url",
-      "0.4.0-rc0"
+      "1.0.0-pre0"
     ],
     [
       "jquery",
@@ -89,27 +97,23 @@
       "1.0.0"
     ],
     [
-      "livedata",
-      "1.0.8-rc0"
-    ],
-    [
       "logging",
-      "1.0.2"
+      "1.0.2-cordova2"
     ],
     [
       "meteor",
-      "1.0.3-rc0"
+      "1.1.0-rc0"
     ],
     [
       "minifiers",
-      "1.0.2"
+      "1.1.0-rc0"
     ],
     [
       "minimongo",
-      "1.0.2-rc0"
+      "1.0.2-rc2"
     ],
     [
-      "mongo-livedata",
+      "mongo",
       "1.0.4-rc0"
     ],
     [
@@ -126,7 +130,7 @@
     ],
     [
       "reactive-dict",
-      "1.0.1-rc0"
+      "1.0.1-rc1"
     ],
     [
       "reactive-var",
@@ -138,11 +142,11 @@
     ],
     [
       "routepolicy",
-      "1.0.0"
+      "1.0.0-cordova1"
     ],
     [
       "spacebars",
-      "1.0.1-rc0"
+      "1.0.1-rc1"
     ],
     [
       "spacebars-compiler",
@@ -150,7 +154,7 @@
     ],
     [
       "templating",
-      "1.0.5-rc0"
+      "1.0.6-rc0"
     ],
     [
       "tracker",
@@ -166,10 +170,14 @@
     ],
     [
       "webapp",
-      "1.0.3-rc0"
+      "1.1.0-rc1"
+    ],
+    [
+      "webapp-hashing",
+      "1.0.0-cordova1"
     ]
   ],
   "pluginDependencies": [],
-  "toolVersion": "meteor-tool@1.0.27-rc2",
+  "toolVersion": "meteor-tool@CHECKOUT",
   "format": "1.0"
 }
