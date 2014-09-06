@@ -58,6 +58,15 @@ To use a route in your app, you can use the `{{pathFor}}` handlebars helper:
 <a href="{{pathFor 'home'}}">Go home!</a>
 ```
 
+which also supports extra options in the following formats
+
+```html
+{{pathFor 'items' params=this}}
+{{pathFor 'items' id=5 query="view=all" hash="somehash"}}
+{{pathFor route='items' id=5 query="view=all" hash="somehash"}}
+```
+
+
 Or, call `Router.path('home')` to get it as a string.
 
 The router will pick up internal clicks on links to routes. 
