@@ -201,6 +201,15 @@ this.route('serverRoute', {
 })
 ```
 
+Note that server routes cannot take a "loading" template so you need to make sure your loading template is specified in a `Meteor.isClient` block:
+
+```
+if (Meteor.isClient) {
+  Router.onBeforeAction('loading');
+}
+```
+
+
 [Read more about server routes](DOCS.md#server-side-routing).
 
 #### Route Controllers
