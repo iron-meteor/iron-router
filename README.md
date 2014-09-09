@@ -217,8 +217,7 @@ PostsEditController = AdminController.extend({
 });
 
 Router.map(function() {
-  // this will automatically match the `PostsEditController` thanks to the name.
-  this.route(postsEdit, {path: '/posts/:_id/edit'});
+  this.route("postsEdit", {controller: PostsEditController, path: '/posts/:_id/edit'});
 });
 ```
 
