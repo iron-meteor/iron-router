@@ -4,6 +4,10 @@ Package.describe({
   git: "https://github.com/eventedmind/iron-router"
 });
 
+Npm.depends({
+  'body-parser': '1.8.1'
+});
+
 Package.on_use(function (api) {
   api.versionsFrom('METEOR@0.9.2-rc0');
   // meteor dependencies
@@ -49,6 +53,7 @@ Package.on_use(function (api) {
   api.add_files('lib/plugins.js');
   api.add_files('lib/global_router.js');
   api.add_files('lib/templates.html');
+  api.add_files('lib/body_parser_server.js', 'server');
 
   // symbol exports
   api.export('Router');
