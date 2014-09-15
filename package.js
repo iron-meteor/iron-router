@@ -46,10 +46,10 @@ Package.on_use(function (api) {
   api.add_files('lib/route_controller_client.js', 'client');
   api.add_files('lib/route.js');
   api.add_files('lib/router.js');
-  api.add_files('lib/router_client.js', 'client');
-  api.add_files('lib/router_server.js', 'server');
   api.add_files('lib/hooks_client.js', 'client');
   api.add_files('lib/helpers_client.js', 'client');
+  api.add_files('lib/router_client.js', 'client');
+  api.add_files('lib/router_server.js', 'server');
   api.add_files('lib/plugins.js');
   api.add_files('lib/global_router.js');
   api.add_files('lib/templates.html');
