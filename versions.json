@@ -2,7 +2,11 @@
   "dependencies": [
     [
       "application-configuration",
-      "1.0.1-rc0"
+      "1.0.2"
+    ],
+    [
+      "base64",
+      "1.0.0"
     ],
     [
       "binary-heap",
@@ -10,7 +14,7 @@
     ],
     [
       "blaze",
-      "2.0.0-rc1"
+      "2.0.0"
     ],
     [
       "blaze-tools",
@@ -18,7 +22,7 @@
     ],
     [
       "boilerplate-generator",
-      "1.0.0-cordova1"
+      "1.0.0"
     ],
     [
       "callback-hook",
@@ -30,19 +34,19 @@
     ],
     [
       "ddp",
-      "1.0.8-rc0"
+      "1.0.8"
     ],
     [
       "deps",
-      "1.0.2-rc1"
+      "1.0.3"
     ],
     [
       "ejson",
-      "1.0.1-rc0"
+      "1.0.2"
     ],
     [
       "follower-livedata",
-      "1.0.1-rc0"
+      "1.0.1"
     ],
     [
       "geojson-utils",
@@ -54,7 +58,7 @@
     ],
     [
       "htmljs",
-      "1.0.0-cordova1"
+      "1.0.1"
     ],
     [
       "id-map",
@@ -62,31 +66,31 @@
     ],
     [
       "iron:controller",
-      "1.0.0-pre0"
+      "1.0.0-pre1"
     ],
     [
       "iron:core",
-      "1.0.0-pre0"
+      "1.0.0-pre1"
     ],
     [
       "iron:dynamic-template",
-      "1.0.0-pre0"
+      "1.0.0-pre1"
     ],
     [
       "iron:layout",
-      "1.0.0-pre0"
+      "1.0.0-pre1"
     ],
     [
       "iron:location",
-      "1.0.0-pre0"
+      "1.0.0-pre1"
     ],
     [
       "iron:middleware-stack",
-      "1.0.0-pre0"
+      "1.0.0-pre1"
     ],
     [
       "iron:url",
-      "1.0.0-pre0"
+      "1.0.0-pre1"
     ],
     [
       "jquery",
@@ -98,27 +102,27 @@
     ],
     [
       "logging",
-      "1.0.2-cordova2"
+      "1.0.3"
     ],
     [
       "meteor",
-      "1.1.0-rc0"
+      "1.1.0"
     ],
     [
       "minifiers",
-      "1.1.0-rc0"
+      "1.1.0"
     ],
     [
       "minimongo",
-      "1.0.2-rc2"
+      "1.0.3"
     ],
     [
       "mongo",
-      "1.0.4-rc0"
+      "1.0.5"
     ],
     [
       "observe-sequence",
-      "1.0.2-rc0"
+      "1.0.2"
     ],
     [
       "ordered-dict",
@@ -130,11 +134,11 @@
     ],
     [
       "reactive-dict",
-      "1.0.1-rc1"
+      "1.0.2"
     ],
     [
       "reactive-var",
-      "1.0.1-rc0"
+      "1.0.1"
     ],
     [
       "retry",
@@ -142,27 +146,27 @@
     ],
     [
       "routepolicy",
-      "1.0.0-cordova1"
+      "1.0.1"
     ],
     [
       "spacebars",
-      "1.0.1-rc1"
+      "1.0.1"
     ],
     [
       "spacebars-compiler",
-      "1.0.2-rc0"
+      "1.0.2"
     ],
     [
       "templating",
-      "1.0.6-rc0"
+      "1.0.6"
     ],
     [
       "tracker",
-      "1.0.2-rc1"
+      "1.0.2"
     ],
     [
       "ui",
-      "1.0.1-rc0"
+      "1.0.2"
     ],
     [
       "underscore",
@@ -170,14 +174,14 @@
     ],
     [
       "webapp",
-      "1.1.0-rc1"
+      "1.1.1"
     ],
     [
       "webapp-hashing",
-      "1.0.0-cordova1"
+      "1.0.0"
     ]
   ],
   "pluginDependencies": [],
-  "toolVersion": "meteor-tool@CHECKOUT",
+  "toolVersion": "meteor-tool@1.0.30",
   "format": "1.0"
 }
