@@ -66,31 +66,31 @@
     ],
     [
       "iron:controller",
-      "1.0.0-pre1"
+      "1.0.0-pre2"
     ],
     [
       "iron:core",
-      "1.0.0-pre1"
+      "1.0.0-pre2"
     ],
     [
       "iron:dynamic-template",
-      "1.0.0-pre1"
+      "1.0.0-pre2"
     ],
     [
       "iron:layout",
-      "1.0.0-pre1"
+      "1.0.0-pre2"
     ],
     [
       "iron:location",
-      "1.0.0-pre1"
+      "1.0.0-pre2"
     ],
     [
       "iron:middleware-stack",
-      "1.0.0-pre1"
+      "1.0.0-pre2"
     ],
     [
       "iron:url",
-      "1.0.0-pre1"
+      "1.0.0-pre2"
     ],
     [
       "jquery",
