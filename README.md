@@ -24,7 +24,7 @@ Iron Router works with Meteor 0.8.0 and above. To use an earlier version, use a 
 
 ##  Installation
 
-Iron Router can be installed with [Meteorite](https://github.com/oortcloud/meteorite/). From inside a Meteorite-managed app:
+Iron Router can be installed with Meteor's package manager. From inside a Meteor-managed app:
 
 ``` sh
 $ meteor add iron:router
