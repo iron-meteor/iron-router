@@ -1,0 +1,80 @@
+<head>
+  <title>layouts</title>
+</head>
+
+<body>
+</body>
+
+<template name="LayoutOne">
+  <div class="layout-one">
+    <h1>Layout One</h1>
+
+    <nav>
+      <ul>
+        <li>
+          <a href="/">Page One</a>
+        </li>
+        <li>
+          <a href="/two">Page Two</a>
+        </li>
+      </ul>
+    </nav>
+
+    <article>
+      {{> yield}}
+    </article>
+
+    <footer>
+      {{> yield "footer"}}
+    </footer>
+  </div>
+</template>
+
+<template name="LayoutTwo">
+  <div class="layout-two">
+    <h1>Layout Two</h1>
+
+    <nav>
+      <ul>
+        <li>
+          <a href="/">Page One</a>
+        </li>
+        <li>
+          <a href="/two">Page Two</a>
+        </li>
+      </ul>
+    </nav>
+
+    <article>
+      {{> yield}}
+    </article>
+
+    <footer>
+      {{> yield "footer"}}
+    </footer>
+  </div>
+</template>
+
+<template name="PageOne">
+  <h2>Page One</h2>
+
+  {{#contentFor "footer"}}
+    Page One Footer
+  {{/contentFor}}
+</template>
+
+<template name="PageTwo">
+  <h2>Page Two</h2>
+  <p>
+    Try changing the layout by setting Session.set('layout', 'LayoutTwo') in
+    the JavaScript console.
+  </p>
+</template>
+
+<template name="PageOneFooter">
+  Page One Footer
+</template>
+
+<template name="PageTwoFooter">
+  Page Two Footer
+</template>
