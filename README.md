@@ -8,6 +8,9 @@ Detailed explanations of router features can be found in the <a href="https://ev
 ## Examples
 There are several examples in the <a href="https://github.com/EventedMind/iron-router/tree/devel/examples" target="_blank">examples folder</a>.
 
+## Note
+You are looking at the *devel* branch right now. This is where active development of the project happens. We will try to keep the Guide up to date with what has been released. We're trying, but mistakes happen! So if you find an issue with the docs please file an issue here on Github. Thanks :).
+
 ## Quick Start
 ```
 
