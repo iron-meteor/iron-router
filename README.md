@@ -12,9 +12,8 @@ There are several examples in the <a href="https://github.com/EventedMind/iron-r
 You are looking at the *devel* branch right now. This is where active development of the project happens. We will try to keep the Guide up to date with what has been released. We're trying, but mistakes happen! So if you find an issue with the docs please file an issue here on Github. Thanks :).
 
 ## Quick Start
-```
-
 Create some routes in a client/server JavaScript file:
+
 ```javascript
 Router.route('/', function () {
   this.render('MyTemplate');
