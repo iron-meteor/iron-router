@@ -53,7 +53,8 @@ Package.on_use(function (api) {
   api.add_files('lib/helpers.js');
   api.add_files('lib/router_client.js', 'client');
   api.add_files('lib/router_server.js', 'server');
-  api.add_files('lib/plugins.js');
+  api.add_files('lib/plugins_client.js', 'client');
+  api.add_files('lib/plugins_server.js', 'server');
   api.add_files('lib/global_router.js');
   api.add_files('lib/templates.html');
   api.add_files('lib/body_parser_server.js', 'server');
