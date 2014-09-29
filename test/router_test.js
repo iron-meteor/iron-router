@@ -2,7 +2,7 @@ Tinytest.add('Router - createController', function (test) {
   test.ok();
 });
 
-Tinytest.add('Router - dispatch and current', function (test) {
+Tinytest.add('Router - dispatch - current', function (test) {
   var calls = [];
   var call;
   var origDispatch = Iron.RouteController.prototype.dispatch;
@@ -69,5 +69,9 @@ Tinytest.add('Router - dispatch and current', function (test) {
   }
 });
 
-Tinytest.add('Router - dispatch error handling', function (test) {
+Tinytest.add('Router - dispatch - error handling', function (test) {
+});
+
+Tinytest.add('Router - dispatch - notFound and unhandled', function (test) {
+  // hard to test at this point as they don't pass off to functions
 });

@@ -46,3 +46,38 @@ Tinytest.add('RouteController - runHooks', function (test) {
   test.equal(hookCalls[4], 'protoOnBeforeAction', 'proto onBeforeAction');
   test.equal(hookCalls[5], 'protoBefore', 'proto before');
 });
+
+Tinytest.add('RouteController - lookupOption', function (test) {
+  var router = new Iron.Router({autoStart: false, autoRender: false});
+  var route = router.route('/', {});
+  var inst = route.createController({});
+  inst.router = router;
+  var value;
+
+  // undefined
+  value = inst.lookupOption('myOption');
+  test.isUndefined(value, 'property should be undefined');
+
+  // router options
+  router.options.myOption = 'myRouterValue';
+  value = inst.lookupOption('myOption');
+  test.equal(value, 'myRouterValue', 'property should be on router options');
+
+  // route options
+  route.options.myOption = 'myRouteValue';
+  value = inst.lookupOption('myOption');
+  test.equal(value, 'myRouteValue', 'property should be on route options');
+
+  // XXX: CurrentOptions dynamic var
+
+  // route controller instance
+  inst.myOption = 'myInstanceValue';
+  value = inst.lookupOption('myOption');
+  test.equal(value, 'myInstanceValue', 'property should be on instance');
+
+  // XXX: this order has changed since 0.9.x - either revert or document heavily
+  // route controller options : 
+  inst.options.myOption = 'myOptionsValue';
+  value = inst.lookupOption('myOption');
+  test.equal(value, 'myOptionsValue', 'property should be on instance options');
+});
