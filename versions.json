@@ -2,6 +2,10 @@
   "dependencies": [
     [
       "application-configuration",
+      "1.0.2"
+    ],
+    [
+      "base64",
       "1.0.0"
     ],
     [
@@ -10,10 +14,14 @@
     ],
     [
       "blaze",
-      "2.0.0-rc0"
+      "2.0.1"
     ],
     [
       "blaze-tools",
+      "1.0.0"
+    ],
+    [
+      "boilerplate-generator",
       "1.0.0"
     ],
     [
@@ -22,19 +30,23 @@
     ],
     [
       "check",
-      "1.0.0"
+      "1.0.1"
+    ],
+    [
+      "ddp",
+      "1.0.9"
     ],
     [
       "deps",
-      "1.0.2-rc1"
+      "1.0.4"
     ],
     [
       "ejson",
-      "1.0.1-rc0"
+      "1.0.3"
     ],
     [
       "follower-livedata",
-      "1.0.0"
+      "1.0.1"
     ],
     [
       "geojson-utils",
@@ -42,11 +54,11 @@
     ],
     [
       "html-tools",
-      "1.0.0"
+      "1.0.1"
     ],
     [
       "htmljs",
-      "1.0.0"
+      "1.0.1"
     ],
     [
       "id-map",
@@ -54,15 +66,15 @@
     ],
     [
       "iron:core",
-      "0.3.2"
+      "0.3.4"
     ],
     [
       "iron:dynamic-template",
-      "0.4.0-rc0"
+      "0.4.1"
     ],
     [
       "iron:layout",
-      "0.4.0-rc0"
+      "0.4.1"
     ],
     [
       "jquery",
@@ -73,32 +85,28 @@
       "1.0.0"
     ],
     [
-      "livedata",
-      "1.0.8-rc0"
-    ],
-    [
       "logging",
-      "1.0.2"
+      "1.0.3"
     ],
     [
       "meteor",
-      "1.0.3-rc0"
+      "1.1.1"
     ],
     [
       "minifiers",
-      "1.0.2"
+      "1.1.0"
     ],
     [
       "minimongo",
-      "1.0.2-rc0"
+      "1.0.3"
     ],
     [
-      "mongo-livedata",
-      "1.0.4-rc0"
+      "mongo",
+      "1.0.6"
     ],
     [
       "observe-sequence",
-      "1.0.2-rc0"
+      "1.0.2"
     ],
     [
       "ordered-dict",
@@ -110,11 +118,11 @@
     ],
     [
       "reactive-dict",
-      "1.0.1-rc0"
+      "1.0.3"
     ],
     [
       "reactive-var",
-      "1.0.1-rc0"
+      "1.0.2"
     ],
     [
       "retry",
@@ -122,23 +130,27 @@
     ],
     [
       "routepolicy",
-      "1.0.0"
+      "1.0.1"
     ],
     [
       "spacebars",
-      "1.0.1-rc0"
+      "1.0.2"
     ],
     [
       "spacebars-compiler",
-      "1.0.2-rc0"
+      "1.0.2"
     ],
     [
       "templating",
-      "1.0.5-rc0"
+      "1.0.7"
     ],
     [
       "tracker",
-      "1.0.2-rc1"
+      "1.0.2"
+    ],
+    [
+      "ui",
+      "1.0.3"
     ],
     [
       "underscore",
@@ -146,10 +158,14 @@
     ],
     [
       "webapp",
-      "1.0.3-rc0"
+      "1.1.2"
+    ],
+    [
+      "webapp-hashing",
+      "1.0.0"
     ]
   ],
   "pluginDependencies": [],
-  "toolVersion": "meteor-tool@CHECKOUT",
+  "toolVersion": "meteor-tool@1.0.32",
   "format": "1.0"
 }
