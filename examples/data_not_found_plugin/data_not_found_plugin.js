@@ -1,4 +1,4 @@
-Router.plugin('dataNotFound', {notFoundTemplate: 'DataNotFound'});
+Router.plugin('dataNotFound', {template: 'DataNotFound'});
 
 Router.route('/', function () {
   this.render('Home');

@@ -1,4 +1,4 @@
-Router.plugin('loading', {loadingTemplate: 'Loading'});
+Router.plugin('loading', {template: 'Loading'});
 
 Router.route('/', function () {
   this.render('Home');
