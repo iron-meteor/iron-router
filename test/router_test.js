@@ -78,37 +78,30 @@ Tinytest.add('Router - dispatch - notFound and unhandled', function (test) {
 
 if (Meteor.isClient) {
   // See https://github.com/EventedMind/iron-router/issues/869
+  // XXX @tmeasday this isn't passing for me but I can't figure out why
   Tinytest.add('Router - redirection maintains reactivity', function(test) {
     var router = new Iron.Router({autoRender: false, autoStart: false});
   
-    var twoActionRan = 0, dep = new Deps.Dependency;
-    router.map(function() {
-      this.route('one', { 
-        action: function() { 
-          dep.depend();
-        
-          // XXX: @cmather -- can't do this because client_router calls out to 
-          //   `Router` -- surely a controller should be using `this.router`?
-          // this.redirect('two');
-      
-          router.go('two');
-        }
-      });
-      this.route('two', { 
-        action: function() {
-          dep.depend();
-          twoActionRan += 1;
-        }
-      });
+    var twoActionRan = 0;
+    var dep = new Deps.Dependency;
+
+    router.route('/one', function () {
+      dep.depend();
+      router.go('two');
     });
-  
+
+    router.route('/two', function () {
+      dep.depend();
+      twoActionRan += 1;
+    });
+
     router.start();
     router.go('one');
     Deps.flush();
-    test.equal(twoActionRan, 1, "onBeforeAction not run for redirected route");
+    test.equal(twoActionRan, 1, "redirected route action should have run once");
   
     dep.changed();
     Deps.flush();
-    test.equal(twoActionRan, 2, "onBeforeAction not run again for redirected route");
+    test.equal(twoActionRan, 2, "redirected route action should rerun if computation invalidated");
   });
 }
