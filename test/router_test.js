@@ -17,7 +17,12 @@ Tinytest.add('Router - dispatch - current', function (test) {
 
   try {
     var router = new Iron.Router({autoRender: false, autoStart: false});
-    var req = {url: '/test'}, res = {}, next = function () {};
+    var req = {url: '/test'};
+    var res = {
+      setHeader: function () {},
+      end: function () {}
+    };
+    var next = function () {};
     var current;
 
     if (Meteor.isClient) {
@@ -50,19 +55,20 @@ Tinytest.add('Router - dispatch - current', function (test) {
       test.isTrue(oldCurrent !== current, 'current controller is not the old controller');
     }
 
+    // XXX FIXME
     if (Meteor.isServer) {
       router(req, res, next);
 
-      test.equal(calls.length, 1, 'dispatch call was made');
-
-      var call = calls[0];
-      var current = calls[0].thisArg;
-      test.instanceOf(current, Iron.RouteController, 'thisArg is a RouteController');
-      test.equal(current.request, req, 'request is set');
-      test.equal(current.response, res, 'response is set');
-      test.instanceOf(call.stack, Iron.MiddlewareStack, 'stack is a MiddlewareStack');
-     
-
+      if (calls.length < 1) {
+        test.fail("dispatch call was not made");
+      } else {
+        var call = calls[0];
+        var current = calls[0].thisArg;
+        test.instanceOf(current, Iron.RouteController, 'thisArg is a RouteController');
+        test.equal(current.request, req, 'request is set');
+        test.equal(current.response, res, 'response is set');
+        test.instanceOf(call.stack, Iron.MiddlewareStack, 'stack is a MiddlewareStack');
+      }
     }
   } finally {
     Iron.RouteController.prototype.dispatch = origDispatch;
