@@ -672,7 +672,7 @@ Router.route('/post/:_id', {
 
   // A declarative way of providing templates for each yield region
   // in the layout
-  yieldRegions: {
+  yieldTemplates: {
     'MyAside': {to: 'aside'},
     'MyFooter': {to: 'footer'}
   },
@@ -886,7 +886,7 @@ This out-of-box plugin will automatically render the template named "Loading" if
 the route's data is not ready (i.e. `this.ready() == false`).
 
 ```javascript
-Router.plugin('dataNotFound', {dataNotFoundTemplate: 'NotFound'});
+Router.plugin('dataNotFound', {notFoundTemplate: 'NotFound'});
 
 Router.route('/post/:_id', {
   data: function () {
@@ -937,7 +937,7 @@ Router.onBeforeAction(function () {
     this.render('Login');
   } else {
     // otherwise don't hold up the rest of hooks or our route/action function
-    from running
+    // from running
     this.next();
   }
 });
@@ -1154,7 +1154,8 @@ Template.Posts.helpers({
 ```
 
 ### Setting Reactive State Variables
-You can set reactive state variables on controllers using the `set` method.
+You can set reactive state variables on controllers using the `set` method on
+the controllers ReactiveDict `state`.
 Let's say we want to store the post `_id` in a reactive variable.
 
 ```javascript
@@ -1164,14 +1165,14 @@ PostController = RouteController.extend({
   action: function () {
     // set the reactive state variable "postId" with a value
     // of the id from our url
-    this.set('postId', this.params._id);
+    this.state.set('postId', this.params._id);
     this.render();
   }
 });
 ```
 
 ### Getting Reactive State Variables
-You can get a reactive variable value by calling `this.get("key")` on the
+You can get a reactive variable value by calling `this.state.get("key")` on the
 `RouteController`. Using the example above, let's grab the value of `postId`
 from a template helper.
 
@@ -1181,7 +1182,7 @@ Template.Post.helpers({
     var controller = UI.controller();
 
     // reactively return the value of postId
-    return controller.get('postId');
+    return controller.state.get('postId');
   }
 });
 ```
