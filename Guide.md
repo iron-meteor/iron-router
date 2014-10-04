@@ -163,7 +163,7 @@ and `this.params.commentId => 100`.
 ```javascript
 // given a url like "/post/5/comments/100"
 Router.route('/post/:_id/comments/:commentId', function () {
-  var id = this.params.id; // "5"
+  var id = this.params._id; // "5"
   var commentId = this.params.commentId; // "100"
 });
 ```
