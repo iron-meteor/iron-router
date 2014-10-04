@@ -1,0 +1,48 @@
+<head>
+  <title>link helpers</title>
+</head>
+
+<body>
+</body>
+
+<template name="Home">
+  {{> Nav}}
+
+  <h1>Home</h1>
+</template>
+
+<template name="One">
+  {{> Nav}}
+
+  <h1>Page One</h1>
+</template>
+
+<template name="Two">
+  {{> Nav}}
+
+  <h1>Page Two</h1>
+</template>
+
+<template name="Nav">
+  <ul>
+    <li>
+    <a href="{{pathFor route='home'}}">Home</a>
+    </li>
+    <li>
+      <a href="{{pathFor route='one'}}">/one</a>
+    </li>
+    <li>
+      <a href="{{pathFor route='one' query='q=s' hash='frag'}}">/one?q=s#frag</a>
+    </li>
+    <li>
+      <a href="{{urlFor route='one' query='q=s' hash='frag'}}">http://localhost:3000/one?q=s#frag</a>
+    </li>
+    <li>
+      {{#linkTo class="myclass" route="two" query="q=s" hash="frag"}}
+        <div style="color: green; font-weight: bold;">
+          Custom Link to Page Two
+        </div>
+      {{/linkTo}}
+    </li>
+  </ul>
+</template>

@@ -1,0 +1,32 @@
+<head>
+  <title>route_controllers</title>
+</head>
+
+<body>
+</body>
+
+<template name="AppLayout">
+  <div class="container">
+    <nav>
+      <ul>
+        <li><a href="/posts">/posts</a></li>
+        <li><a href="/posts/1">/posts/1</a></li>
+      </ul>
+    </nav>
+    <article>
+      {{> yield}}
+    </article>
+  </div>
+</template>
+
+<template name="Home">
+  <h1>Home</h1>
+</template>
+
+<template name="PostIndex">
+  <h1>Post Index</h1>
+</template>
+
+<template name="PostShow">
+  <h1>Post Show</h1>
+</template>
