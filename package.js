@@ -17,6 +17,9 @@ Package.on_use(function (api) {
   api.use('ui');
   api.use('templating');
 
+  // for cloning
+  api.use('ejson');
+
   // for dynamic scoping with environment variables
   api.use('meteor')
 
