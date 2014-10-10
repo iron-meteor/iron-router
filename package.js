@@ -13,9 +13,6 @@ Package.on_use(function (api) {
   // default ui manager
   // use unordered: true becuase of circular dependency
 
-  // for helpers
-  api.use('ui', 'client');
- 
   // gives us dynamic layouts
   api.use('iron-layout');
 
@@ -23,17 +20,10 @@ Package.on_use(function (api) {
   api.imply('iron-layout');
 
 
-  api.add_files('lib/utils.js', ['client', 'server']);
-  api.add_files('lib/route.js', ['client', 'server']);
-  api.add_files('lib/route_controller.js', ['client', 'server']);
-  api.add_files('lib/router.js', ['client', 'server']);
-
-  api.add_files('lib/client/location.js', 'client');
-  api.add_files('lib/client/router.js', 'client');
-  api.add_files('lib/client/wait_list.js', 'client');
-  api.add_files('lib/client/hooks.js', 'client');
-  api.add_files('lib/client/route_controller.js', 'client');
-  api.add_files('lib/client/ui/helpers.js', 'client');
+  api.add_files('lib/utils.js', ['server']);
+  api.add_files('lib/route.js', ['server']);
+  api.add_files('lib/route_controller.js', ['server']);
+  api.add_files('lib/router.js', ['server']);
 
   api.add_files('lib/server/route_controller.js', 'server');
   api.add_files('lib/server/router.js', 'server');
@@ -41,10 +31,9 @@ Package.on_use(function (api) {
   api.use('webapp', 'server');
   Npm.depends({connect: '2.9.0'});
 
-  api.export('RouteController', ['client', 'server']);
-  api.export('Route', ['client', 'server']);
-  api.export('Router', ['client', 'server']);
-  api.export('IronLocation', 'client');
+  api.export('RouteController', ['server']);
+  api.export('Route', ['server']);
+  api.export('Router', ['server']);
 
   api.export('Utils', ['client', 'server'], {testOnly: true});
   api.export('IronRouter', ['client', 'server'], {testOnly: true});
