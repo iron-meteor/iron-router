@@ -6,7 +6,7 @@ A router that works on the server and the browser, designed specifically for <a 
 Detailed explanations of router features can be found in the <a href="https://eventedmind.github.io/iron-router" target="_blank">Guide</a>.
 
 ## Examples
-There are several examples in the <a href="https://github.com/EventedMind/iron-router/tree/devel/examples" target="_blank">examples folder</a>. TODO  These examples are based on the version 1.0.0-pre
+There are several examples in the <a href="https://github.com/EventedMind/iron-router/tree/devel/examples" target="_blank">examples folder</a>. TODO  These examples are based on the version 1.0.0-pre4
 
 ## Note
 You are looking at the *devel* branch right now. This is where active development of the project happens. We will try to keep the Guide up to date with what has been released. We're trying, but mistakes happen! So if you find an issue with the docs please file an issue here on Github. Thanks :).
