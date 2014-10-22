@@ -10,7 +10,7 @@ You can install iron:router using Meteor's package management system:
 > meteor add iron:router
 ```
 
-To update iron:router to the latest version you can use the meteor update
+To update iron:router to the latest version you can use the `meteor update`
 command:
 
 ```bash
@@ -38,7 +38,8 @@ to the page. In simple cases like this, you don't even need to provide a route
 function.
 
 So far, we've only created routes that will be run directly in the browser. But
-we can also create server routes. 
+we can also create server routes. These hook directly into the HTTP request and
+are used to implement REST endpoints.
 
 ```javascript
 Router.route('/item', function () {
