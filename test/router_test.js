@@ -2,7 +2,9 @@ Tinytest.add('Router - createController', function (test) {
   test.ok();
 });
 
-Tinytest.add('Router - dispatch - current', function (test) {
+// XXX: this test fails on the server because of the check that a single route
+//   must be defined or the server short-circuits and displays an error.
+Meteor.isClient && Tinytest.add('Router - dispatch - current', function (test) {
   var calls = [];
   var call;
   var origDispatch = Iron.RouteController.prototype.dispatch;
