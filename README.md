@@ -2,11 +2,17 @@ Iron.Router
 ==============================================================================
 A router that works on the server and the browser, designed specifically for <a href="https://github.com/meteor/meteor" target="_blank">Meteor</a>
 
+## Versions
+
+The current stable version of Iron Router is 0.9.4. Please [go here](https://github.com/EventedMind/iron-router/blob/0.9/DOCS.md) for documentation. 
+
+This document applies to the pre-release of IR1.0. To install, run `meteor add iron:router@1.0.0-pre4`. We appreciate your help in testing the new version!
+
 ## The Iron.Router Guide
-Detailed explanations of router features can be found in the <a href="https://eventedmind.github.io/iron-router" target="_blank">Guide</a>. (**Note** that the guide is for the 1.0.x series of IR. If you are looking for 0.9.x docs, please [go here](https://github.com/EventedMind/iron-router/blob/0.9/DOCS.md)).
+Detailed explanations of router features can be found in the <a href="https://eventedmind.github.io/iron-router" target="_blank">Guide</a>.
 
 ## Examples
-There are several examples in the <a href="https://github.com/EventedMind/iron-router/tree/devel/examples" target="_blank">examples folder</a>. TODO  These examples are based on the version 1.0.0-pre4
+There are several examples in the <a href="https://github.com/EventedMind/iron-router/tree/devel/examples" target="_blank">examples folder</a>.
 
 ## Note
 You are looking at the *devel* branch right now. This is where active development of the project happens. We will try to keep the Guide up to date with what has been released. We're trying, but mistakes happen! So if you find an issue with the docs please file an issue here on Github. Thanks :).
