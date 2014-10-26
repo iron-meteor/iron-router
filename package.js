@@ -1,6 +1,6 @@
 Package.describe({
   summary: 'Routing specifically designed for Meteor',
-  version: "1.0.0-rc.0"
+  version: "1.0.0-rc.0",
   git: "https://github.com/eventedmind/iron-router"
 });
 
