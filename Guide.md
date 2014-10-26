@@ -1127,7 +1127,7 @@ reactively return the current instance of a `RouteController`. Keep in mind this
 value could be `null` if no route has run yet.
 
 You can also access the current `RouteController` from inside your template
-helpers by using the `UI.controller()` method.
+helpers by using the `Iron.controller()` method.
 
 ```javascript
 Router.route('/posts', function () {
@@ -1149,7 +1149,7 @@ defined on the `Posts` template.
 ```javascript
 Template.Posts.helpers({
   myHelper: function () {
-    var controller = UI.controller();
+    var controller = Iron.controller();
 
     // now we can get properties and call methods on the controller
   }
@@ -1182,7 +1182,7 @@ from a template helper.
 ```javascript
 Template.Post.helpers({
   postId: function () {
-    var controller = UI.controller();
+    var controller = Iron.controller();
 
     // reactively return the value of postId
     return controller.state.get('postId');
