@@ -6,7 +6,12 @@ A router that works on the server and the browser, designed specifically for <a 
 
 The current stable version of Iron Router is 0.9.4. Please [go here](https://github.com/EventedMind/iron-router/blob/0.9/DOCS.md) for documentation. 
 
-This document applies to the pre-release of IR1.0. To install, run `meteor add iron:router@1.0.0-pre4`. We appreciate your help in testing the new version!
+### Pre-Release Version
+This document and the guide applies to the pre-release. To track the
+pre-release versions of iron:router you can use the meteor command `meteor show
+iron:router`. To install, run `meteor add iron:router@1.0.0-pre<version>`.
+
+We appreciate your help in testing to get the router ready for 1.0!
 
 ## The Iron.Router Guide
 Detailed explanations of router features can be found in the <a href="https://eventedmind.github.io/iron-router" target="_blank">Guide</a>.
