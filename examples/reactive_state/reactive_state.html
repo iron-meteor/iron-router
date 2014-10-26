@@ -1,0 +1,45 @@
+<head>
+  <title>reactive_state</title>
+</head>
+
+<body>
+</body>
+
+<template name="AppLayout">
+  <div class="container">
+    <nav>
+      <ul>
+        <li>
+          <a href="/posts/1">/posts/1</a>
+        </li>
+        <li>
+          <a href="/posts/2">/posts/2</a>
+        </li>
+        <li>
+          <a href="/posts/3">/posts/3</a>
+        </li>
+      </ul>
+    </nav>
+
+    <p>
+      <pre>
+        var c = UI.controller();
+        return c && c.get('postId');
+      </pre>
+
+      Click the different links to see how we use the controller's reactive state variable
+    </p>
+
+    <article>
+      {{> yield}}
+    </article>
+  </div>
+</template>
+
+<template name="Home">
+  Home
+</template>
+
+<template name="Post">
+  <h1>PostId: {{postId}}</h1>
+</template>
