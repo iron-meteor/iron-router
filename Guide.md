@@ -854,26 +854,43 @@ Router.route('/post/:_id', function () {
 });
 ```
 
+### Using subscriptions
+
+You can automatically take advantage of this functionality by using the `subscriptions` option to your route.
+
+```
+Router.route('/post/:_id', {
+  subcriptions: function() {
+    return Meteor.subscribe('item', this.params._id);
+  },
+  action: function () {
+    if (this.ready()) {
+      this.render();
+    } else {
+      this.render('Loading');
+    }
+  }
+});
+
+Your `subscriptions` function can return a single subscription handle (the result of `Meteor.subscribe`) or an array of them. The subscription(s) will be used to drive the `.ready()` state. 
+
+You can also inherit subscriptions from the global router config or from a controller (see below).
+
 ### Using waitOn
-In the last two examples we populated the wait list in our route function. In
-many cases this is okay. But if you're using hooks like "loading" or
-"dataNotFound" you may need the wait list to be populated before those hooks
-run. In order to accomplish this you can use the `waitOn` option. Using `waitOn`
-makes sure the wait list is populated before anything else runs.
+Another alternative is to use `waitOn` instead of `subscribe`. This has the same effect but automatically short-circuits your route action and any before hooks (see below), and renders a `loadingTemplate` instead. You can specify that template on the route or the router itself:
 
 ```javascript
 Router.route('/post/:_id', {
+  // this template will be rendered until the subscriptions are ready
+  loadingTemplate: 'loading',
+  
   waitOn: function () {
     // return one handle, a function, or an array
     return Meteor.subscribe('post', this.params._id);
   },
 
   action: function () {
-    // this.ready() is true if all items returned from waitOn are ready
-    if (this.ready())
-      this.render();
-    else
-      this.render('Loading');
+    this.render('myTemplate');
   }
 });
 ```
