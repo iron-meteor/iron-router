@@ -14,11 +14,6 @@ Tinytest.add('RouteController - lookupOption', function (test) {
   value = inst.lookupOption('myOption');
   test.equal(value, 'myRouterValue', 'property should be on router options');
 
-  // route options
-  route.options.myOption = 'myRouteValue';
-  value = inst.lookupOption('myOption');
-  test.equal(value, 'myRouteValue', 'property should be on route options');
-
   // XXX: CurrentOptions dynamic var
 
   // route controller instance
@@ -31,6 +26,11 @@ Tinytest.add('RouteController - lookupOption', function (test) {
   inst.options.myOption = 'myOptionsValue';
   value = inst.lookupOption('myOption');
   test.equal(value, 'myOptionsValue', 'property should be on instance options');
+
+  // route options
+  route.options.myOption = 'myRouteValue';
+  value = inst.lookupOption('myOption');
+  test.equal(value, 'myRouteValue', 'property should be on route options');
 });
 
 Tinytest.add('RouteController - hooks - inheritance order', function (test) {
