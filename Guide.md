@@ -60,6 +60,9 @@ A route's name is now accessible at `route.getName()` (previously it was `route.
 
 It's not strictly required, but moving forward, Iron Router expects all routes to be declared on both client and server. This means that the client can route to the server and visa-versa.
 
+### Catchall routes
+
+Iron Router now uses [path-to-regexp](https://github.com/pillarjs/path-to-regexp), which means the syntax for catchall routes has changed a little -- it's now `'/(.*)'`.
 
 ## Quick Start
 You can install iron:router using Meteor's package management system:
