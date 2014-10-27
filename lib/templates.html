@@ -5,3 +5,33 @@
     </div>
   </div>
 </template>
+
+<template name="__IronRouterNoRoutes__">
+    <div style='font-family: helvetica; color: #777; max-width: 600px; margin: 20px auto;'>
+      <h1 style='text-align: center; margin: 0; font-size: 48pt;'>
+        iron:router
+      </h1>
+      <p style='text-align: center; font-size: 1.3em;'>
+        Organize your Meteor application.
+      </p>
+      <div style='margin: 50px 0px;'>
+        <pre style='background: #f2f2f2; margin: 0; padding: 10px;'>
+Router.route('/', function () {
+  this.render('Home', {
+    data: function () { return Items.findOne({_id: this.params._id}) }
+  });
+});
+        </pre>
+      </div>
+      <div style='margin: 50px 0px;'>
+        Check it out on Github:<br>
+        <a href='https://github.com/eventedmind/iron-router' target='_blank'>https://github.com/eventedmind/iron-router</a>
+        <br>
+        <br>
+        And check out the new Guide:<br>
+        <a href='https://eventedmind.github.io/iron-router' target='_blank'>
+          https://eventedmind.github.io/iron-router
+        </a>
+      </div>
+    </div> 
+</template>

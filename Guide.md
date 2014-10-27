@@ -9,6 +9,58 @@ A router that works on the server and the browser, designed specifically for
 - fix typos
 - changelog or migration guide?
 
+
+## Migration from 0.9.x 
+-- put this somewhere
+
+Iron Router should be reasonably backwards compatible, but there are a few required changes that you need to know about:
+
+### Hooks
+
+`onRun` and `onBeforeAction` hooks now require you to call `this.next()`, and no longer take a `pause()` argument. So the default behaviour is reversed. For example, if you had:
+
+```
+Router.onBeforeAction(function(pause) {
+  if (! Meteor.userId()) {
+    this.render('login');
+    pause();
+  }
+});
+```
+
+You'll need to update it to
+
+```
+Router.onBeforeAction(function() {
+  if (! Meteor.userId()) {
+    this.render('login');
+  } else {
+    this.next();
+  }
+});
+```
+
+This is to fit better with existing route middleware (e.g. connect) semantics.
+
+### Loading Hook
+
+The `loading` hook now runs automatically on the client side if your route has a `waitOn`. As previously, you can set a global or per-route `loadingTemplate`.
+
+If you want to setup subscriptions that you won't wait on, you can use the new `subscriptions` option.
+
+### Hook and option inheritance
+
+All hooks and options are now fully inherited from parent controllers and the router itself as you might expect. The order of precendence is now route; controller; parent controller; router.
+
+### Route names
+
+A route's name is now accessible at `route.getName()` (previously it was `route.name`). In particular, you'll need to write `Router.current().route.getName()`.
+
+### Routes on client and server
+
+It's not strictly required, but moving forward, Iron Router expects all routes to be declared on both client and server. This means that the client can route to the server and visa-versa.
+
+
 ## Quick Start
 You can install iron:router using Meteor's package management system:
 
