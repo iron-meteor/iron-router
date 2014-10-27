@@ -46,7 +46,7 @@ This is to fit better with existing route middleware (e.g. connect) semantics.
 
 The `loading` hook now runs automatically on the client side if your route has a `waitOn`. As previously, you can set a global or per-route `loadingTemplate`.
 
-If you want to setup subscriptions that you won't wait on, you can use the new `subscriptions` option.
+If you want to setup subscriptions but not have an automatic loading hook, you can use the new `subscriptions` option, which still affects `.ready()`-ness, but doesn't force the `loading` hook.
 
 ### Hook and option inheritance
 
@@ -944,33 +944,18 @@ TODO
 
 ## Plugins
 Plugins are a way to reuse functionality in your router, either that you've
-built for your own applications, or from other package authors. There's even two
-built-in plugins called "loading" and "dataNotFound".
+built for your own applications, or from other package authors. There's even a
+built-in plugin called "dataNotFound".
 
 To use a plugin just call the `plugin` method of Router and pass the name of the
 plugin and any options for the plugin.
 
 ```javascript
-Router.plugin('loading', {loadingTemplate: 'Loading'});
+Router.plugin('dataNotFound', {notFoundTemplate: 'notFound'});
 ```
 
-This out-of-box plugin will automatically render the template named "Loading" if
-the route's data is not ready (i.e. `this.ready() == false`).
-
-```javascript
-Router.plugin('dataNotFound', {notFoundTemplate: 'NotFound'});
-
-Router.route('/post/:_id', {
-  data: function () {
-    // if this returns a falsy value like null, the NotFound template will
-    // render instead of our Post template.
-    return Posts.findOne({_id: this.params._id});
-  }
-});
-```
-
-This plugin will render the "NotFound" template if your data function returns a
-falsy value like null or false.
+This out-of-box plugin will automatically render the template named "notFound" 
+if the route's data is falsey (i.e. `! this.data()`).
 
 ### Creating Plugins
 To create a plugin just put your function on the `Iron.Router.plugins` object
@@ -1060,7 +1045,8 @@ Router.onBeforeAction('customPackageHook');
 ```
 ### Available Hook Methods
 * **onRun**: Called when the route is first run. It is not called again if the
-  route reruns because of a computation invalidation.
+  route reruns because of a computation invalidation. This makes it a good 
+  candidate for things like analytics where you want be sure the hook only runs once. Note that this hook *won't* run again if the route is reloaded via hot code push.
 
 * **onRerun**: Called if the route reruns because its computation is
   invalidated.
@@ -1144,8 +1130,8 @@ We might have some options defined globally with `Router.configure`, some
 options defined on the `Route` and some options defined on the
 `RouteController`. Iron.Router looks up options in this order:
 
-1. RouteController
-2. Route
+1. Route
+2. RouteController
 3. Router
 
 ### Inheriting from Route Controllers
