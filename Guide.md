@@ -884,8 +884,6 @@ will see if there are any routes defined for that url, either on the server or
 on the client. If no routes are found, the server will send a 404 http status
 code to indicate no resource was found for the given url.
 
-### Server Middleware and Connect
-TODO
 
 ## Plugins
 Plugins are a way to reuse functionality in your router, either that you've
@@ -1007,6 +1005,20 @@ Router.onBeforeAction('customPackageHook');
 
 * **onStop**: Called when the route is stopped, typically right before a new
   route is run.
+
+
+### Server Hooks and Connect
+
+On the server, the API signature for a `onBeforeAction` hook is identical to that of a [connect](https://github.com/senchalabs/connect) middleware:
+
+```
+Router.onBeforeAction(function(req, res, next) {
+  // in here next() is equivalent to this.next();
+}, {where: 'server'});
+```
+
+This means you can attach any connect middleware you like on the server side using `Router.onBeforeAction()`. For convience, IR makes express' [body-parser](https://github.com/expressjs/body-parser) available at `Iron.Router.bodyParser`.
+
 
 ## Route Controllers
 An `Iron.RouteController` object is created when the Router handles a url
