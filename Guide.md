@@ -4,66 +4,6 @@ A router that works on the server and the browser, designed specifically for
 [Meteor](https://github.com/meteor/meteor).
 
 
-## TODOS
-- update the waitOn and subscription examples
-- fix typos
-- changelog or migration guide?
-
-
-## Migration from 0.9.x 
--- put this somewhere
-
-Iron Router should be reasonably backwards compatible, but there are a few required changes that you need to know about:
-
-### Hooks
-
-`onRun` and `onBeforeAction` hooks now require you to call `this.next()`, and no longer take a `pause()` argument. So the default behaviour is reversed. For example, if you had:
-
-```
-Router.onBeforeAction(function(pause) {
-  if (! Meteor.userId()) {
-    this.render('login');
-    pause();
-  }
-});
-```
-
-You'll need to update it to
-
-```
-Router.onBeforeAction(function() {
-  if (! Meteor.userId()) {
-    this.render('login');
-  } else {
-    this.next();
-  }
-});
-```
-
-This is to fit better with existing route middleware (e.g. connect) semantics.
-
-### Loading Hook
-
-The `loading` hook now runs automatically on the client side if your route has a `waitOn`. As previously, you can set a global or per-route `loadingTemplate`.
-
-If you want to setup subscriptions but not have an automatic loading hook, you can use the new `subscriptions` option, which still affects `.ready()`-ness, but doesn't force the `loading` hook.
-
-### Hook and option inheritance
-
-All hooks and options are now fully inherited from parent controllers and the router itself as you might expect. The order of precendence is now route; controller; parent controller; router.
-
-### Route names
-
-A route's name is now accessible at `route.getName()` (previously it was `route.name`). In particular, you'll need to write `Router.current().route.getName()`.
-
-### Routes on client and server
-
-It's not strictly required, but moving forward, Iron Router expects all routes to be declared on both client and server. This means that the client can route to the server and visa-versa.
-
-### Catchall routes
-
-Iron Router now uses [path-to-regexp](https://github.com/pillarjs/path-to-regexp), which means the syntax for catchall routes has changed a little -- it's now `'/(.*)'`.
-
 ## Quick Start
 You can install iron:router using Meteor's package management system:
 
@@ -142,6 +82,7 @@ The `where: 'server'` option tells the Router this is a server side route.
   - [Global Default Options](#global-default-options)
 - [Waiting on Subscriptions](#waiting-on-subscriptions)
   - [Wait and Ready](#wait-and-ready)
+  - [Using subscriptions](#using-subscriptions)
   - [Using waitOn](#using-waiton)
 - [Server Routing](#server-routing)
   - [Creating Routes](#creating-routes)
@@ -874,6 +815,7 @@ Router.route('/post/:_id', {
     }
   }
 });
+```
 
 Your `subscriptions` function can return a single subscription handle (the result of `Meteor.subscribe`) or an array of them. The subscription(s) will be used to drive the `.ready()` state. 
 
