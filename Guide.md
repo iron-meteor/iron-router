@@ -1019,6 +1019,7 @@ Router.onBeforeAction(function(req, res, next) {
 
 This means you can attach any connect middleware you like on the server side using `Router.onBeforeAction()`. For convience, IR makes express' [body-parser](https://github.com/expressjs/body-parser) available at `Iron.Router.bodyParser`.
 
+The Router attaches the JSON body parser automatically.
 
 ## Route Controllers
 An `Iron.RouteController` object is created when the Router handles a url
