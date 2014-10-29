@@ -1,56 +1,8 @@
-1.0.0-pre3 / 2014-09-25
+1.0.0 / 2014-10-28
 ==================
-  * Merge branch 'next' into devel
-  * comment about running server middleware in fibers
-  * allow route to take only a name as a parameter
-  * new versions file
-  * bump version to 1.0.0-pre2
-  * fix Router.route to work with paths or names as first param
-  * make sure a route's controller inherits from RouteController
-  * fix Route constructor to accept path or name as first param
-  * New version for 0.9.1
-  * iron:router 0.9.2-rc2, for Meteor 0.9.1-rc3
-  * bump meteor version to 0.9.1-rc2
-  * update changelog
-  * update package version for 0.9.1-rc1 release
-  * oops bump iron:layout version too
-  * fix versions for blaze-preview
-  * fix package.js to use METEOR vs METEOR-CORE in versionsFrom
-  * update changelog
-  * fix waitlist onInvalidate logic
-  * update package.js for Meteor 0.9.1
-  * update versions.json
-  * Added another failing test case. For #742
-  * Update README.md
-  * fix waitlist to ensure ready() is correct before next flush
-  * fix multiple data issues and make onRun actually only run once
-  * fix onRun should only run once.
-  * throw an error on infinite waitlist invalidation loops.
-  * wip add tests for waitlist infinite loop
-  * Merge pull request #770 from zimme/smart.json
-  * Fix missing comma in smart.json
-  * Added failing test case for #742
-  * add versions.json file
-  * add version_conflict_error.js file
-  * attempted fix for infinite invalidation loop
-  * Merge branch 'devel' of github.com:E  * update for new package system
-  * remove deprecate method from utils since we have it in core
-  * Another unnecessary stop(). Fix for #743
-  * Added sort-of-failing test for #754
-  * Expanded test a little
-  * Added self-referential test to wait_list.
-  * add back a data function people can call if they want
-  * bump versions
-  * fix controller global data setting
-  * bump version to 0.8.1
-  * oops fix wait() api method to use controller wait
-  * fix wait method on subscription handle extension
-  * bump version on readme
-  * update History.md
-  * add new waitlist from refactor
-  * Merge branch 'bug/layout-rendering' into devel
-  * fix layout rendering bug with issue #724
-  * track current rendering transaction...
+  * Major refactor and cleanup
+  * See the README.md for a migration guide from previous versions
+  * Mostly backward compatible but a few breaking changes
 
 v0.9.2 / 2014-08-27
 ==================
