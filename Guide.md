@@ -80,10 +80,10 @@ The `where: 'server'` option tells the Router this is a server side route.
 - [Route Options](#route-options)
   - [Route Specific Options](#route-specific-options)
   - [Global Default Options](#global-default-options)
-- [Waiting on Subscriptions](#waiting-on-subscriptions)
+- [Subscriptions](#subscriptions)
   - [Wait and Ready](#wait-and-ready)
-  - [Using subscriptions](#using-subscriptions)
-  - [Using waitOn](#using-waiton)
+  - [The subscriptions Option](#the-subscriptions-option)
+  - [The waitOn Option](#the-waiton-option)
 - [Server Routing](#server-routing)
   - [Creating Routes](#creating-routes)
   - [Restful Routes](#restful-routes)
@@ -757,7 +757,7 @@ Router.configure({
 
 Options declared on the route will override these default Router options.
 
-## Waiting on Subscriptions
+## Subscriptions
 Sometimes you want to wait on one or more subscriptions to be ready, or maybe
 on the result of some other action. For example, you might want to show a
 loading template while waiting for subscription data.
@@ -798,15 +798,18 @@ Router.route('/post/:_id', function () {
 });
 ```
 
-### Using subscriptions
+### The subscriptions Option
 
 You can automatically take advantage of this functionality by using the `subscriptions` option to your route.
 
 ```
 Router.route('/post/:_id', {
   subcriptions: function() {
+    // returning a subscription handle or an array of subscription handles
+    // adds them to the wait list.
     return Meteor.subscribe('item', this.params._id);
   },
+
   action: function () {
     if (this.ready()) {
       this.render();
@@ -821,7 +824,7 @@ Your `subscriptions` function can return a single subscription handle (the resul
 
 You can also inherit subscriptions from the global router config or from a controller (see below).
 
-### Using waitOn
+### The waitOn Option
 Another alternative is to use `waitOn` instead of `subscribe`. This has the same effect but automatically short-circuits your route action and any before hooks (see below), and renders a `loadingTemplate` instead. You can specify that template on the route or the router itself:
 
 ```javascript
