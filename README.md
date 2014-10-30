@@ -3,7 +3,7 @@ Iron.Router
 A router that works on the server and the browser, designed specifically for <a href="https://github.com/meteor/meteor" target="_blank">Meteor</a>
 
 ## The Iron.Router Guide
-Detailed explanations of router features can be found in the <a href="https://github.com/EventedMind/iron-router-tree/devel/Guide.md" target="_blank">Guide</a>.
+Detailed explanations of router features can be found in the <a href="https://github.com/EventedMind/iron-router/tree/devel/Guide.md" target="_blank">Guide</a>.
 
 ## Examples
 There are several examples in the <a href="https://github.com/EventedMind/iron-router/tree/devel/examples" target="_blank">examples folder</a>.
