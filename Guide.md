@@ -697,13 +697,22 @@ Router.route('/post/:_id', {
 
   // A declarative way of providing templates for each yield region
   // in the layout
-  yieldTemplates: {
+  yieldRegions: {
     'MyAside': {to: 'aside'},
     'MyFooter': {to: 'footer'}
   },
 
-  // Subscriptions or other things we want to "wait" on. More on waitOn in the
-  // next section.
+  // a place to put your subscriptions
+  subscriptions: {
+    this.subscribe('items');
+    
+    // add the subscription to the waitlist
+    this.subscribe('item', this.params._id).wait();
+  },
+
+  // Subscriptions or other things we want to "wait" on. This also
+  // automatically uses the loading hook. That's the only difference between
+  // this option and the subscriptions option above.
   waitOn: function () {
     return Meteor.subscribe('post', this.params._id);
   },
