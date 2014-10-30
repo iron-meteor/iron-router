@@ -71,7 +71,10 @@ Router.onBeforeAction(function() {
 });
 ```
 
-This is to fit better with existing route middleware (e.g. connect) semantics.
+This is to fit better with existing route middleware (e.g. connect) APIs.
+
+### Query Parameters
+Query parameters now get their own object on `this.params`. To access the query object you can use `this.params.query`.
 
 ### Loading Hook
 
