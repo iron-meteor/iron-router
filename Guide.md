@@ -1183,8 +1183,9 @@ Template.Posts.helpers({
 
 ### Setting Reactive State Variables
 You can set reactive state variables on controllers using the `set` method on
-the controllers ReactiveDict `state`.
-Let's say we want to store the post `_id` in a reactive variable.
+the controller's [ReactiveDict](https://atmospherejs.com/meteor/reactive-dict) `state`.
+
+Let's say we want to store the post `_id` in a reactive variable:
 
 ```javascript
 Router.route('/posts/:_id', {name: 'post'});
