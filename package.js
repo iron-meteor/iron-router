@@ -1,6 +1,6 @@
 Package.describe({
   summary: 'Routing specifically designed for Meteor',
-  version: "1.0.0",
+  version: "1.0.1",
   git: "https://github.com/eventedmind/iron-router"
 });
 
@@ -37,7 +37,7 @@ Package.on_use(function (api) {
   api.use('iron:url@1.0.0');
 
   // for reactive urls and pushState in the browser
-  api.use('iron:location@1.0.0');
+  api.use('iron:location@1.0.1');
 
   // for RouteController which inherits from this
   api.use('iron:controller@1.0.0');
