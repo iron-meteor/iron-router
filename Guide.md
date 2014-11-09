@@ -325,7 +325,7 @@ Router.route('/post/:_id', function () {
     data: function () { return Posts.findOne({_id: this.params._id}) }
   });
 
-  this.render('Post' {
+  this.render('Post', {
     // we don't really need this since we set the data context for the
     // the entire layout above. But this demonstrates how you can set
     // a new data context for each specific region.
