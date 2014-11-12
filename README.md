@@ -73,6 +73,10 @@ Router.onBeforeAction(function() {
 
 This is to fit better with existing route middleware (e.g. connect) APIs.
 
+### Controller Methods
+
+`controller.setLayout()` is now `controller.layout()`. Usually called as `this.layout("fooTemplate")` inside a route action.
+
 ### Query Parameters
 Query parameters now get their own object on `this.params`. To access the query object you can use `this.params.query`.
 
