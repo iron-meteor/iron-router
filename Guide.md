@@ -703,7 +703,7 @@ Router.route('/post/:_id', {
   },
 
   // a place to put your subscriptions
-  subscriptions: {
+  subscriptions: function() {
     this.subscribe('items');
     
     // add the subscription to the waitlist
