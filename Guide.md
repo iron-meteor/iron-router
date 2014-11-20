@@ -556,7 +556,7 @@ Now that we're using named routes in `Router.go` you can also pass a parameters
 object, query and hash fragment options.
 
 ```javascript
-Router.go('post.show', {_id: 1}, {query: 'q=s', frag: 'hashFrag'});
+Router.go('post.show', {_id: 1}, {query: 'q=s', hash: 'hashFrag'});
 ```
 
 The above JavaScript will navigate to this url:
