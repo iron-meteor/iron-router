@@ -912,6 +912,22 @@ Router.plugin('dataNotFound', {notFoundTemplate: 'notFound'});
 This out-of-box plugin will automatically render the template named "notFound" 
 if the route's data is falsey (i.e. `! this.data()`).
 
+### Applying Plugins to Specific Routes
+You can apply a plugin to a specific route by passing an `except` or `only` option
+to the respective plugin function. This is useful for server routes, where you
+explicitly don't want to run plugins designed for the client.
+
+```javascript
+Router.plugin('dataNotFound', {
+  notFoundTemplate: 'NotFound', 
+  except: ['server.route']
+  // or only: ['routeOne', 'routeTwo']
+});
+```
+
+In the above example, the dataNotFound will be applied to all routes except the 
+route named 'server.route'.
+
 ### Creating Plugins
 To create a plugin just put your function on the `Iron.Router.plugins` object
 like this:
