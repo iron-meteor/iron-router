@@ -813,7 +813,7 @@ You can automatically take advantage of this functionality by using the `subscri
 
 ```
 Router.route('/post/:_id', {
-  subcriptions: function() {
+  subscriptions: function() {
     // returning a subscription handle or an array of subscription handles
     // adds them to the wait list.
     return Meteor.subscribe('item', this.params._id);
