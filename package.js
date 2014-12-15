@@ -1,4 +1,5 @@
 Package.describe({
+  name: 'iron:router',
   summary: 'Routing specifically designed for Meteor',
   version: "1.0.3",
   git: "https://github.com/eventedmind/iron-router"
