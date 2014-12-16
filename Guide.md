@@ -657,7 +657,7 @@ with the route path for the given route, parameters, hash and query. You can
 even provide a block of content to be used inside the link.
 
 ```html
-{{#linkTo route="post.show" data=getData query="q=s" frag="hashFrag" class="my-cls"}}
+{{#linkTo route="post.show" data=getData query="q=s" hash="hashFrag" class="my-cls"}}
   <span style="color: orange;">
     Post Show
   </span>
