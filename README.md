@@ -102,6 +102,27 @@ It's not strictly required, but moving forward, Iron Router expects all routes t
 
 Iron Router now uses [path-to-regexp](https://github.com/pillarjs/path-to-regexp), which means the syntax for catchall routes has changed a little -- it's now `'/(.*)'`.
 
+### Template Lookup
+
+If you don't explicitly set a template option on your route, and you don't
+explicity render a template name, the router will try to automatically render a
+template based on the name of the route. By default the router will look for the
+class case name of the template.
+
+For example, if you have a route defined like this:
+
+```javascript
+Router.route('/items/:_id', {name: 'items.show'});
+```
+
+The router will by default look for a template named `ItemsShow` with capital
+letters for each word and punctuation removed. If you would like to customize
+this behavior you can set your own converter function. For example, let's say
+you don't want any conversion. You can set the converter function like this:
+
+```
+Router.setTemplateNameConverter(function (str) { return str; });
+```
 
 ## Contributing
 Contributors are very welcome. There are many things you can help with,
