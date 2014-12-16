@@ -186,6 +186,21 @@ Router.route('/post/:_id', function () {
 });
 ```
 
+**Note**: If you want to rerun a function when the hash changes you can do this:
+
+```javascript
+// get a handle for the controller.
+// in a template helper this would be
+// var controller = Iron.controller();
+var controller = this;
+
+// reactive getParams method which will invalidate the comp if any part of the params change
+// including the hash.
+var params = controller.getParams();
+```
+
+By default the router will follow normal browser behavior. If you click a link with a hash frag it will scroll to an element with that id. If you want to use `controller.getParams()` you can put that in either your own autorun if you want to do something procedural, or in a helper.
+
 ## Rendering Templates
 Usually we want to render a template when the user goes to a particular url. For
 example, we might want to render the template named `Post` when the user
