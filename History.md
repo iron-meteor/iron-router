@@ -1,3 +1,31 @@
+1.0.4 / 2014-12-17
+==================
+  * auto detect url scheme so you can cut and paste IE8 urls to modern browsers for example
+  * correctly handle + in uri components
+  * correctly handle spaces in GET queries
+  * remove trailing slash between path and hash frag
+  * use #! instead of # hash frag to support spiderable
+  * make sure prev controller stopped before setting params
+  * remove Object.keys issue causing problems in IE8
+  * only instantiate controller for the correct environment
+  * change "frag" to "hash" in guide example of linkTo
+  * don't call out to server route if history.state.initial is true
+  * implement ready() and wait() on server
+  * config bodyParser which is overridable
+  * mention template lookup semantics in readme...
+  * Merge pull request #1120 from NestedData/devel
+  * Merge pull request #1123 from zimme/name
+  * Merge pull request #1124 from dburles/patch-1
+  * update tom's isHandled logic to use thisArg instead of params...
+  * added one semicolon
+  * Add name to package.js
+  * Added note about getParams
+  * Merge pull request #1100 from lirbank/patch-1
+  * Merge pull request #1078 from lb-/patch-1
+  * Update Guide.md
+  * Make static files work again
+  * Minor typo in guide.md
+ 
 1.0.0 / 2014-10-28
 ==================
   * Major refactor and cleanup
