@@ -1,3 +1,9 @@
+
+1.0.5 / 2014-12-17
+==================
+  * Don't create a lookup host dep on yield and contentFor to prevent
+    re-rendering layout on every route change
+
 1.0.4 / 2014-12-17
 ==================
   * auto detect url scheme so you can cut and paste IE8 urls to modern browsers for example
