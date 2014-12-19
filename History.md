@@ -1,11 +1,17 @@
+1.0.6 / 2014-12-18
+==================
+  * roll back a change that resulted in re-rendering templates on every route
+    change. The effect of this change is that sometimes controller helpers will
+    not rerun even if the route has changed. But this is less of a problem than
+    large parts of the page re-rendering.
 
 1.0.5 / 2014-12-17
 ==================
-  * Don't create a lookup host dep on yield and contentFor to prevent
-    re-rendering layout on every route change
+  * Don't use. See note in 1.0.6
 
 1.0.4 / 2014-12-17
 ==================
+  * Upgrade to 1.0.6. See note in 1.0.6.
   * auto detect url scheme so you can cut and paste IE8 urls to modern browsers for example
   * correctly handle + in uri components
   * correctly handle spaces in GET queries
