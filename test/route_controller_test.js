@@ -22,7 +22,7 @@ Tinytest.add('RouteController - lookupOption', function (test) {
   test.equal(value, 'myInstanceValue', 'property should be on instance');
 
   // XXX: this order has changed since 0.9.x - either revert or document heavily
-  // route controller options : 
+  // route controller options :
   inst.options.myOption = 'myOptionsValue';
   value = inst.lookupOption('myOption');
   test.equal(value, 'myOptionsValue', 'property should be on instance options');
@@ -31,6 +31,12 @@ Tinytest.add('RouteController - lookupOption', function (test) {
   route.options.myOption = 'myRouteValue';
   value = inst.lookupOption('myOption');
   test.equal(value, 'myRouteValue', 'property should be on route options');
+
+  // dot notation
+  route.options.dot = {notation: 'myDotNotationValue'};
+  value = inst.lookupOption('dot.notation');
+  test.equal(value, 'myDotNotationValue', 'property should be on route ' +
+    'options using dot notation');
 });
 
 Tinytest.add('RouteController - hooks - inheritance order', function (test) {
@@ -42,7 +48,7 @@ Tinytest.add('RouteController - hooks - inheritance order', function (test) {
       hookCalls.push('routerOnAfterAction');
     }
   });
-  
+
   var Parent = Iron.RouteController.extend({
     onAfterAction: function protoOnAfterAction() {
       hookCalls.push('parentOnAfterAction');
