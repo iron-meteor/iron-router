@@ -1105,7 +1105,7 @@ providing a controller option.
 ```javascript
 Router.route('/post/:_id', {
   name: 'post.show',
-  controller: 'PostController'
+  controller: 'CustomController'
 });
 ```
 
