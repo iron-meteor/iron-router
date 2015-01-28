@@ -1035,7 +1035,8 @@ Router.onBeforeAction('customPackageHook');
   candidate for things like analytics where you want be sure the hook only runs once. Note that this hook *won't* run again if the route is reloaded via hot code push.
 
 * **onRerun**: Called if the route reruns because its computation is
-  invalidated.
+  invalidated. Similarly to `onBeforeAction`, if you want to continue calling the next function, you
+  *must* call `this.next()`.
 
 * **onBeforeAction**: Called before the route or "action" function is run. These
   hooks behave specially. If you want to continue calling the next function you
