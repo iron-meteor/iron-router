@@ -1,0 +1,61 @@
+
+<template name="default">
+
+	<h1>This is our main wrapper which usually defines the navigation bar, footer, etc</h1>
+
+	<nav>
+		<a href="/dashboard">Dashboard</a>
+		<a href="/settings">Settings</a>
+	</nav>
+
+	<div>
+		{{> yield region="body"}}
+	</div>
+
+</template>
+
+
+<template name="dashboard">
+	<div class="panel">
+		This is our dashboard template
+	</div>
+</template>
+
+
+<template name="settings">
+
+	<div class="panel">
+		<div>
+			<a href="/settings/profile">Profile</a>
+			<a href="/settings/account">Account</a>
+			<a href="/settings/billing">Billing</a>
+		</div>
+
+		<div class="area">
+			{{ > yield}}
+		</div>
+
+	</div>
+
+</template>
+
+
+<template name="profile">
+
+	<strong>This is the profile content</strong>
+
+</template>
+
+
+<template name="billing">
+
+	<strong>This is the billing content</strong>
+
+</template>
+
+<template name="account">
+
+	<strong>This is the account content</strong>
+
+</template>
+
