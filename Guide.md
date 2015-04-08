@@ -826,7 +826,7 @@ Router.route('/post/:_id', function () {
 
 You can automatically take advantage of this functionality by using the `subscriptions` option to your route.
 
-```
+```javascript
 Router.route('/post/:_id', {
   subscriptions: function() {
     // returning a subscription handle or an array of subscription handles
@@ -1054,7 +1054,7 @@ Router.onBeforeAction('customPackageHook');
 
 On the server, the API signature for a `onBeforeAction` hook is identical to that of a [connect](https://github.com/senchalabs/connect) middleware:
 
-```
+```javascript
 Router.onBeforeAction(function(req, res, next) {
   // in here next() is equivalent to this.next();
 }, {where: 'server'});
@@ -1296,7 +1296,7 @@ http://localhost:3000/#/items/5?q=s&__hash__=hashFrag
 But in your `RouteController` functions you can access the url, query and hash
 values just like you have before.
 
-```
+```javascript
 Router.route('/items/:_id', function () {
   var id = this.params._id; // "5"
   var query = this.params.query; // {q: "s"}
