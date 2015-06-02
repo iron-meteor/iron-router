@@ -72,6 +72,7 @@ The `where: 'server'` option tells the Router this is a server side route.
   - [Using Redirects](#using-redirects)
   - [Using Links to Server Routes](#using-links-to-server-routes)
 - [Named Routes](#named-routes)
+  - [Getting the Current Route](#getting-the-current-route)
 - [Template Lookup](#template-lookup)
 - [Path and Link Template Helpers](#path-and-link-template-helpers)
   - [pathFor](#pathfor)
@@ -578,6 +579,13 @@ The above JavaScript will navigate to this url:
 
 ```html
 /post/1?q=s#hashFrag
+```
+### Getting the Current Route
+
+You can access the current route's name through the current controller with:
+
+```javascript
+Router.current().route.getName()
 ```
 
 ## Template Lookup
