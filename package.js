@@ -32,13 +32,13 @@ Package.on_use(function (api) {
   api.use('iron:layout@1.0.8');
 
   // connect like middleware stack for client/server
-  api.use('iron:middleware-stack@1.0.8');
+  api.use('iron:middleware-stack@1.0.9');
 
   // client and server side url utilities and compiling
   api.use('iron:url@1.0.9');
 
   // for reactive urls and pushState in the browser
-  api.use('iron:location@1.0.8');
+  api.use('iron:location@1.0.9');
 
   // for RouteController which inherits from this
   api.use('iron:controller@1.0.8');
