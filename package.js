@@ -1,7 +1,7 @@
 Package.describe({
   name: 'iron:router',
   summary: 'Routing specifically designed for Meteor',
-  version: "1.0.8",
+  version: "1.0.9",
   git: "https://github.com/eventedmind/iron-router"
 });
 
@@ -35,7 +35,7 @@ Package.on_use(function (api) {
   api.use('iron:middleware-stack@1.0.8');
 
   // client and server side url utilities and compiling
-  api.use('iron:url@1.0.8');
+  api.use('iron:url@1.0.9');
 
   // for reactive urls and pushState in the browser
   api.use('iron:location@1.0.8');
