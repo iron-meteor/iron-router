@@ -1,12 +1,12 @@
 Package.describe({
   name: 'iron:router',
   summary: 'Routing specifically designed for Meteor',
-  version: "1.0.7",
+  version: "1.0.8",
   git: "https://github.com/eventedmind/iron-router"
 });
 
 Npm.depends({
-  'body-parser': '1.8.1'
+  'body-parser': '1.12.x'
 });
 
 Package.on_use(function (api) {
@@ -25,23 +25,23 @@ Package.on_use(function (api) {
   api.use('meteor')
 
   // main namespace and utils
-  api.use('iron:core@1.0.7');
+  api.use('iron:core@1.0.8');
   api.imply('iron:core');
 
   // ui layout
-  api.use('iron:layout@1.0.7');
+  api.use('iron:layout@1.0.8');
 
   // connect like middleware stack for client/server
-  api.use('iron:middleware-stack@1.0.7');
+  api.use('iron:middleware-stack@1.0.8');
 
   // client and server side url utilities and compiling
-  api.use('iron:url@1.0.7');
+  api.use('iron:url@1.0.8');
 
   // for reactive urls and pushState in the browser
-  api.use('iron:location@1.0.7');
+  api.use('iron:location@1.0.8');
 
   // for RouteController which inherits from this
-  api.use('iron:controller@1.0.7');
+  api.use('iron:controller@1.0.8');
 
   api.add_files('lib/current_options.js');
   api.add_files('lib/http_methods.js');
