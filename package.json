@@ -1,0 +1,11 @@
+{
+  "name": "IronRouterGuide",
+  "version": "1.0.0",
+  "description": "",
+  "author": "Chris Mather",
+  "license": "MIT",
+  "dependencies": {
+    "grunt": "^0.4.5",
+    "grunt-markdown": "^0.7.0"
+  }
+}
