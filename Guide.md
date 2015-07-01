@@ -207,7 +207,7 @@ Usually we want to render a template when the user goes to a particular url. For
 example, we might want to render the template named `Post` when the user
 navigates to the url `/posts/1`.
 
-```html
+```handlebars
 <template name="Post">
   <h1>Post: {{title}}</h1>
 </template>
@@ -250,7 +250,7 @@ placeholder is called a *region.* The content will be "injected" into the
 region when we actually run our route.  This lets us reuse the layout on many
 different pages, only changing the content of the *yield regions*.
 
-```html
+```handlebars
 <template name="ApplicationLayout">
   <header>
     <h1>{{title}}</h1>
@@ -292,7 +292,7 @@ Router.configure({
 Inside of our route function we can tell the router which templates to render
 into each region. 
 
-```html
+```handlebars
 <template name="Post">
   <p>
     {{post_content}}
@@ -369,7 +369,7 @@ same `ApplicationLayout` from the previous example. But this time, instead of
 defining a new template for each region, we'll provide the content *inline* in
 our `Post` template.
 
-```html
+```handlebars
 <template name="Post">
   <p>
     {{post_content}}
@@ -403,7 +403,7 @@ Router.route('/post/:_id', function () {
 You can even provide a template option to the `contentFor` helper instead of
 providing in-line block content.
 
-```html
+```handlebars
 <template name="Post">
   <p>
     {{post_content}}
@@ -424,7 +424,7 @@ are a few ways to navigate around the application.
 Users can navigate around the application by clicking links. Let's say we have a
 layout with some navigation links.
 
-```html
+```handlebars
 <template name="ApplicationLayout">
   <nav>
     <ul>
@@ -491,7 +491,7 @@ routes, the browser doesn't need to make requests to the server.
 You can navigate to a given url, or even a route name, from JavaScript using the
 `Router.go` method. Let's say we've defined a click event handler for a button.
 
-```html
+```handlebars
 <template name="MyButton">
   <button id="clickme">Go to Page One</button>
 </template>
@@ -535,7 +535,7 @@ Router.route('/download/:filename', function () {
 
 Now, in our html we'll have a link to download a particular file.
 
-```html
+```handlebars
 <a href="/download/myfilename">Download File</a>
 ```
 
@@ -577,7 +577,7 @@ Router.go('post.show', {_id: 1}, {query: 'q=s', hash: 'hashFrag'});
 
 The above JavaScript will navigate to this url:
 
-```html
+```handlebars
 /post/1?q=s#hashFrag
 ```
 ### Getting the Current Route
@@ -605,7 +605,7 @@ letters for each word and punctuation removed. If you would like to customize
 this behavior you can set your own converter function. For example, let's say
 you don't want any conversion. You can set the converter function like this:
 
-```
+```javascript
 Router.setTemplateNameConverter(function (str) { return str; });
 ```
 
@@ -617,7 +617,7 @@ First, we can use the `{{pathFor}}` helper to generate a path for a given named
 route. Given the `post.show` route we created above we can create a link like
 this:
 
-```html
+```handlebars
 {{#with post}}
   <a href="{{pathFor route='post.show'}}">Post Show</a>
 {{/with}}
@@ -625,13 +625,13 @@ this:
 
 Assuming we have a post with an id of "1", the above snippet is equivalent to:
 
-```html
+```handlebars
 <a href="/posts/1">Post Show</a>
 ```
 
 We can pass `data`, `query` and `hash` options to the pathFor helper.
 
-```html
+```handlebars
 <a href="{{pathFor route='post.show' data=getPost query='q=s' hash='frag'}}">Post Show</a>
 ```
 
@@ -645,7 +645,7 @@ data = { _id: 1 };
 
 The above `pathFor` expression will result in a link that looks like this:
 
-```html
+```handlebars
 <a href="/post/1?q=s#frag">Post Show</a>
 ```
 
@@ -664,7 +664,7 @@ The `linkTo` helper automatically generates the html for an anchor tag along
 with the route path for the given route, parameters, hash and query. You can
 even provide a block of content to be used inside the link.
 
-```html
+```handlebars
 {{#linkTo route="post.show" data=getData query="q=s" hash="hashFrag" class="my-cls"}}
   <span style="color: orange;">
     Post Show
@@ -674,7 +674,7 @@ even provide a block of content to be used inside the link.
 
 The expression above will be transformed into html that looks like this:
 
-```html
+```handlebars
 <a href="/posts/1?q=s#hashFrag" class="my-cls">
   <span style="color: orange;">
     Post Show
@@ -1202,7 +1202,7 @@ Router.route('/posts', function () {
 
 This route will render the `Posts` template defined below.
 
-```html
+```handlebars
 <template name="Posts">
   Posts
 </template>
@@ -1261,7 +1261,7 @@ So far we've been letting the Router render itself to the page automatically.
 But you can also control precisely where the Router renders itself by using a
 global helper method.
 
-```html
+```handlebars
 <body>
   <h1>Some App Html</h1>
   <div class="container">
@@ -1292,13 +1292,13 @@ the url, query, hash and parameters will look like their regular values inside
 of `RouteController` functions. Here are a few examples of how urls will be
 translated.
 
-```
+```bash
 http://localhost:3000/items/5?q=s#hashFrag
 ```
 
 The url above would be transformed to the url below in your browser.
 
-```
+```bash
 http://localhost:3000/#/items/5?q=s&__hash__=hashFrag
 ```
 
