@@ -17,12 +17,13 @@ Package.on_use(function (api) {
   api.use('deps', 'client');
   api.use('ui');
   api.use('templating');
+  api.imply('templating');
 
   // for cloning
   api.use('ejson');
 
   // for dynamic scoping with environment variables
-  api.use('meteor')
+  api.use('meteor');
 
   // main namespace and utils
   api.use('iron:core@1.0.8');
