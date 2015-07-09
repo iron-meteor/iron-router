@@ -39,7 +39,7 @@ Router.route('/restful', {where: 'server'})
 
 // Namespace
 Router.namespace('/admin', {
-  // Optional root namespace
+  // Optional root route
   "/": "",
   "posts": function() {
     this.render('posts');
