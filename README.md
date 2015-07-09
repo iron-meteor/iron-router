@@ -37,6 +37,19 @@ Router.route('/restful', {where: 'server'})
     this.response.end('post request\n');
   });
 
+// Namespace
+Router.namespace('/admin', {
+  // Optional root namespace
+  "/": "",
+  "posts": function() {
+    this.render('posts');
+  },
+  "comments": function() {
+    this.render('comments');
+  },
+}, {
+  layoutTemplate: 'adminLayout'
+});
 ```
 
 ## Migrating from 0.9.4
