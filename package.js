@@ -32,7 +32,7 @@ Package.on_use(function (api) {
   api.use('iron:layout@1.0.8');
 
   // connect like middleware stack for client/server
-  api.use('iron:middleware-stack@1.0.9');
+  api.use('iron:middleware-stack@1.0.10');
 
   // client and server side url utilities and compiling
   api.use('iron:url@1.0.9');
