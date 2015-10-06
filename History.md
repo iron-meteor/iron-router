@@ -1,3 +1,7 @@
+1.0.10 / 2015-10-6
+==================
+  * compatibility fix for Meteor 1.2
+
 1.0.6 / 2014-12-18
 ==================
   * roll back a change that resulted in re-rendering templates on every route
@@ -37,7 +41,7 @@
   * Update Guide.md
   * Make static files work again
   * Minor typo in guide.md
- 
+
 1.0.0 / 2014-10-28
 ==================
   * Major refactor and cleanup
@@ -190,7 +194,7 @@ v0.8.0 / 2014-07-29
       3. controller object
       4. route option hooks
       5. router global
-      
+
 * Helpers cleanup
   * `{{link}}` helper is no longer included by default. These types of helpers can be implemented in separate packages.
   * `{{renderRouter}}` is gone for now.
@@ -232,7 +236,7 @@ v0.8.0 / 2014-07-29
     1. `{{pathFor contextObject queryKey=queryValue hash=anchorTag}}`
     or
     2. ```
-        {{#with contextObject}} 
+        {{#with contextObject}}
           {{pathFor queryKey=queryValue hash=anchorTag}}
         {{/with}}
        ```
