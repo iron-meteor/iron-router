@@ -76,8 +76,8 @@ The `where: 'server'` option tells the Router this is a server side route.
 - [Template Lookup](#template-lookup)
 - [Path and Link Template Helpers](#path-and-link-template-helpers)
   - [pathFor](#pathfor)
-  - [urlFor](#urlFor)
-  - [linkTo](#linkTo)
+  - [urlFor](#urlfor)
+  - [linkTo](#linkto)
 - [Route Options](#route-options)
   - [Route Specific Options](#route-specific-options)
   - [Global Default Options](#global-default-options)
@@ -89,13 +89,12 @@ The `where: 'server'` option tells the Router this is a server side route.
   - [Creating Routes](#creating-routes)
   - [Restful Routes](#restful-routes)
   - [404s and Client vs Server Routes](#404s-and-client-vs-server-routes)
-  - [Server Middleware and Connect](#server-middleware-and-connect)
 - [Plugins](#plugins)
   - [Creating Plugins](#creating-plugins)
 - [Hooks](#hooks)
   - [Using Hooks](#using-hooks)
   - [Applying Hooks to Specific Routes](#applying-hooks-to-specific-routes)
-  - [Using the Iron.Router.hooks Namespace](#using-the-iron-router-hooks-namespace)
+  - [Using the Iron.Router.hooks Namespace](#using-the-ironrouterhooks-namespace)
   - [Available Hook Methods](#available-hook-methods)
 - [Route Controllers](#route-controllers)
   - [Creating Route Controllers](#creating-route-controllers) 
@@ -1040,7 +1039,7 @@ Router.onBeforeAction('customPackageHook');
 ### Available Hook Methods
 * **onRun**: Called when the route is first run. It is not called again if the
   route reruns because of a computation invalidation. This makes it a good 
-  candidate for things like analytics where you want be sure the hook only runs once. Note that this hook *won't* run again if the route is reloaded via hot code push.
+  candidate for things like analytics where you want be sure the hook only runs once. Note that this hook *won't* run again if the route is reloaded via hot code push. You *must* call `this.next()` to continue calling the next function.
 
 * **onRerun**: Called if the route reruns because its computation is
   invalidated. Similarly to `onBeforeAction`, if you want to continue calling the next function, you

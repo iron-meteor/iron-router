@@ -96,8 +96,8 @@ are used to implement REST endpoints.</p>
 <li><a href="#template-lookup">Template Lookup</a></li>
 <li><a href="#path-and-link-template-helpers">Path and Link Template Helpers</a><ul>
 <li><a href="#pathfor">pathFor</a></li>
-<li><a href="#urlFor">urlFor</a></li>
-<li><a href="#linkTo">linkTo</a></li>
+<li><a href="#urlfor">urlFor</a></li>
+<li><a href="#linkto">linkTo</a></li>
 </ul>
 </li>
 <li><a href="#route-options">Route Options</a><ul>
@@ -115,7 +115,6 @@ are used to implement REST endpoints.</p>
 <li><a href="#creating-routes">Creating Routes</a></li>
 <li><a href="#restful-routes">Restful Routes</a></li>
 <li><a href="#404s-and-client-vs-server-routes">404s and Client vs Server Routes</a></li>
-<li><a href="#server-middleware-and-connect">Server Middleware and Connect</a></li>
 </ul>
 </li>
 <li><a href="#plugins">Plugins</a><ul>
@@ -125,7 +124,7 @@ are used to implement REST endpoints.</p>
 <li><a href="#hooks">Hooks</a><ul>
 <li><a href="#using-hooks">Using Hooks</a></li>
 <li><a href="#applying-hooks-to-specific-routes">Applying Hooks to Specific Routes</a></li>
-<li><a href="#using-the-iron-router-hooks-namespace">Using the Iron.Router.hooks Namespace</a></li>
+<li><a href="#using-the-ironrouterhooks-namespace">Using the Iron.Router.hooks Namespace</a></li>
 <li><a href="#available-hook-methods">Available Hook Methods</a></li>
 </ul>
 </li>
@@ -878,7 +877,7 @@ Router.onBeforeAction(&#39;customPackageHook&#39;);
 <ul>
 <li><p><strong>onRun</strong>: Called when the route is first run. It is not called again if the
 route reruns because of a computation invalidation. This makes it a good 
-candidate for things like analytics where you want be sure the hook only runs once. Note that this hook <em>won&#39;t</em> run again if the route is reloaded via hot code push.</p>
+candidate for things like analytics where you want be sure the hook only runs once. Note that this hook <em>won&#39;t</em> run again if the route is reloaded via hot code push. You <em>must</em> call <code>this.next()</code> to continue calling the next function.</p>
 </li>
 <li><p><strong>onRerun</strong>: Called if the route reruns because its computation is
 invalidated. Similarly to <code>onBeforeAction</code>, if you want to continue calling the next function, you
