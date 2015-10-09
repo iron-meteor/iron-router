@@ -3,3 +3,4 @@
 .build*
 smart.lock
 versions.json
+.versions

@@ -1,3 +1,7 @@
+v1.0.11 / 2015-10-09
+==================
+  * Fix Iron-Layout for Meteor 1.2
+
 1.0.10 / 2015-10-6
 ==================
   * compatibility fix for Meteor 1.2
