@@ -1,7 +1,7 @@
 Package.describe({
   name: 'iron:router',
   summary: 'Routing specifically designed for Meteor',
-  version: '1.0.11',
+  version: '1.0.12',
   git: 'https://github.com/iron-meteor/iron-router'
 });
 
@@ -29,7 +29,7 @@ Package.on_use(function (api) {
   api.imply('iron:core');
 
   // ui layout
-  api.use('iron:layout@1.0.11');
+  api.use('iron:layout@1.0.12');
 
   // connect like middleware stack for client/server
   api.use('iron:middleware-stack@1.0.11');
@@ -41,7 +41,7 @@ Package.on_use(function (api) {
   api.use('iron:location@1.0.11');
 
   // for RouteController which inherits from this
-  api.use('iron:controller@1.0.11');
+  api.use('iron:controller@1.0.12');
 
   api.add_files('lib/current_options.js');
   api.add_files('lib/http_methods.js');
