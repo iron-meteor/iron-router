@@ -3,7 +3,6 @@
 A router that works on the server and the browser, designed specifically for
 [Meteor](https://github.com/meteor/meteor).
 
-
 ## Quick Start
 You can install iron:router using Meteor's package management system:
 
@@ -98,8 +97,8 @@ The `where: 'server'` option tells the Router this is a server side route.
   - [Using the Iron.Router.hooks Namespace](#using-the-iron-router-hooks-namespace)
   - [Available Hook Methods](#available-hook-methods)
 - [Route Controllers](#route-controllers)
-  - [Creating Route Controllers](#creating-route-controllers) 
-  - [Inheriting from Route Controllers](#inheriting-from-route-controllers) 
+  - [Creating Route Controllers](#creating-route-controllers)
+  - [Inheriting from Route Controllers](#inheriting-from-route-controllers)
   - [Accessing the Current Route Controller](#accessing-the-current-route-controller)
   - [Setting Reactive State Variables](#setting-reactive-state-variables)
   - [Getting Reactive State Variables](#getting-reactive-state-variables)
@@ -118,7 +117,7 @@ browser and close the connection.
 In some more modern Web apps you'll use a "client side" router like pagejs or
 Backbone router. These routers run in the browser, and let you navigate around
 an application without making trips to the server by taking advantage of browser
-HTML5 features like pushState or url hash fragments. 
+HTML5 features like pushState or url hash fragments.
 
 ### Client and Server
 Iron.Router runs on the client *and* the server. You can define a route that
@@ -181,7 +180,7 @@ using the `query` and `hash` properties of the `this.params` object.
 Router.route('/post/:_id', function () {
   var id = this.params._id;
   var query = this.params.query;
-  
+
   // query.q -> "s"
   var hash = this.params.hash; // "hashFrag"
 });
@@ -290,7 +289,7 @@ Router.configure({
 
 ### Rendering Templates into Regions with JavaScript
 Inside of our route function we can tell the router which templates to render
-into each region. 
+into each region.
 
 ```handlebars
 <template name="Post">
@@ -321,11 +320,11 @@ Router.route('/post/:_id', function () {
   // {{> yield}}
   this.render('Post');
 
-  // render the PostAside template into the yield region named "aside" 
+  // render the PostAside template into the yield region named "aside"
   // {{> yield "aside"}}
   this.render('PostAside', {to: 'aside'});
 
-  // render the PostFooter template into the yield region named "footer" 
+  // render the PostFooter template into the yield region named "footer"
   // {{> yield "footer"}}
   this.render('PostFooter', {to: 'footer'});
 });
@@ -431,7 +430,7 @@ layout with some navigation links.
       <li>
         <a href="/">Home</a>
       </li>
-      
+
       <li>
         <a href="/one">Page One</a>
       </li>
@@ -485,7 +484,7 @@ Likewise, if the user clicks the `Page Two` link, the url in the browser will
 change to '/two' and the third route will run, rendering the 'PageTwo' template.
 
 Even though the url is changing in the browser, since these are client-side
-routes, the browser doesn't need to make requests to the server. 
+routes, the browser doesn't need to make requests to the server.
 
 ### Using JavaScript
 You can navigate to a given url, or even a route name, from JavaScript using the
@@ -728,7 +727,7 @@ Router.route('/post/:_id', {
   // a place to put your subscriptions
   subscriptions: function() {
     this.subscribe('items');
-    
+
     // add the subscription to the waitlist
     this.subscribe('item', this.params._id).wait();
   },
@@ -852,7 +851,7 @@ Router.route('/post/:_id', {
 });
 ```
 
-Your `subscriptions` function can return a single subscription handle (the result of `Meteor.subscribe`) or an array of them. The subscription(s) will be used to drive the `.ready()` state. 
+Your `subscriptions` function can return a single subscription handle (the result of `Meteor.subscribe`) or an array of them. The subscription(s) will be used to drive the `.ready()` state.
 
 You can also inherit subscriptions from the global router config or from a controller (see below).
 
@@ -863,7 +862,7 @@ Another alternative is to use `waitOn` instead of `subscribe`. This has the same
 Router.route('/post/:_id', {
   // this template will be rendered until the subscriptions are ready
   loadingTemplate: 'loading',
-  
+
   waitOn: function () {
     // return one handle, a function, or an array
     return Meteor.subscribe('post', this.params._id);
@@ -932,7 +931,7 @@ plugin and any options for the plugin.
 Router.plugin('dataNotFound', {notFoundTemplate: 'notFound'});
 ```
 
-This out-of-box plugin will automatically render the template named "notFound" 
+This out-of-box plugin will automatically render the template named "notFound"
 if the route's data is falsey (i.e. `! this.data()`).
 
 ### Applying Plugins to Specific Routes
@@ -942,13 +941,13 @@ explicitly don't want to run plugins designed for the client.
 
 ```javascript
 Router.plugin('dataNotFound', {
-  notFoundTemplate: 'NotFound', 
+  notFoundTemplate: 'NotFound',
   except: ['server.route']
   // or only: ['routeOne', 'routeTwo']
 });
 ```
 
-In the above example, the dataNotFound will be applied to all routes except the 
+In the above example, the dataNotFound will be applied to all routes except the
 route named 'server.route'.
 
 ### Creating Plugins
@@ -1039,8 +1038,11 @@ Router.onBeforeAction('customPackageHook');
 ```
 ### Available Hook Methods
 * **onRun**: Called when the route is first run. It is not called again if the
-  route reruns because of a computation invalidation. This makes it a good 
-  candidate for things like analytics where you want be sure the hook only runs once. Note that this hook *won't* run again if the route is reloaded via hot code push.
+  route reruns because of a computation invalidation. This makes it a good
+  candidate for things like analytics where you want be sure the hook only runs once. Note that
+  this hook *won't* run again if the route is reloaded via hot code push. Similarly to
+  `onBeforeAction`, if you want to continue calling the next function, you *must* call
+  `this.next()`.
 
 * **onRerun**: Called if the route reruns because its computation is
   invalidated. Similarly to `onBeforeAction`, if you want to continue calling the next function, you
