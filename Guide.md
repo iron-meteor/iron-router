@@ -237,6 +237,28 @@ Router.route('/post/:_id', function () {
   });
 });
 ```
+If you wish to return access to more that one `Post` from the route, the 
+`data` option should return an object containing a cursor.
+
+```javascript
+Router.route('/post/:_id', function () {
+  this.render('Post', {
+    data: {
+      posts: Posts.find();
+    }
+  });
+});
+```
+
+Too access the `title` of each `Post`, use the `#each` helper in the template.
+
+```handlebars
+<template name="Post">
+  {{#each posts}}
+  <h1>Post: {{title}}</h1>
+  {{/each}}
+</template>
+```
 
 ## Layouts
 Layouts allow you to reuse a common look and feel in multiple pages in your
