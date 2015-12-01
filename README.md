@@ -2,6 +2,7 @@ Iron.Router
 ==============================================================================
 
 [![Join the chat at https://gitter.im/iron-meteor/iron-router](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/iron-meteor/iron-router?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 A router that works on the server and the browser, designed specifically for <a href="https://github.com/meteor/meteor" target="_blank">Meteor</a>
 
 ## The Iron.Router Guide
