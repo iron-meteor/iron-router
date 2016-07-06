@@ -56,7 +56,7 @@ Iron Router should be reasonably backwards compatible, but there are a few requi
 
 `onRun` and `onBeforeAction` hooks now require you to call `this.next()`, and no longer take a `pause()` argument. So the default behaviour is reversed. For example, if you had:
 
-```
+```javascript
 Router.onBeforeAction(function(pause) {
   if (! Meteor.userId()) {
     this.render('login');
@@ -67,7 +67,7 @@ Router.onBeforeAction(function(pause) {
 
 You'll need to update it to
 
-```
+```javascript
 Router.onBeforeAction(function() {
   if (! Meteor.userId()) {
     this.render('login');
@@ -126,7 +126,7 @@ letters for each word and punctuation removed. If you would like to customize
 this behavior you can set your own converter function. For example, let's say
 you don't want any conversion. You can set the converter function like this:
 
-```
+```javascript
 Router.setTemplateNameConverter(function (str) { return str; });
 ```
 
