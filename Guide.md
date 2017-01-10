@@ -510,7 +510,7 @@ This will change the browser's url to `/one` and run the corresponding route.
 
 ### Using Redirects
 You can redirect from one route to another from inside a route function by using
-the `redirect` method inside your route function.
+the `redirect` method inside your route function. You can use a route's path or name as its argument.
 
 ```javascript
 Router.route('/one', function () {
