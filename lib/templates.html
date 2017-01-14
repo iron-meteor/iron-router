@@ -11,10 +11,11 @@
       <h1 style='text-align: center; margin: 0; font-size: 48pt;'>
         iron:router
       </h1>
-      <p style='text-align: center; font-size: 1.3em;'>
-        Organize your Meteor application.
+      <p style='text-align: center; font-size: 1.3em; color: red;'>
+        No route definitions found.
       </p>
       <div style='margin: 50px 0px;'>
+        <p>To create a route:</p>
         <pre style='background: #f2f2f2; margin: 0; padding: 10px;'>
 Router.route('/', function () {
   this.render('Home', {
@@ -22,10 +23,11 @@ Router.route('/', function () {
   });
 });
         </pre>
+        <p style="text-align:center"><small>To hide this page, set 'noRoutesTemplate' in <a href="http://iron-meteor.github.io/iron-router/#global-default-options" target="_blank">Router.configure()</a></small></p>
       </div>
-      <div style='margin: 50px 0px;'>
+      <div style='margin: 50px 0px; text-align: center;'>
         Check it out on Github:<br>
-        <a href='https://github.com/eventedmind/iron-router' target='_blank'>https://github.com/eventedmind/iron-router</a>
+        <a href='https://github.com/iron-meteor/iron-router/' target='_blank'>https://github.com/iron-meteor/iron-router/</a>
         <br>
         <br>
         And check out the new Guide:<br>
@@ -33,5 +35,5 @@ Router.route('/', function () {
           https://iron-meteor.github.io/iron-router
         </a>
       </div>
-    </div> 
+    </div>
 </template>

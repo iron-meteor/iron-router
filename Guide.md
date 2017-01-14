@@ -800,11 +800,11 @@ method.
 Router.configure({
   layoutTemplate: 'ApplicationLayout',
 
-  template: 'DefaultTemplate'
+  template: 'DefaultTemplate',
 
-  // .
-  // .
-  // .
+  notFoundTemplate: 'RouteNotFound',
+
+  noRoutesTemplate: 'ReplacesSplashScreen'
 });
 ```
 
