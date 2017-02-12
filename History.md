@@ -1,3 +1,7 @@
+v1.1.2 / 2017-2-12
+==================
+  * Bump Iron:Url version
+
 v1.1.0 / 2017-1-14
 ==================
   * Add 'noRoutesTemplate' config option
