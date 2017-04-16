@@ -741,7 +741,7 @@ Router.route('/post/:_id', {
 
   // A declarative way of providing templates for each yield region
   // in the layout
-  yieldRegions: {
+  yieldTemplates: {
     'MyAside': {to: 'aside'},
     'MyFooter': {to: 'footer'}
   },
