@@ -728,7 +728,7 @@ Router.route('/post/:_id', {
 
   // If we want to provide a specific RouteController instead of an anonymous
   // one we can do that here. See the Route Controller section for more info.
-  controller: 'CustomController',
+  controller: CustomController,
 
   // If the template name is different from the route name you can specify it
   // explicitly here.
@@ -1134,7 +1134,7 @@ providing a controller option.
 ```javascript
 Router.route('/post/:_id', {
   name: 'post.show',
-  controller: 'CustomController'
+  controller: CustomController
 });
 ```
 
@@ -1183,7 +1183,7 @@ ApplicationController = RouteController.extend({
 
 Router.configure({
   // this will be the default controller
-  controller: 'ApplicationController'
+  controller: ApplicationController
 });
 
 // now we have a route for posts
