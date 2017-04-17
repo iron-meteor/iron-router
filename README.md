@@ -8,7 +8,7 @@ A router that works on the server and the browser, designed specifically for <a 
 ## The Iron.Router Guide
 Detailed explanations of router features can be found in the [Guide](http://iron-meteor.github.io/iron-router/).
 
-##Installation
+## Installation
 
 ```shell
 meteor add iron:router
