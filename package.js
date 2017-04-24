@@ -17,6 +17,7 @@ Package.on_use(function (api) {
   api.use('deps', 'client');
   api.use('ui');
   api.use('templating');
+  api.imply('templating');
 
   // for cloning
   api.use('ejson');
