@@ -940,6 +940,18 @@ will see if there are any routes defined for that url, either on the server or
 on the client. If no routes are found, the server will send a 404 http status
 code to indicate no resource was found for the given url.
 
+To define a custom template to be rendered upon receiving a 404 http status code
+you can use `notFoundTemplate` settings in `Router.configure`.
+
+```javascript
+Router.configure({
+    notFoundTemplate: 'notFound'
+});
+```
+
+Upon further navigation, the router will do a full page load to correctly
+interpret the http status code, in case the next route returns 200 OK.
+
 ## Plugins
 Plugins are a way to reuse functionality in your router, either that you've
 built for your own applications, or from other package authors. There's even a
