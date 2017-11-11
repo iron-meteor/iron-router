@@ -543,6 +543,29 @@ Router.route('/two', function () {
   this.render('PageTwo');
 });
 ```
+#### Redirect with data
+You can redirect from one route and pass data to a route with parameters using the `redirect` method. The example below shows redirecting to the `term.add.name` route when no terms are found in the Jargon mongo collection.
+
+```javascript
+Router.route('/terms/:name', {
+	name: 'terms',
+	data: function() {
+		var terms = Jargon.find({name: this.params.name});
+		if (terms.count() > 0) {
+			return terms;
+		} else {
+			this.redirect('term.add.name', {name: this.params.name})
+		}
+	}
+});
+
+Router.route('/term/add/:name', {
+	name: 'term.add.name',
+	data: function() {
+		return {name: this.params.name};
+	}
+});
+```
 
 ### Using Links to Server Routes
 Let's say you have a server route that you'd like to link to. For example, a
